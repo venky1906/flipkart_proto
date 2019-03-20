@@ -46,8 +46,10 @@ jQuery(document).ready(function($) {
 		else if(user.id==0)
 			$("#password_warning").show();
 		else
-			window.location = "http://localhost:8080/flipkart/UnderConstruction.html";
-
+		{
+			setCookie("Buyer_data",JSON.stringify(user),30);
+			$("#login-Modal").hide();
+		}
 		
 	}
 	function finduser(){
@@ -111,7 +113,7 @@ jQuery(document).ready(function($) {
 			"gender":"M"
 			
 		});
-		console.log(user_data);
+		//console.log(user_data);
 		$.ajax(
 		{
 		type : 'POST',

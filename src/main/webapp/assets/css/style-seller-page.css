@@ -1,0 +1,123 @@
+.move-left{
+}
+
+.logo-img{
+	width:163px;
+	height:50px;
+}
+.signuplogo-img{
+	
+	width:100px;
+	height:40px;
+}
+.image-btn{
+	width:30px;
+	height:30px;
+}
+
+.remove-btn{
+	margin-top:10px;
+	margin-left:20px;
+	height:20px;
+	width:20px;
+}
+
+
+.big_img{	
+	width:350px;
+	height:350px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+  	padding: 2px;
+}
+
+.small_img{	
+	width:80px;
+	height:80px;
+	border: 1px solid #ddd;
+  	padding: 2px;
+}
+
+.input-lg{
+	height:100px;
+}
+
+.nav-link:hover {
+	color: #F7A200;
+}
+
+.nav-link{
+	font-size: 12px;
+	color:#fff;
+}
+
+.nav-item-active{
+	color: #F7A200;
+}
+
+.navbar-default {
+    font-family: 'Open Sans', sans-serif;
+    border: 0;
+    z-index: 9999999;
+    margin-bottom: 0
+}
+
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+body {
+    margin: 0
+    font-family: sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+}
+
+body {
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+
+.nav-tabs .dropdown-menu {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0
+}
+
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent
+}
+
+div {
+    display: block;
+}
+
+.navbar-nav{
+    text-transform: uppercase;
+}
+
+
+.nav-item{
+	font-family: sans-serif;
+	padding-left: 2px;
+	font-weight: bold;
+}
+
+
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.add-image-button:hover{	
+}

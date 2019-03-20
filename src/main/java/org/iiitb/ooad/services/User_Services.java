@@ -79,6 +79,48 @@ public class User_Services {
 		 
 	}
 	
+	// API for user to create an account as a Seller
+
+	@POST
+	@Path("/createSeller")
+	@Consumes("application/json")
+	public String createSeller(Seller user)
+	{
+		user.setEmail(user.getEmail());
+		user.setGender(user.getGender());
+		user.setName(user.getName());
+		user.setPassword(user.getPassword());
+		user.setPhone_no(user.getPhone_no());
+		user.setGst_info(user.getGst_info());
+		user.setAddress("iiitb");
+		SellerDAO dao=new SellerDAO();
+		if(!dao.searchUserByEmail(user) && !dao.searchUserByMobile(user))
+			return dao.addSeller(user);
+		else
+			return "exists";
+		 
+	}
 	
+	// API for Seller to authenticate for flipkart service via email
+	
+		@POST
+		@Path("/authenticateSellerEmail")
+		@Consumes("application/json")
+		@Produces("application/json")
+		public Seller getUserByEmail(Seller user)
+		{
+			SellerDAO dao = new SellerDAO();
+			Seller user_data = dao.getUserByEmail(user);
+			
+			if(user_data != null)
+			{
+				if(!user.getPassword().equals(user_data.getPassword()))
+					return user;
+				else
+					return user_data;
+			}
+			else
+				return null;
+		}
 
 }
