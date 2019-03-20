@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Seller" table="Seller">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart seller detail. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "seller_id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "name" column = "name" type = "string"/>
+      <property name = "email" column = "email" type = "string"  unique="true"/>
+      <property name = "phone_no" column = "phone_no" type = "string"  unique="true"/>
+      <property name = "pic_location" column = "pic_location" type = "string"/>
+      <property name = "password" column = "password" type = "string"/>
+      <property name="gender" column = "gender" type="string"/>
+      <property name="address" column="address" type="string"/>
+      <property name="gst_info" column="gst_info" type="string"/>
+	</class>
+</hibernate-mapping>

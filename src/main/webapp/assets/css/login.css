@@ -1,0 +1,56 @@
+@charset "UTF-8";
+input 
+	{
+		display: block;
+		border: none;
+		border-bottom: 1px solid #ccc;
+		width: 100%
+	}
+	
+	.floating-div 
+	{
+		position: relative; /*  make label relate to div  */
+		padding-top: 5%; /*  make space for label      */
+	}
+	
+	.floating-label
+	{
+		position: absolute;
+		pointer-events: none;
+		top: 50%;
+		color: #878787;
+	}
+
+	.floating-label-new
+	{
+		position: absolute;
+		pointer-events: none;
+		top: 40%;
+		color: #878787;
+	}
+	
+	input:focus ~ .floating-label-new
+	{
+		transition: 0.2s ease all;
+		top: 5%;
+		font-size: 80%;
+	}
+	input:focus ~ .floating-label
+	{
+		transition: 0.2s ease all;
+		top: 30%;
+		font-size: 70%;
+	}
+
+	input:valid ~ .floating-label-new
+	{
+		transition: 0.2s ease all;
+		top: -5%;
+		font-size: 70%;
+	}
+	input:valid ~ .floating-label 
+	{
+		transition: 0.2s ease all;
+		top: 30%;
+		font-size: 70%;
+	}

@@ -9,7 +9,7 @@
     <name>flipkart-prototype</name>
 
     <build>
-        <finalName>ooad</finalName>
+        <finalName>flipkart</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
