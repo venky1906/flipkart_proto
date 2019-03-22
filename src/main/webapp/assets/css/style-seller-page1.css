@@ -1,25 +1,18 @@
 .move-left{
 }
 
-.singleProduct{
-	border-radius: 4px;
-	border: 1px solid #ddd;
-  	margin-left: 10px;
-  	margin-right:25%;
-  	padding-top:10px;
+.logo-img{
+	width:163px;
+	height:50px;
 }
-
+.signuplogo-img{
+	
+	width:100px;
+	height:40px;
+}
 .image-btn{
 	width:30px;
 	height:30px;
-}
-
-.medium_img{
-	width:200px;
-	height:200px;
-	border-radius: 4px;
-	border: 1px solid #ddd;
-  	padding: 2px;
 }
 
 .remove-btn{
@@ -54,7 +47,7 @@
 }
 
 .nav-link{
-	font-size: 14px;
+	font-size: 12px;
 	color:#fff;
 }
 
@@ -63,7 +56,6 @@
 }
 
 .navbar-default {
-    background-color: #337ab7;
     font-family: 'Open Sans', sans-serif;
     border: 0;
     z-index: 9999999;
@@ -78,7 +70,6 @@ html {
 
 body {
     margin: 0
-    background-color:rgba(128,128,128,0.1);
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%
@@ -128,26 +119,5 @@ ul, menu, dir {
     padding-inline-start: 40px;
 }
 
-.my_button{
-	text-align: center;
-	width: 100px;
-}
-
-.my_button_remove{
-	text-align: center;
-	width: 100px;
-	background-color: #f44336;
-	border-color:#f44336;
-}
-
-.my_button_remove:hover{
-	background-color: #f44336;
-	border-color:#f44336;
-}
-
-.my_button_remove:active{
-	background-color: #f44336;
-	border-color:#f44336;	
-}
 .add-image-button:hover{	
 }

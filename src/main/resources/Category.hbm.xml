@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Category" table="Category">
+	 
+      <meta attribute = "class-description">
+         This class contains the Category detail. 
+      </meta>
+      
+      <id name = "category_id" type = "int" column = "category_id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "name" column = "name" type = "string" unique="true"/>
+      <property name= "cat_img" column="cat_img" type="string"></property>
+      
+	</class>
+</hibernate-mapping>

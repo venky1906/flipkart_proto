@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Item" table="Item">
+	 
+      <meta attribute = "class-description">
+         This class contains the Item detail. 
+      </meta>
+      
+      <id name = "item_id" type = "int" column = "item_id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "name" column = "name" type = "string"/>
+      <property name = "subcategory_id" column = "subcategory_id" type = "int"/>
+      <property name = "quantity" column = "quantity" type = "int"/>
+      <property name = "price" column = "price" type = "float"/>
+      <property name = "brand" column = "brand" type = "string"/>
+      <property name = "description" column = "description" type = "string"/>
+      <property name = "manufacture_date" column = "manufacture_date" type = "string"/>
+      <property name = "color" column = "color" type = "string"/>
+      <property name = "discount" column = "discount" type = "float"/>
+      <property name = "seller_id" column = "seller_id" type = "int"/>
+     
+	</class>
+	
+</hibernate-mapping>

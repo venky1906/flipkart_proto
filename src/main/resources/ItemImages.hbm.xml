@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.ItemImages" table="ItemImages">
+	 
+      <meta attribute = "class-description">
+         This class contains the Item Images detail. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "id">
+         <generator class="native"/>
+      </id>
+           
+      <property name = "item_id" column = "item_id" type = "int"/>
+      <property name = "image_location" column = "image_location" type = "string"/>
+     
+	</class>
+	
+</hibernate-mapping>

@@ -27,9 +27,8 @@ jQuery(document).ready(function($){
 				else
 				{
 					setCookie("seller_data",JSON.stringify(user), 30);
-					setTimeout(function(){
-						window.location.href = "http://localhost:8080/flipkart/sellerhome.html";
-					}, 2000);
+					window.location.href = "http://localhost:8080/flipkart/SellerPage.html?nav_ref=home";
+					
 				}
 
 			}

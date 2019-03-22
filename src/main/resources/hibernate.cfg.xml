@@ -11,10 +11,17 @@
   <property name="hibernate.show_sql">true</property>
   <property name="hibernate.format_sql">true</property>
   <property name="hbm2ddl.auto">update</property>
-  
-  
-  
+<!--   <property name="hibernate.hbm2ddl.auto">create</property> -->
+  <!--mapping class="com.topjavatutorial.dao.Flipkart_User"/ -->
+  <!-- mapping resource="Flipkart_User.hbm.xml"/-->
+
+  <mapping resource="Category.hbm.xml"/>
   <mapping resource="Buyer.hbm.xml"/>
   <mapping resource="Seller.hbm.xml"/>
+  <mapping resource="SubCategory.hbm.xml"/>
+  <mapping resource="Item.hbm.xml"/>
+  <mapping resource="ItemDetails.hbm.xml"/>
+  <mapping resource="ItemImages.hbm.xml"/>
+  
  </session-factory>
 </hibernate-configuration>
