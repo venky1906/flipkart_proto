@@ -46,6 +46,23 @@ public class HibernateDAO<E> {
 			return null;
 		return entity.get(0);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public E find(String entity_name, String param, int val)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from "+ entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		if (entity.size() == 0)
+			return null;
+		return entity.get(0);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<E> list(E ent)

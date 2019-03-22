@@ -53,6 +53,12 @@ public class ItemServices {
 				
 				System.out.println("Item_id: " + item_id);
 				
+				SubCategoryDAO subcat_dao = new SubCategoryDAO();
+				SubCategory sub_cat = subcat_dao.getSubCategory(item.getSubcategory_id());
+				
+				String subcategory_name = sub_cat.getName();
+				item_details.put("subcategory_name",subcategory_name);
+				
 				//Get the list of variable details
 				
 				List<ItemDetails> key_value_pairs = itemDetailsDao.getItemDetailsByItemId(item_id);

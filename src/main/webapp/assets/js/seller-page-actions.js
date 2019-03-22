@@ -366,7 +366,7 @@ jQuery(document).ready(function($){
 									"<label>Description :"+ item.description +"</label>"+
 								"</div>"+
 								"<div class='row'>"+
-									"<label>Sub Category :" + item.subcategory_id + "</label>"+
+									"<label>Sub Category :" + item_details.subcategory_name + "</label>"+
 								"</div>";
 				
 				
