@@ -59,7 +59,7 @@ public class SellerServices {
 			
 			// Adding images to image table with obtained item id and organize to folders.
 			
-//			String images_folder = "/home/sravya/git/flipkart_proto/src/main/webapp/images/catalog/" + Integer.toString(item_id)+"/";
+		//	String images_folder = "/home/sravya/git/flipkart_proto/src/main/webapp/images/catalog/" + Integer.toString(item_id)+"/";
 			
 			String images_folder = "/Users/pranithreddy/Desktop/git/flipkart-prototype/src/main/webapp/images/catalog/"+Integer.toString(item_id)+"/";
 			

@@ -1,0 +1,86 @@
+
+.citem{
+	text-align: center;
+	color: white;
+	background-color: #80f; 
+	list-style: none;
+	font-size: 200%;
+	margin: 10px;
+	border-color: black;
+	border-style: ridge;
+	outline-width: 100%;
+	cursor:pointer;
+
+}
+
+
+.citem:hover{
+	background-color: #f06; 
+
+}
+
+.litem{
+	list-style: none;
+}
+
+.catblock{
+	display: block;
+	width: 100%;
+	border: none;
+	background-color: #80f ;
+	color: white;
+	padding: 4px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 200%;
+}
+.catblock:hover {
+  background-color: #f06;
+  color: black;
+}
+
+.subcatblock{
+	display: block;
+	width: 50%;
+	border: none;
+	background-color: #2874ef ;
+	color: white;
+	padding: 4px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	text-align: center;
+	font-size: 200%;
+}
+.subcatblock:hover {
+  background-color: #f3c6c3;
+  color: black;
+}
+
+
+.button{
+	background-color: #4CAF50;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-catblock;
+ 	font-size: 200%;
+ 	cursor: pointer;
+ 	margin-top: 10px;
+ 	margin-bottom: 10px;
+ 	margin-left: 10px;
+ }
+
+
+.categoryList{
+	background-color: #f1f1f1;
+}
+
+#catheading{
+	text-align: center;
+}

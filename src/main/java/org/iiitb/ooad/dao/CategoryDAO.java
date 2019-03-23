@@ -12,5 +12,8 @@ public class CategoryDAO extends HibernateDAO<Category> {
 	{
 		return super.list(new Category());
 	}
+	public Category getCategory(int id) {
+		return super.find(entity, "category_id", id);
+	}
 	
 }

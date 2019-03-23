@@ -43,4 +43,9 @@ public class SellerDAO extends HibernateDAO<Seller> {
 			return "false";
 		}
 	}
+	
+	public Seller getSellerByID(int id)
+	{
+		return super.find(entity, "seller_id", id);
+	}
 }
