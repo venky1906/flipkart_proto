@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.BuyerAccount" table="BuyerAccount">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart saved buyer accounts. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "accountno" column = "accountno" type = "string" unique="true"/>
+      <property name = "buyer_id" column = "buyer_id" type = "int"/>
+      <property name = "pin" column = "pin" type = "string"/>
+      <property name = "balance" column = "balance" type = "float"/>
+	</class>
+</hibernate-mapping>

@@ -169,7 +169,40 @@ public class HibernateDAO<E> {
 		session.close();
 		
 		return 0;
-		
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public double average(String entity_name, String attr, String param, int val) {
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "select avg("+attr+") from "+ entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		List list = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		if(list.get(0)==null) {
+			return 0;
+		}
+		return (double)list.get(0);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public long count(String entity_name, String attr, String param, int val) {
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "select count("+attr+") from "+ entity_name + " where "+param+" = :val" + " and " + param + " is not null";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		List list = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		if(list.get(0)==null) {
+			return 0;
+		}
+		return (long)list.get(0);
 	}
 	
 }

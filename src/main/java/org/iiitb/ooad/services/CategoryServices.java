@@ -34,6 +34,8 @@ public class CategoryServices {
 
 	}
 	
+	
+	// API to get the su-category with id
 	@POST
 	@Path("/getSubCategoryList/{id}")
 	@Consumes("application/json")
@@ -47,5 +49,30 @@ public class CategoryServices {
 		else
 			return subcategory;
 	}
+	
+	// API to get the category with id.
+	@POST
+	@Path("/getCategoryById/{id}")
+	public Category getCategoryById(@PathParam("id") int id){
+			
+		CategoryDAO dao = new CategoryDAO();
+		Category cat = dao.getCategory(id);
+				
+		return cat;
+	}
+	
+	// API to get the sub-category with id.
+	@POST
+	@Path("/getSubCategoryById/{id}")
+	public SubCategory getSubCategoryById(@PathParam("id") int id){
+			
+		SubCategoryDAO dao = new SubCategoryDAO();
+		SubCategory subcat = dao.getSubCategory(id);
+				
+		return subcat;
+	}
+		
+	
+	
 	
 }

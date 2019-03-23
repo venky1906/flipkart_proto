@@ -19,6 +19,7 @@ import org.iiitb.ooad.dao.*;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 @SuppressWarnings("unused")
 @Path("/items")
@@ -111,4 +112,100 @@ public class ItemServices {
 			return "fail";
 		}
 	}
+	
+	@POST
+	@Path("/getAllItemsBySubcategoryId/{id}")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String getItemsBySubcategoryId(@PathParam("id")int subcat_id) throws JSONException
+	{
+
+		ItemDAO dao = new ItemDAO();
+		ItemImagesDAO itemImagesDao = new ItemImagesDAO();
+		SubCategoryDAO subcategoryDao = new SubCategoryDAO();
+		List<Item> items = dao.getItemsBySubcategoryId(subcat_id);
+		SubCategory subcat=subcategoryDao.getSubCategory(subcat_id);
+		
+		JSONArray allItems = new JSONArray();
+		JSONObject subcat_details= new JSONObject();
+		subcat_details.append("subcat_name",subcat.getName());
+		allItems.put(subcat_details);
+		try {
+			
+			for(int i=0;i< items.size();i++) {
+			
+				Item item = items.get(i);
+				
+				JSONObject item_details= new JSONObject();
+				item_details.append("itemid",item.getItem_id());
+				item_details.append("name",item.getName());
+				item_details.append("price",item.getPrice());
+				item_details.append("brand",item.getBrand());
+				item_details.append("discount",item.getDiscount());
+				int item_id = item.getItem_id();
+				
+				System.out.println("Item_id: " + item_id);
+				
+				ItemImages itemImage = itemImagesDao.getItemImagesByItemId(item_id).get(0);
+				item_details.append("image",itemImage.getImage_location());
+				
+				allItems.put(item_details);
+				
+			}
+			
+			System.out.println(allItems);
+			return allItems.toString();
+		}
+		
+		catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	// API to get the Item with item id.
+	@POST
+	@Path("/getItemByItemId/{id}")
+	@Produces("application/json")
+	public Item getItemByItemId(@PathParam("id") int item_id){
+		//System.out.println("hey");
+		ItemDAO dao = new ItemDAO();
+		Item item =  dao.getItemByItemId(item_id);
+		
+		return item;
+	}
+	
+	// API to get the item images with item id.
+	@POST
+	@Path("/getItemImagesByItemId/{id}")
+	@Produces("application/json")
+	public List<ItemImages> getItemImagesByItemId(@PathParam("id") int item_id){
+		
+		ItemImagesDAO dao = new ItemImagesDAO();
+		List<ItemImages> itemimgs = dao.getItemImagesByItemId(item_id);
+			
+		if(itemimgs!=null) {
+			return itemimgs;
+		}
+		return null;
+	}
+	
+	// API to get the item details with item id.
+	@POST
+	@Path("/getItemDetailsByItemId/{id}")
+	@Produces("application/json")
+	public List<ItemDetails> getItemDetailsByItemId(@PathParam("id") int item_id){
+		
+		ItemDetailsDAO dao = new ItemDetailsDAO();
+		List<ItemDetails> itemdetails = dao.getItemDetailsByItemId(item_id);
+			
+		if(itemdetails!=null) {
+			return itemdetails;
+		}
+		return null;
+	}
+	
+	
+	
 }

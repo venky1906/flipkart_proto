@@ -122,5 +122,56 @@ public class User_Services {
 			else
 				return null;
 		}
+		
+		
+		//API to get buyer addresses
+		
+		@POST
+		@Path("/getAllAddresses/{id}")
+		@Produces("application/json")
+		public List<BuyerAddress> getAllAddresses(@PathParam("id") int buyer_id){
+			BuyerAddressDAO dao = new BuyerAddressDAO();
+			//System.out.println(address.getBuyer_id());
+			List<BuyerAddress> address_data = dao.getAddressByBuyerID(buyer_id);
+			
+			if(address_data != null){
+				return address_data;
+			}
+				
+			else {
+				return null;
+			}
+		}
+				
+		
+		// API for buyer to add a new address
+
+		@POST
+		@Path("/addAddress")
+		@Consumes("application/json")
+		public int addAddress(BuyerAddress address){
+		
+			address.setAddress(address.getAddress());
+			address.setName(address.getName());
+			address.setBuyer_id(address.getBuyer_id());
+			address.setType("GENERAL");
+			BuyerAddressDAO dao=new BuyerAddressDAO();
+			return dao.addBuyerAddress(address);
+					 
+		}
+				
+		// API to get the Seller with id.
+		@POST
+		@Path("/getSellerById/{id}")
+		@Produces("application/json")
+		public Seller getSellerById(@PathParam("id") int item_id){
+					
+			SellerDAO dao = new SellerDAO();
+			Seller seller = dao.getSellerByID(item_id);
+			
+			return seller;
+		}
+		
+		
 
 }

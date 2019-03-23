@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Review" table="Review">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart item's reviews. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "buyer_id" column = "buyer_id" type = "int"/>
+      <property name = "item_id" column = "item_id" type = "int"/>
+      <property name = "seller_id" column = "seller_id" type = "int"/>
+      <property name = "rating" column = "rating" type = "string"/>
+      <property name = "review" column = "review" type = "string"/>
+	</class>
+</hibernate-mapping>

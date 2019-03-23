@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+.small_img {
+  position: relative;
+  border: 3px solid rgba(255,255,255,1);;
+  width: 75px;
+  height: 85px;
+  margin: 0 auto;
+}
+
+.small_img:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 0, 255, 1);
+}
+
+.big_img {
+  top: 25px;
+  border: 5px solid rgba(255,255,255,1);;
+  width: 450px;
+  height: 420px;
+  margin: 0 auto;
+}
+
+.big_img:mousemove {
+  position: right;
+  zoomWidth: auto; 
+  zoomHeight: auto;
+  autoMargin: 10;
+  adjustX: 10;
+  adjustY: -1;
+  autoScroll: 200|-10;
+  showTitle: true; 
+  titlePosition: above;
+  titlePermanent: true;
+}
+
+#zoom_img{
+  margin-top: 10px;
+  border:1px solid black;
+  width:350px;
+  height:500px;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flipkart_button{
+  color: white; 
+  background-color: rgba(255,69,0, 0.8); 
+  border-radius: 0 !important;
+}
+
+.rating{
+  font-size: 12px; 
+  color: white; 
+  background: green; 
+  border-radius: 5px
+}
