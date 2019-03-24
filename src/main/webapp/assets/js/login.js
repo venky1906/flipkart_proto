@@ -4,6 +4,7 @@ jQuery(document).ready(function($) {
 	/* warnings */
 	
 	$(".warning").hide();	
+	var buyer_id;
 	function validate(){
 		$(".warning").hide();
 		var user = $("#email_or_mobile").val();
@@ -49,8 +50,25 @@ jQuery(document).ready(function($) {
 		{
 			setCookie("Buyer_data",JSON.stringify(user),30);
 			$("#login-Modal").hide();
+			window.location = "Home.html";
 		}
 		
+	}
+	
+	function checkCookie(){
+		var data = JSON.parse(getCookie("Buyer_data"));
+		if(data="" || data==null)
+			buyer_id=null;
+		else
+			buyer_id = data.id;
+		
+		if(buyer_id!=null)
+		{
+			
+			//get data from cookie or ajax call
+			// Hide login button and show profile
+		}
+			
 	}
 	function finduser(){
 		var email = $("#email_or_mobile").val();
