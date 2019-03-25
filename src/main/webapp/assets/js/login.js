@@ -3,8 +3,9 @@ jQuery(document).ready(function($) {
 	
 	/* warnings */
 	
-	$(".warning").hide();	
-	var buyer_id;
+	$(".warning").hide();
+
+	var id;
 	function validate(){
 		$(".warning").hide();
 		var user = $("#email_or_mobile").val();
@@ -49,27 +50,13 @@ jQuery(document).ready(function($) {
 		else
 		{
 			setCookie("Buyer_data",JSON.stringify(user),30);
-			$("#login-Modal").hide();
+			//$("#login-Modal").hide();
 			window.location = "Home.html";
 		}
 		
 	}
 	
-	function checkCookie(){
-		var data = JSON.parse(getCookie("Buyer_data"));
-		if(data="" || data==null)
-			buyer_id=null;
-		else
-			buyer_id = data.id;
-		
-		if(buyer_id!=null)
-		{
-			
-			//get data from cookie or ajax call
-			// Hide login button and show profile
-		}
-			
-	}
+
 	function finduser(){
 		var email = $("#email_or_mobile").val();
 		var password = $("#password").val();
@@ -139,14 +126,63 @@ jQuery(document).ready(function($) {
 		url : "http://localhost:8080/flipkart/webapi/user/createBuyer",
 		data : user_data,
 		success : function(response){
-			if(response=="exists")
-				alert("Email already exists");
+			if(response==0)
+				alert("Email/Mobile Number already exists");
 			else
-				alert("account created successfully");
+			{
+				alert("Account created successfully");
+				id=response;
+				$("#signup-Modal").hide();
+				$("#account-Modal").show();
+			}
 		}
 		});
 	}
+	
 	$("#signup_btn2").click(signup);
+	$("#signup_btn3").click(function(event){
+		
+		$(".warning").hide();
+		if (!$("#new_acc").val() )
+		{
+			$("#acc_warning").show();
+			return false;
+		}
+		if (!$("#new_pin").val() )
+		{
+			$("#pin_warning").show();
+			return false;
+		}
+		if (!$("#new_amount").val() )
+		{
+			$("#amount_warning").show();
+			return false;
+		}
+		var user_data = JSON.stringify({
+			"buyer_id":id,
+			"accountno":$("#new_acc").val(),
+			"pin":$("#new_pin").val(),
+			"balance":$("#new_amount").val()
+		});
+		
+		$.ajax(
+		{
+		type : 'POST',
+		contentType : 'application/json',
+		url : "http://localhost:8080/flipkart/webapi/user/createBuyerAccount",
+		data : user_data,
+		success : function(response){
+			if(response==0 || response==-1)
+				alert("Invalid details OR account number is already linked");
+			else
+			{
+				alert("Account Linked successfully");
+				window.location="Home.html";
+			}
+		}
+		});
+		
+	});
 });
 
 

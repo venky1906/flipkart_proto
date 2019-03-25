@@ -15,7 +15,10 @@ public class BuyerAccountDAO extends HibernateDAO<BuyerAccount> {
 		}
 		return accounts;
 	}
-	
+	public BuyerAccount getAccountByAccountno(String account_no)
+	{
+		return super.find(entity, "accountno", account_no);
+	}
 	public BuyerAccount getAccountByAccountID(int account_id)
 	{
 		return super.find(entity, "id", Integer.toString(account_id));
@@ -33,7 +36,7 @@ public class BuyerAccountDAO extends HibernateDAO<BuyerAccount> {
 			return super.add(account);
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			return -1;
 		}
 	}

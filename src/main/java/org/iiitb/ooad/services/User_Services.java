@@ -64,7 +64,7 @@ public class User_Services {
 	@POST
 	@Path("/createBuyer")
 	@Consumes("application/json")
-	public String createBuyer(Buyer user)
+	public int createBuyer(Buyer user)
 	{
 		user.setEmail(user.getEmail());
 		user.setGender(user.getGender());
@@ -75,16 +75,34 @@ public class User_Services {
 		if(!dao.searchUserByEmail(user) && !dao.searchUserByMobile(user))
 			return dao.addBuyer(user);
 		else
-			return "exists";
+			return 0;
 		 
 	}
 	
+	@POST
+	@Path("/createBuyerAccount")
+	@Consumes("application/json")
+	public int createBuyerAccount(BuyerAccount user)
+	{
+		user.setAccountno(user.getAccountno());
+		user.setBalance(user.getBalance());
+		user.setBuyer_id(user.getBuyer_id());
+		user.setPin(user.getPin());
+		
+		BuyerAccountDAO dao=new BuyerAccountDAO();
+		if(dao.getAccountByBuyerID(user.getBuyer_id())==null && dao.getAccountByAccountno(user.getAccountno())==null)
+			return dao.addBuyerAccount(user);
+		else
+			return 0;
+		 
+	}
+
 	// API for user to create an account as a Seller
 
 	@POST
 	@Path("/createSeller")
 	@Consumes("application/json")
-	public String createSeller(Seller user)
+	public int createSeller(Seller user)
 	{
 		user.setEmail(user.getEmail());
 		user.setGender(user.getGender());
@@ -97,9 +115,28 @@ public class User_Services {
 		if(!dao.searchUserByEmail(user) && !dao.searchUserByMobile(user))
 			return dao.addSeller(user);
 		else
-			return "exists";
+			return 0;
 		 
 	}
+	
+	@POST
+	@Path("/createSellerAccount")
+	@Consumes("application/json")
+	public int createSellerAccount(SellerAccount user)
+	{
+		user.setAccountno(user.getAccountno());
+		user.setBalance(user.getBalance());
+		user.setSeller_id(user.getSeller_id());
+		user.setPin(user.getPin());
+		
+		SellerAccountDAO dao=new SellerAccountDAO();
+		if(dao.getAccountBySellerID(user.getSeller_id())==null && dao.getAccountByAccountno(user.getAccountno())==null)
+			return dao.addSellerAccount(user);
+		else
+			return 0;
+		 
+	}
+
 	
 	// API for Seller to authenticate for flipkart service via email
 	

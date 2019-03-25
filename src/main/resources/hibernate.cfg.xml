@@ -4,7 +4,7 @@
 <hibernate-configuration>
  <session-factory name="hibernateSessionFactory">
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">1234</property>
+  <property name="hibernate.connection.password">1589</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/flipkartdb</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -27,6 +27,7 @@
   <mapping resource="BuyerAccount.hbm.xml"/>
   <mapping resource="BuyerAddress.hbm.xml"/>
   <mapping resource="Review.hbm.xml"/>
+  <mapping resource="SellerAccount.hbm.xml"/>
   
  </session-factory>
 </hibernate-configuration>

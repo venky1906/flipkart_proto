@@ -132,7 +132,7 @@ label {
           														   Sell on Flipkart.</h2>
           			<p class="lead">Give a kickstart to your business. Register now. <br/>It's quick and easy.</p>
         		</div></div>
-        		<div class="col-md-6" id="book">
+        		<div class="col-md-6" style="margin-top:-60px" id="register_user">
           			<div class="card">
             			<div class="card-body p-5">
               				<h3 class="pb-3">Create your Seller Account</h3>
@@ -172,15 +172,51 @@ label {
 						</div>
 					</div>
 				</div>
+				<div class="col-md-6" id="register_account">
+          			<div class="card">
+            			<div class="card-body p-5">
+              				<h3 class="pb-3">Create your Seller Bank Account</h3>
+							<form >
+							<div class="form-group">
+									<label>Account Number</label> <input type="text" id="acc_no" class="form-control"
+										maxlength="10" placeholder="Enter Account Number" required>
+									<div id="warning_accno" style="color: #f2575b; position: relative; left: 10px;
+									 margin: 7px 0 0;">This is not a valid account number</div>
+								</div>
+								<div class="form-group">
+									<label>PIN</label> <input type="password" id="pin" class="form-control"
+										placeholder="Minimum 4 characters" required>
+									<div id="warning_pin" style="color: #f2575b; position: relative; left: 10px;
+									 margin: 7px 0 0;">This is not a valid Password</div>
+								</div>
+								
+								<div class="form-group">
+									<label>Balance</label> <input class="form-control" id="balance"
+										placeholder="Enter Balance" required>
+									<div id="warning_balance" style="color: #f2575b; position: relative; left: 10px;
+									 margin: 7px 0 0;">This is not a valid Password</div>
+								</div>
+								<p style="font-size: small;">If you have read and agree to the Terms and Conditions, please continue</p>
+								<div align="center"><button type="button" id="signup_btn_acc" class="btn btn-primary" >Continue</button></div>
+
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
   	</div>
 <script type="text/javascript">
 jQuery(document).ready(function($){
+		$("#register_account").hide();
+		$("#warning_balance").hide();
+		$("#warning_pin").hide();
+		$("#warning_accno").hide();
 		$("#warning_email").hide();
 		$("#warning_phone").hide();
 		$("#warning_password").hide();
 		$("#warning_name").hide();
+		var id;
 		$("#signup_btn").click(function(event){
 			$("#warning_email").hide();
 			$("#warning_phone").hide();
@@ -231,17 +267,65 @@ jQuery(document).ready(function($){
 						url : "http://localhost:8080/flipkart/webapi/user/createSeller",
 						data : user_data,
 						success : function(response){
-							if(response=="exists")
+							if(response==0)
 								alert("Email already exists");
 							else
 							{
-								alert("account created successfully");
-								window.location = "http://localhost:8080/flipkart/SellerHub.html";
+								id=response;
+								alert("account created successfully! Fill the below form to complete registration..");
+								$("#register_user").hide();
+								$("#register_account").show();
+								
 							}
 						}
 						});
 
 			}
+		});
+		$("#signup_btn_acc").click(function(){
+			$("#warning_balance").hide();
+			$("#warning_pin").hide();
+			$("#warning_accno").hide();
+			if (!$("#acc_no").val() )
+			{
+				$("#warning_accno").show();
+				return false;
+			}
+			if (!$("#pin").val() )
+			{
+				$("#warning_pin").show();
+				return false;
+			}
+			if (!$("#balance").val() )
+			{
+				$("#warning_balance").show();
+				return false;
+			}
+			var user_data = JSON.stringify({
+				"seller_id":id,
+				"accountno":$("#acc_no").val(),
+				"pin":$("#pin").val(),
+				"balance":$("#balance").val()
+			});
+			
+			$.ajax(
+					{
+					type : 'POST',
+					contentType : 'application/json',
+					url : "http://localhost:8080/flipkart/webapi/user/createSellerAccount",
+					data : user_data,
+					success : function(response){
+						if(response==0 || response==-1)
+							alert("Invalid details OR account number is already linked");
+						else
+						{
+							alert("Account Linked successfully");
+							window.location = "http://localhost:8080/flipkart/SellerHub.html";
+						}
+					}
+					});
+
+
 		});
 	
 })

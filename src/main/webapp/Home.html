@@ -280,14 +280,12 @@
 			
 			<div class="row"
 							style="padding-left: 0px; padding-top: 15px; padding-bottom: 15px;">
-							
-						<form id="signupForm" method="post" action="#" enctype="multipart/form-data">
 							<button type="button" id="signup_btn2"
 								class="btn btn-primary btn-lg btn-block"
 								style="border-radius: 0px; background-color: #F26419; border-width: 0mm"
 								>SIGN UP</button>
 								
-						</form>
+						
 			</div>
 	
 			<div class="row"
@@ -302,12 +300,108 @@
   	
   </div>
  </div>
+ <!-- Linking Bank Account -->
+ <div class="modal" id="account-Modal" role="dialog" align="center" >
+  	<div class="modal-dialog">
+  		<div>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+    	</div>
+    	      <!-- Modal content-->
+     <div class="row" style="display: table;">
+    
+		<div class="col-sm-5" style="font-size:12px; background-color: #2455f4; padding-left: 45px; padding-right: 45px; float: none; display: table-cell; vertical-align: top;">
+				<div class="row">
+					<h2 class="modal-title" align="left" style="padding-top:40px;font-size:20px;font-family: sans-serif; color: white;">
+							<b>Signup</b>
+					</h2>
+					<h4 class="modal-title" align="left" style="padding-top:15px;font-size:12px;font-family: sans-serif; color: white; line-height: 1.5">
+					We do not share your personal details with anyone.</h4>
+				</div>
+				<div class="row" style="padding-top: 100px; padding-bottom: 20px;">
+					<img src="./images/login_img.png" align="middle" align="bottom" width="200px" />
+				</div>
+		</div>
+		
+		<div class="col-sm-6" style="background-color: #ffffff; padding-left: 45px; padding-right: 45px; float: none; display: table-cell; vertical-align: top;">
+			
+						
+			<div class="floating-div"
+							style="padding-left: 0px; padding-top: 20px; padding-bottom: 15px; text-align: left">
+							<span class='blocking-span'> <input type="text"
+								id="new_acc" name="Acc_num" class="inputText"
+								required /> <span style="align: left"
+								class="floating-label-new pull-left"><b>Enter
+										Account Number</b></span>
+							</span> <span class="warning" id="acc_warning"
+								style="align: left; padding-left: 0px; color: red; font-size: 80%"
+								class="pull-left"> <b>Please enter Account Number</b>
+							</span> 
+			</div>
+						
+			<div class="floating-div"
+							style="padding-left: 0px; padding-top: 20px; padding-bottom: 15px; text-align: left">
+							<span class='blocking-span'> <input type="text"
+								id="new_pin" name="pin" class="password"
+								required /> <span style="align: left"
+								class="floating-label-new pull-left"><b>Enter
+										PIN</b></span>
+							</span> <span class="warning" id="pin_warning"
+								style="align: left; padding-left: 0px; color: red; font-size: 80%"
+								class="pull-left"> <b>Please enter valid PIN</b>
+							</span>
+							
+			</div>
+			
+			<div class="floating-div"
+							style="padding-left: 0px; padding-top: 20px; padding-bottom: 15px; text-align: left">
+							<span class='blocking-span'> <input type="inputText"
+								id="new_amount" name="amount_txt" class="inputText" required />
+								<span class="floating-label-new"><b>Enter Balance</b></span>
+							</span> <span class="warning" id="amount_warning"
+								style="align: left; padding-left: 0px; color: red; font-size: 80%"
+								class="pull-left"> <b>Please Enter Amount</b>
+							</span> 
+			</div>	
+			
+			
+			<div class="row"
+							style="padding-left: 0px; padding-top: 15px; padding-bottom: 15px;">
+							<button type="button" id="signup_btn3"
+								class="btn btn-primary btn-lg btn-block"
+								style="border-radius: 0px; background-color: #F26419; border-width: 0mm"
+								>Continue</button>
+								
+			</div>
+		</div>
+  	</div>
+  	
+  </div>
  </div>
-<script type="text/javascript" src="assets/cookie.js"></script>
+ </div>
+<script type="text/javascript" src="assets/js/cookie.js"></script>
 <script type="text/javascript" src="assets/js/login.js"></script>
 
 <script type="text/javascript">
 	jQuery(document).ready(function($){
+		var buyer_id;
+		function checkCookie(){
+			var data = getCookie("Buyer_data");
+			if(data="" || data==null)
+				buyer_id=null;
+			else
+			{
+				var buyer_data = JSON.parse(data);
+				buyer_id = buyer_data.id;
+			}
+			
+			if(buyer_id!=null)
+			{
+				
+				//get data from cookie or ajax call
+				// Hide login button and show profile
+			}
+				
+		}
 		checkCookie();
 		$("#signup_btn1").click(function(){
 			$("#login-Modal").hide();

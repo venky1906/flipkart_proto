@@ -31,16 +31,15 @@ public class BuyerDAO extends HibernateDAO<Buyer> {
 		else
 			return true;
 	}
-	public String addBuyer(Buyer user)
+	public int addBuyer(Buyer user)
 	{
 		try {
-		super.add(user);
-		return "true";
+		return super.add(user);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "false";
+			return 0;
 		}
 	}
 }
