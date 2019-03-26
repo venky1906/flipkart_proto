@@ -1,5 +1,7 @@
 package org.iiitb.ooad.services;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -70,6 +72,23 @@ public class ReviewServices {
 
 	}
 	
+	// API to add review.
+	@POST
+	@Path("/addReview")
+	@Consumes("application/json")
+	public String addReview(Review review){
+		
+		ReviewDAO dao = new ReviewDAO();
+		System.out.println("Review:      ............."+review.getOrderItem_id());
+		return Integer.toString(dao.add(review));
+	}
 	
-	
+	// API to update review.
+	@POST
+	@Path("/updateReview")
+	@Consumes("application/json")
+	public int updateReview(Review review){
+		ReviewDAO dao = new ReviewDAO();
+		return dao.updateReview(review);
+	}
 }

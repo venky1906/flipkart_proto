@@ -12,6 +12,7 @@
          <generator class="native"/>
       </id>
       
+      <property name = "orderItem_id" column = "orderItem_id" type = "int"/>
       <property name = "buyer_id" column = "buyer_id" type = "int"/>
       <property name = "item_id" column = "item_id" type = "int"/>
       <property name = "seller_id" column = "seller_id" type = "int"/>

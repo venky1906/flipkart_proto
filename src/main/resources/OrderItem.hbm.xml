@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.OrderItem" table="OrderItem">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart's items in an order. 
+      </meta>
+      
+      <id name = "order_id" type = "int" column = "order_id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "item_id" column = "item_id" type = "int"/>
+      <property name = "seller_id" column = "seller_id" type = "int"/>
+      <property name = "buyer_id" column = "buyer_id" type = "int"/>
+      <property name = "address_id" column = "address_id" type = "int"/>
+      <property name = "quantity" column = "quantity" type = "int"/>
+      <property name = "amount_paid" column = "amount_paid" type = "float"/>
+      <property name = "status" column = "status" type = "string"/>
+      <property name = "order_date" column = "order_date" type = "string"/>
+	</class>
+</hibernate-mapping>

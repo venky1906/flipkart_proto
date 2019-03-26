@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" href="assets/css/add_category.css">
+  <title>Flipkart: Admin</title>
+</head>
+
+<div class="container">
+    <select class="custom-select mr-sm-3" id="itemExistsCategory">
+		<option selected>Existing Categories</option>
+	</select>
+    <label for="categoryname"><b>Add Category Name</b></label>
+    <input type="text" placeholder="Enter Category Name" name="categoryname" id="categoryname" required>
+
+    <button type="button" id = 'AddC' >Add</button>
+  </div>
+<div class="container">
+    <select class="custom-select mr-sm-3" id="itemCategory">
+		<option selected>Choose Category</option>
+	</select>
+    <label for="subcategoryname"><b>Add SubCategory Name</b></label>
+    <input type="text" placeholder="Enter SubCategory Name" name="subcategoryname" id="subcategoryname" required>
+
+    <button type="button" id = 'AddS' >Add</button>
+</div>
+
+<script src="assets/js/add_category.js"></script>

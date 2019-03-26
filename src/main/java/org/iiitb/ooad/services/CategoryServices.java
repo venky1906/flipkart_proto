@@ -72,7 +72,25 @@ public class CategoryServices {
 		return subcat;
 	}
 		
+	@POST
+	@Path("/addCategory")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addCategory(Category category) {
+		CategoryDAO dao = new CategoryDAO();
+		dao.addCategory(category);
+		return "success";
+	}
 	
+	@POST
+	@Path("/addsubCategory")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addSubCategory(SubCategory subcategory) {
+		SubCategoryDAO dao = new SubCategoryDAO();
+		dao.addSubCategory(subcategory);
+		return "success";
+	}
 	
 	
 }

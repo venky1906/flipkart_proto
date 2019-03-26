@@ -26,15 +26,20 @@ jQuery(document).ready(function($){
 					console.log(data);
                     //var itemslist = data.items;
                     var subcat_name =data[0].subcat_name;
-					for(var i=1;i<data.length;i++){
+
+                    var subcat = "<a class='_1KHd47' id="+subcat_id+" href='/flipkart/itemslist.html?subcat_id="+subcat_id+"'>"+subcat_name+"</a>"
+                    
+                    for(var i=1;i<data.length;i++){
 						var itemid = data[i].itemid;
 						var item_name = data[i].name;
 						var item_price = data[i].price;
 						var item_brand = data[i].brand;
 						var item_discount = data[i].discount;
 						var item_image = data[i].image;
-                        var item_offerprice=(item_price-(((item_discount)/item_price)*100));
-                        console.log(data[i].discount);            
+                        var item_offerprice=Math.round((item_price-(((item_discount)/100)*item_price)));
+                        console.log(subcat_id);
+                        
+                        
                         var item = //"<div class='bhgxx2 col-12-12'>"+
                                      //   "<div class='_3O0U0u _288RSE'>"+
                                             "<div id="+itemid+" style='width: 25%;'>"+
@@ -60,9 +65,9 @@ jQuery(document).ready(function($){
                                                                         "<div class='_3AqcXr'>"+
                                                                         "</div>"+
                                                                         "<div class='_1uv9Cb'>"+
-                                                                            "<div class='_1vC4OE' style=' margin-right:5px;' id="+item_offerprice+">Rs."+item_offerprice+"</div>"+
-                                                                            "<del class='_1vC4OE' style=' margin-right:5px;' id="+item_price+">Rs."+item_price+"</del>"+
-                                                                            "<div class='_1vC4OE' style=' margin-right:5px;' id="+item_discount+">"+item_discount+"% off</div>"+
+                                                                            "<div class='_1vC4OE' style=' margin-right:5px; font-size: 14px;' id="+item_offerprice+">Rs."+item_offerprice+"</div>"+
+                                                                            "<del class='_1vC4OE' style=' margin-right:5px; font-size: 12px; color: gray;' id="+item_price+">Rs."+item_price+"</del>"+
+                                                                            "<div class='_1vC4OE' style=' margin-right:5px; font-size: 14px; color: green;' id="+item_discount+">"+item_discount+"% off</div>"+
                                                                         "</div>"+
                                                                         "<div class='_3V_vUN'>"+
                                                                         "</div>"+
@@ -73,6 +78,7 @@ jQuery(document).ready(function($){
                                 //"</div>" 
 							 	$("#single_item").append(item);				   
                 }
+                $("#subcategory").append(subcat);
             }
             }
         });

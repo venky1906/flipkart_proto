@@ -1,6 +1,9 @@
 package org.iiitb.ooad.dao;
 
 import org.iiitb.ooad.model.Review;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewDAO extends HibernateDAO<Review> {
@@ -14,6 +17,11 @@ public class ReviewDAO extends HibernateDAO<Review> {
 			return null;
 		}
 		return reviews;
+	}
+	
+	public Review getReviewByOrderItemID(int id)
+	{
+		return super.find(entity, "orderItem_id", id);
 	}
 	
 	public double averageRatingOfItem(int item_id)
@@ -40,6 +48,30 @@ public class ReviewDAO extends HibernateDAO<Review> {
 	{
 		try {
 			return super.add(review);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public int updateReview(Review review)
+	{
+		try {
+			List<Field> fields = new ArrayList<Field>();
+			
+			Field rating_field = review.getClass().getDeclaredField("rating");
+			rating_field.setAccessible(true);
+			fields.add(rating_field);
+			
+			Field review_field = review.getClass().getDeclaredField("review");
+			review_field.setAccessible(true);
+			fields.add(review_field);
+			if(super.update(review, "id", review.getId(), fields)==1)
+				return review.getId();
+			else
+				return -1;
+		
 		}
 		catch(Exception e){
 			e.printStackTrace();

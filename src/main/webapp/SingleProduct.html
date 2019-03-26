@@ -15,17 +15,17 @@
 <body style="background-color: rgba(128,128,128,0.1);">
 	<!-- Header with flipkart logo -->
 	<div class="card" style="background-color: rgba(83, 51, 249, 1); height: 55px; border-radius: 0 !important;">
-		<div style="margin-left: 410px;">
+		<div style="margin-left: 185px;">
 		  <img class="card-img-bottom" id="logo" src="images/Extras/logo.png" style="width: 110px; height: 46px;"> 
 		</div>
 		<!-- Add search and others -->
 	</div>
 	
 	<div class="card" style="height: 45px; border-radius: 0 !important;">
-	  <!-- Add categories -->
+	  <!-- Add categories-->
 	</div>
 
-	<div class="card" style="margin-left: 250px; margin-right: 250px; border-radius: 0 !important;">
+	<div class="card" style="margin-left:150px; margin-right:150px; border-radius: 0 !important;">
 	  <!-- Main view -->
 	  <div class="form-group row">
 	      <!-- Available images -->
@@ -44,9 +44,9 @@
 			<div>
 			  <img class="big_img" id="prod_big_img" src="#" style="margin-left: 30px;"></img>
 			</div>
-			<div class="form-group row" style="margin-left: 70px; margin-top: 15px;">
-			  <button type="button" class="btn btn-warning btn-lg col-lg-5" id="go_to_cart" style="color: white; border-radius: 0 !important;">GO TO CART</button>
-			  <button type="button" class="btn flipkart_button btn-lg col-lg-5" style="margin-left: 10px;" id="buy_now">BUY NOW</button>
+			<div class="form-group row" align="center" style="margin-left: 55px; margin-top: 15px;">
+			  <button type="button" class="btn btn-warning btn-lg" id="go_to_cart" style="color: white; border-radius: 0 !important;">GO TO CART</button>
+			  <button type="button" class="btn flipkart_button btn-lg" style="margin-left: 10px;" id="buy_now">BUY NOW</button>
 			</div>
 		  </div>
 		  <!-- Description -->
@@ -57,14 +57,16 @@
 			      <div>
 			      	<nav aria-label="breadcrumb">
 					  <ol id="path" class="breadcrumb" style="background-color: rgba(255,255,255,1);">
-					    <li class="breadcrumb-item active"><a id="path_home" href="http://localhost:8080/flipkart/categories.html">Home</a></li>
+					    <li class="breadcrumb-item active"><a id="path_home" href="http://localhost:8080/flipkart/Homepage.html">Home</a></li>
 					    <li class="breadcrumb-item active"><a id="path_cat" href="#">Fashion</a></li>
 					    <li class="breadcrumb-item active"><a id="path_subcat" href="#">Accessories</a></li>
 					    <li class="breadcrumb-item" id="path_curr" aria-current="page">Watch</li>
 					  </ol>
 					</nav>
 			      </div>
-			      <div><h3 id="name" class="col-form-label" style="font-size: 25px;">Watch</h3></div>
+			      <div><label id="name" class="col-form-label" style="font-size: 25px;">Watch</label></div>
+			      <div><label id="item_id" class="col-form-label" style="font-size: 14px; color: gray;">Item ID : 1</label></div>
+			      <div><label id="quantity" class="col-form-label" style="font-size: 14px; color: green;">Available Stock : 3unit(s)</label></div>
 			      <div><label id="availablity" class="col-form-label" style="font-size: 25px; color: red; visibility: visible;">Currently Unavailable</label></div>
 			      <!-- Item Rating -->
 			      <div class="form-inline">
@@ -73,7 +75,7 @@
 			        </div>
 			        <div class="form-inline">
 			          <div><label id="rating_no" class="col-form-label" style="margin-left: 5px;">455</label></div> 
-			          <div><label class="col-form-label" style="margin-left: 5px;">Ratings & </label></div>
+			          <div><label class="col-form-label" style="margin-left: 5px;">Ratings &amp; </label></div>
 			          <div><label id="review_no" class="col-form-label" style="margin-left: 5px;">425</label></div>
 			          <div><label class="col-form-label" style="margin-left: 5px;">Reviews</label></div>
 			        </div>
@@ -85,9 +87,9 @@
 			        <div><label id="discount" class="col-form-label" style="margin-left: 20px; font-size: 20px; color: green;">45% off</label></div>
 			      </div>
 			      <!-- Description -->
-			      <div class="form-group inline">
-			        <label class="col-form-label" style="color: gray;">Description: </label>
-			        <ul id="desc" style="margin-left: 10px;">
+			      <div class="form-group">
+			        <label class="col-form-label" style="color: gray;">Details: </label>
+			        <ul id="desc">
 					  <!-- <li>Point 1</li>
 					  <li>Point 2</li>
 					  <li>Point 3</li> -->
@@ -110,6 +112,6 @@
 
 </body>
 
-<script src="assets/js/singleproduct.js"></script>
+<script type="text/javascript" src="assets/js/singleproduct.js"></script>
 
 </html>

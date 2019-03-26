@@ -3,6 +3,7 @@ package org.iiitb.ooad.model;
 public class Review {
 
 	private int id;
+	private int orderItem_id;
 	private int buyer_id;
 	private int item_id;
 	private int seller_id;
@@ -14,6 +15,12 @@ public class Review {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getOrderItem_id() {
+		return orderItem_id;
+	}
+	public void setOrderItem_id(int id) {
+		this.orderItem_id = id;
 	}
 	public int getBuyer_id() {
 		return buyer_id;

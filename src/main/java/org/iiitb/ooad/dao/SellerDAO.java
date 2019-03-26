@@ -1,6 +1,5 @@
 package org.iiitb.ooad.dao;
 
-import org.iiitb.ooad.model.Buyer;
 import org.iiitb.ooad.model.Seller;
 
 public class SellerDAO extends HibernateDAO<Seller> {
@@ -31,16 +30,15 @@ public class SellerDAO extends HibernateDAO<Seller> {
 		else
 			return true;
 	}
-	public String addSeller(Seller user)
+	public int addSeller(Seller user)
 	{
 		try {
-		super.add(user);
-		return "true";
+			return super.add(user);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "false";
+			return 0;
 		}
 	}
 	

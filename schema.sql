@@ -105,6 +105,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flipkartdb`.`Item` (
   `item_id` INT NOT NULL AUTO_INCREMENT,
+  `id` VARCHAR(10) NOT NULL,
   `name` VARCHAR(90) NOT NULL,
   `subcategory_id` INT NOT NULL,
   `quantity` INT NOT NULL,
@@ -119,6 +120,7 @@ CREATE TABLE IF NOT EXISTS `flipkartdb`.`Item` (
   PRIMARY KEY (`item_id`),
   INDEX `fk_Item_1_idx` (`subcategory_id` ASC),
   INDEX `fk_Item_2_idx` (`seller_id` ASC),
+  UNIQUE INDEX `index4` (`id` ASC, `seller_id` ASC),
   CONSTRAINT `fk_Item_1`
     FOREIGN KEY (`subcategory_id`)
     REFERENCES `flipkartdb`.`SubCategory` (`subcategory_id`)
@@ -166,10 +168,52 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `flipkartdb`.`OrderItem`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `flipkartdb`.`OrderItem` (
+  `order_id` INT NOT NULL AUTO_INCREMENT,
+  `item_id` INT NOT NULL,
+  `seller_id` INT NOT NULL,
+  `buyer_id` INT NOT NULL,
+  `address_id` INT NOT NULL,
+  `quantity` INT NOT NULL DEFAULT 1,
+  `amount_paid` FLOAT NOT NULL,
+  `status` ENUM('paymentdone', 'shipped', 'delivered', 'paymentsent', 'cancelled') NOT NULL,
+  `order_date` DATETIME NOT NULL,
+  INDEX `fk_OrderItem_2_idx` (`item_id` ASC),
+  INDEX `fk_OrderItem_3_idx` (`seller_id` ASC),
+  PRIMARY KEY (`order_id`),
+  INDEX `fk_OrderItem_4_idx` (`address_id` ASC),
+  INDEX `fk_OrderItem_5_idx` (`buyer_id` ASC),
+  CONSTRAINT `fk_OrderItem_2`
+    FOREIGN KEY (`item_id`)
+    REFERENCES `flipkartdb`.`Item` (`item_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_OrderItem_3`
+    FOREIGN KEY (`seller_id`)
+    REFERENCES `flipkartdb`.`Seller` (`seller_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_OrderItem_4`
+    FOREIGN KEY (`address_id`)
+    REFERENCES `flipkartdb`.`BuyerAddress` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_OrderItem_5`
+    FOREIGN KEY (`buyer_id`)
+    REFERENCES `flipkartdb`.`Buyer` (`buyer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `flipkartdb`.`Review`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flipkartdb`.`Review` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `orderItem_id` INT NOT NULL,
   `buyer_id` INT NOT NULL,
   `item_id` INT NOT NULL,
   `seller_id` INT NOT NULL,
@@ -178,6 +222,7 @@ CREATE TABLE IF NOT EXISTS `flipkartdb`.`Review` (
   INDEX `fk_Review_2_idx` (`item_id` ASC),
   INDEX `fk_Review_3_idx` (`seller_id` ASC),
   PRIMARY KEY (`id`),
+  INDEX `fk_Review_4_idx` (`orderItem_id` ASC),
   CONSTRAINT `fk_Review_1`
     FOREIGN KEY (`buyer_id`)
     REFERENCES `flipkartdb`.`Buyer` (`buyer_id`)
@@ -191,6 +236,11 @@ CREATE TABLE IF NOT EXISTS `flipkartdb`.`Review` (
   CONSTRAINT `fk_Review_3`
     FOREIGN KEY (`seller_id`)
     REFERENCES `flipkartdb`.`Seller` (`seller_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Review_4`
+    FOREIGN KEY (`orderItem_id`)
+    REFERENCES `flipkartdb`.`OrderItem` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -318,55 +368,6 @@ CREATE TABLE IF NOT EXISTS `flipkartdb`.`Cart` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `flipkartdb`.`Order`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `flipkartdb`.`Order` (
-  `order_id` INT NOT NULL AUTO_INCREMENT,
-  `buyer_id` INT NOT NULL,
-  `address_id` INT NOT NULL,
-  `order_date` DATETIME NOT NULL,
-  PRIMARY KEY (`order_id`),
-  INDEX `fk_Order_1_idx` (`buyer_id` ASC),
-  INDEX `fk_Order_2_idx` (`address_id` ASC),
-  CONSTRAINT `fk_Order_1`
-    FOREIGN KEY (`buyer_id`)
-    REFERENCES `flipkartdb`.`Buyer` (`buyer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Order_2`
-    FOREIGN KEY (`address_id`)
-    REFERENCES `flipkartdb`.`BuyerAddress` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `flipkartdb`.`OrderItem`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `flipkartdb`.`OrderItem` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `order_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
-  `quantity` INT NOT NULL DEFAULT 1,
-  `amount_paid` FLOAT NOT NULL,
-  `status` ENUM('paymentdone', 'shipped', 'delivered', 'paymentsent') NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_OrderItem_2_idx` (`item_id` ASC),
-  CONSTRAINT `fk_OrderItem_1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `flipkartdb`.`Order` (`order_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_OrderItem_2`
-    FOREIGN KEY (`item_id`)
-    REFERENCES `flipkartdb`.`Item` (`item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -399,4 +400,3 @@ INSERT INTO `flipkartdb`.`BuyerAddress` (`id`, `buyer_id`, `address`, `name`, `t
 INSERT INTO `flipkartdb`.`BuyerAddress` (`id`, `buyer_id`, `address`, `name`, `type`) VALUES (4, 4, 'IIITB', 'Home', 'GENERAL');
 
 COMMIT;
-

@@ -1,10 +1,9 @@
 package org.iiitb.ooad.model;
-import org.glassfish.json.*;
-import java.util.Date;
 
 public class Item {
 	
 	private int item_id;
+	private String id;
 	private String name;
 	private int subcategory_id;
 	private int quantity;
@@ -22,7 +21,7 @@ public class Item {
 	}
 	
 	public Item(String name,int subcategory_id,int quantity,float price,String brand,String description,String manufacture_date,
-			String color,float discount,int seller_id)
+			String color,float discount,int seller_id,String id)
 	{
 		
 		setBrand(brand);
@@ -35,8 +34,17 @@ public class Item {
 		setQuantity(quantity);
 		setSeller_id(seller_id);
 		setSubcategory_id(subcategory_id);
+		setId(id);
 	}	
 
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	public int getItem_id() {
 		return item_id;
 	}

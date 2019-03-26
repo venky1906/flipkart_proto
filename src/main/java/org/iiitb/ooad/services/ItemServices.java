@@ -200,7 +200,7 @@ public class ItemServices {
 		ItemDetailsDAO dao = new ItemDetailsDAO();
 		List<ItemDetails> itemdetails = dao.getItemDetailsByItemId(item_id);
 			
-		if(itemdetails!=null) {
+		if(itemdetails!=null && itemdetails.size()>0) {
 			return itemdetails;
 		}
 		return null;

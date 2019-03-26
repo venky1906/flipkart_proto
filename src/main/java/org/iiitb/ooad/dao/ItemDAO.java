@@ -72,4 +72,14 @@ public class ItemDAO extends HibernateDAO<Item> {
 		return super.find(entity,"item_id",item_id);
 	}
 	
+	public String reduceItemQuantity(Item item){
+		Item curr_item = getItemByItemId(item.getItem_id());
+		int qty = curr_item.getQuantity();
+		curr_item.setQuantity(qty-item.getQuantity());
+		System.out.println(qty-item.getQuantity()+"..............................");
+		if(updateItemQuantity(curr_item, item.getItem_id())==1) {
+			return "success";
+		}
+		return "fail";
+	}
 }

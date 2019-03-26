@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -15,35 +14,39 @@
 <body style="background-color: rgba(128,128,128,0.1);">
 	<!-- Header with flipkart logo -->
 	<div class="card" style="background-color: rgba(83, 51, 249, 1); height: 55px; border-radius: 0 !important;">
-		<div style="margin-left: 285px;">
+		<div style="margin-left: 185px;">
 		  <img class="card-img-bottom" id="logo" src="images/Extras/logo.png" style="width: 110px; height: 46px;"> 
 		</div>
 	</div>
 	<div class="form-group row" style="margin-top: 10px;">
 	  <div>
-		<div class="container" style="width: 930px; margin-left: 250px;">
+		<div class="container" style="width: 770px; margin-left: 160px;">
 		  <div id="accordion">
 		  
 		  	<!-- Login -->
-		    <div id="login_card" class="card">
+		    <div class="card">
 		      <div class="card-header">
-		        <a class="card-link" data-toggle="collapse" href="#login">1. LOGIN</a>
+		        <div><a id="login_card" class="card-link" data-toggle="collapse" href="#login">1. LOGIN</a></div>
+		        <div id='saved_login'>
+		          <!-- <label class="col-form-label col-lg-4" id='login_name'>Password:</label>
+		          <label class="col-form-label col-lg-4" for="pwd">Password:</label> -->
+		        </div>
 		      </div>
+		      
 		      
 		      <div id="login" class="collapse show" data-parent="#accordion">
 		        <div class="card-body">
 		          <!-- Enter Login details-->
 		          <form class="form-group" action="/action_page.php">
 	  	  
-				  	 <div class="form-group row" style="margin-left: 150px;">
+				  	 <div class="form-group row" style="margin-left: 100px;">
 					   <label class="col-form-label col-lg-4" for="email">Email/Phone Number:</label>
-					   <input class="form-control col-lg-4" id="email" placeholder="Enter your Email/Phone Number">
+					   <input class="form-control col-lg-4" id="email" placeholder="Email/Phone Number">
 					 </div>
 					 
-					 <div class="form-group row" style="margin-left: 150px;">
+					 <div class="form-group row" style="margin-left: 100px;">
 					   <label class="col-form-label col-lg-4" for="pwd">Password:</label>
 					   <input type="password" class="form-control col-lg-4" id="pwd" placeholder="Enter your password">
-					   <button type="button" class="btn btln-lg col-lg-3 btn-link" id="fpwd">Forgot Password?</button>	
 					 </div>
 					 
 					 <div align="center">
@@ -60,9 +63,9 @@
 		    </div>
 		    
 		    <!-- Delivery Address -->
-		    <div id="delivery_card" class="card">
+		    <div class="card">
 		      <div class="card-header">
-		        <a class="collapsed card-link" data-toggle="collapse" href="#delivery">2. DELIVERY ADDRESS</a>
+		        <a id="delivery_card" class="collapsed card-link" data-toggle="collapse" href="#delivery">2. DELIVERY ADDRESS</a>
 		      </div>
 		      
 		      <div id="delivery" class="collapse" data-parent="#accordion">
@@ -91,7 +94,7 @@
 		      <!-- Add Address -->
 			  <div id="add_address_card" class="card d-none">   
 				<div class="card-header">
-				  <a class="collapsed card-link" data-toggle="collapse" href="#newaddress">
+				  <a id="new_address_card" class="collapsed card-link" data-toggle="collapse" href="#newaddress">
 				    <label id="plus">+</label>
 				    <label>Add a new address</label>
 				  </a>
@@ -102,17 +105,17 @@
 				  	<form class="form-group" action="/action_page.php">
 	  	  
 	  	  			 <div class="form-group row">
-					   <label class="col-form-label col-lg-3">Name of the address:</label>
+					   <label class="col-form-label col-lg-4">Name of the address:</label>
 					   <input class="form-control col-lg-6" id="nameaddress" placeholder="Home, College etc.,">
 					 </div>
 					 
 				  	 <div class="form-group row">
-					   <label class="col-form-label col-lg-3">Address:</label>
-					   <input class="form-control col-lg-6" id="new_address" placeholder="Enter your address(area, street, city, state, pincode)">
+					   <label class="col-form-label col-lg-4">Address:</label>
+					   <input class="form-control col-lg-6" id="new_address" placeholder="Area, Street, City, State, Pincode">
 					 </div>
 					 
 					 <div>
-					   <button type="button" class="btn btln-lg col-lg-4 flipkart_button" id="save">SAVE AND DELIVER HERE</button>
+					   <button type="button" class="btn btln-lg col-lg-4 flipkart_button" id="save">SAVE</button>
 					   <button type="button" class="btn btn-link" id="cancel">CANCEL</button>
 					   
 					 </div>
@@ -126,7 +129,7 @@
 		    <!-- Order Summary -->
 		    <div class="card">
 		      <div class="card-header">
-		        <a class="collapsed card-link" data-toggle="collapse" href="#order">3. ORDER SUMMARY</a>
+		        <a id="order_card" class="collapsed card-link" data-toggle="collapse" href="#order">3. ORDER SUMMARY</a>
 		      </div>
 		      
 		      <div id="order" class="collapse" data-parent="#accordion">
@@ -136,8 +139,8 @@
 		          <!-- Product details -->
 			      <div id="prod_details" style="border-top: 1px solid;">
 	    
-				    <div class="col-lg-4" style="padding: 5px">
-				      <img id="sel_prod" src="images/Catalog/images.jpeg" alt="Card image" style="width:160px;height:160px;float:left" />
+				    <div class="col-lg-4" style="padding: 5px;">
+				      <img id="sel_prod" src="#" alt="Card image" style="width:160px;height:160px;float:left;" />
 				    </div>
 				    
 				    <div>
@@ -146,10 +149,10 @@
 					        <h4 id="prod_name" class="col-lg-8 col-form-label" style="font-size: 20px;">Double cot bedsheet</h4>
 					        <label id="prod_desc" class="col-lg-8 col-form-label" style="font-size: 12px; color: gray;">4GB RAM</label>
 					        <label id="prod_seller" class="col-lg-8 col-form-label" style="font-size: 12px; color: gray;">Seller: Akash Motors</label>
-					        <div class="form-group row" style="margin-left: 1px;">
-	         		          <label id="prod_offer_price" class="col-lg-2 col-form-label" style="font-size: 18px;">Rs.1000</label>
-					          <del id="prod_orig_price" class="col-form-label" style="font-size: 16px; color: gray;">Rs.1000</del>
-					          <label id="prod_discount" class="col-lg-2 col-form-label" style="color: green; font-size: 20px;">45% Off</label>
+					        <div class="form-inline" style="margin-left: 10px;">
+	         		          <label id="prod_offer_price" class="col-form-label" style="font-size: 18px;">Rs.1000</label>
+					          <del id="prod_orig_price" class="col-form-label" style="font-size: 16px; color: gray; margin-left: 10px;">Rs.1000</del>
+					          <label id="prod_discount" class="col-form-label" style="color: green; font-size: 20px; margin-left: 10px;">45% Off</label>
 					        </div>
 					    </div>
 				      </form>
@@ -166,7 +169,7 @@
 				  <div class="form-group row" style="border-top: 1px solid;">
 				    <label style="margin-left: 5px; margin-top: 20px;">Order confirmation email will be sent to </label>
 				    <h5 id="email_conf" style="margin-top: 20px; margin-left: 5px;">Deepika.Alavala@iiitb.org</h5>
-				    <button type="button" class="btn btln-lg flipkart_button" id="order_cont" style="margin-top: 20px; margin-left: 220px;">CONTINUE</button>
+				    <button type="button" class="btn btln-lg flipkart_button" id="order_cont" style="margin-top: 20px; margin-left: 60px;">CONTINUE</button>
 				  </div>
 		        </div>
 		      </div>
@@ -175,7 +178,7 @@
 		    <!-- Payment options -->
 		    <div class="card">
 		      <div class="card-header">
-		        <a class="collapsed card-link" data-toggle="collapse" href="#payment">4. PAYMENT OPTIONS</a>
+		        <a id="payment_card" class="collapsed card-link" data-toggle="collapse" href="#payment">4. PAYMENT OPTIONS</a>
 		      </div>
 		      
 		      <div id="payment" class="collapse" data-parent="#accordion">
@@ -232,7 +235,10 @@
 		     </div>
 		     <div class="form-inline" style="border-bottom: 2px solid;">
 		     	<div><label class="col-form-label">Amount Payable:</label></div>
-		     	<div><label id="total_price" style="margin-left: 100px;" class="col-form-label">Rs. 11,000</label></div>
+		     	<div class="form-inline">
+		     	  <label style="margin-left: 100px;" class="col-form-label">Rs.</label>
+		     	  <label id="total_price" style="margin-left: 5px;" class="col-form-label">11,000</label>
+		     	</div>
 		     </div>
 		     <div><label id="savings" class="col-form-label" style="color: green;">Your Total Savings on this order Rs.4000</label></div>
 		   </div>
@@ -242,6 +248,7 @@
   </div>
 </body>
 
-<script src="assets/js/buy.js"></script>
+<script type="text/javascript" src="assets/js/cookie.js"></script>
+<script type="text/javascript" src="assets/js/buy.js"></script>
 
 </html>
