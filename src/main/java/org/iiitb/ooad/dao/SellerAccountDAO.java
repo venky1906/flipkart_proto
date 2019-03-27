@@ -10,13 +10,9 @@ public class SellerAccountDAO extends HibernateDAO<SellerAccount> {
 
 	String entity="SellerAccount";
 	
-	public List<SellerAccount> getAccountBySellerID(int seller_id)
+	public SellerAccount getAccountBySellerID(int seller_id)
 	{
-		List<SellerAccount> accounts = super.findAll(entity, "seller_id", seller_id);
-		if (accounts.size() == 0) {
-			return null;
-		}
-		return accounts;
+		return super.find(entity, "seller_id", seller_id);
 	}
 	public SellerAccount getAccountByAccountno(String account_no)
 	{
@@ -24,13 +20,7 @@ public class SellerAccountDAO extends HibernateDAO<SellerAccount> {
 	}
 	public SellerAccount getAccountByAccountID(int account_id)
 	{
-		return super.find(entity, "id", Integer.toString(account_id));
-	}
-	
-	public String UpdateBalance(int account_id, float balance)
-	{
-		//return super.find(entity, "id", Integer.toString(account_id));
-		return "success";
+		return super.find(entity, "id", account_id);
 	}
 	
 	public int addSellerAccount(SellerAccount account)

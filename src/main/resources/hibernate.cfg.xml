@@ -29,6 +29,7 @@
   <mapping resource="BuyerAddress.hbm.xml"/>
   <mapping resource="Review.hbm.xml"/>
   <mapping resource="OrderItem.hbm.xml"/>
+  <mapping resource="FlipkartAccount.hbm.xml"/>
   
  </session-factory>
 </hibernate-configuration>

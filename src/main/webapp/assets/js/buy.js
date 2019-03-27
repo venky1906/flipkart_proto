@@ -65,6 +65,7 @@ jQuery(document).ready(function($){
 	//For order Summary
 	function toOrderDetails(item){
 		$("#prod_name").text(item.name);
+		$("#prod_id").text("ITEM ID : " + item.id);
 		$("#prod_desc").text(item.brand+" (Color: "+item.color+")");
 		//$("#prod_seller").text("Seller: "+seller);
 		var offer_price = item.price - (item.price*item.discount/100.0);
@@ -210,18 +211,18 @@ jQuery(document).ready(function($){
 					for(var i=0;i<data.length;i++){
 						add_no = data[i].id;
 						//console.log(data[i].buyer_id);
-						var address =  "<div id='add_"+add_no+"' class='form-check' style='border-top: 1px solid;'>"+
-										  "<input type='radio' class='form-check-input' id='radio' value='"+add_no+"'>"+
+						//"<div id='add_"+add_no+"' class='form-check' style='border-top: 1px solid;'>"+
+						var address =    "<input type='radio' class='form-check-input' id='radio' value='"+add_no+"'>"+
 										  "<div>"+
 										  	"<h5 id='addname_"+add_no+"'>College</h5>"+
 										  	"<p id='address_"+add_no+"'>IIIT Bangalore-560100</p>"+
 										  "</div>"+
 										  "<div>"+
 										     "<button type='button' style='margin-bottom: 10px;' class='btn btln-lg flipkart_button' id='delivhere_"+add_no+"'>DELIVER HERE</button>"+
-										  "</div>"+
-									   "</div>";
+										  "</div>";
+									   //"</div>";
 						
-					    $("#deliv_details").append(address);
+					    $("#deliv_radio").append(address);
 					    $("#addname_"+add_no).text(data[i].name);
 					    $("#address_"+add_no).text(data[i].address);
 					    $("#delivhere_"+add_no).hide();
@@ -229,6 +230,7 @@ jQuery(document).ready(function($){
 						$("#no_address").hide();
 					}
 					
+					$("#deliv_radio").show();
 					onAddressClick(buyer_id);
 				}
 				else{
@@ -278,21 +280,20 @@ jQuery(document).ready(function($){
 	
 					if(data!=-1){
 						//console.log(data);
-						var address =  "<div id='add_"+data+"' class='form-check' style='border-top: 1px solid;'>"+
-										  "<input type='radio' class='form-check-input' id='radio' value="+data+">"+
+						//"<div id='add_"+data+"' class='form-check' style='border-top: 1px solid;'>"+
+						var address =  "<input type='radio' class='form-check-input' id='radio' value="+data+">"+
 										  "<div>"+
 											  	"<h5 id='addname_"+data+"'>College</h5>"+
 										  	"<p id='address_"+data+"'>IIIT Bangalore-560100</p>"+
 										  "</div>"+
 										  "<div>"+
 										     "<button type='button' style='margin-bottom: 10px;' class='btn btln-lg flipkart_button' id='delivhere_"+data+"'>DELIVER HERE</button>"+
-										  "</div>"+
-									   "</div>";
+										  "</div>";
+									   //"</div>";
 						
-						$("#deliv_details").append(address);
+						$("#deliv_radio").append(address);
 						$("#addname_"+data).text(name);
 						$("#address_"+data).text(addr);
-						$("#add_"+data).show();
 						$("#delivhere_"+data).hide();
 						$("#no_address").hide();
 						
@@ -303,6 +304,7 @@ jQuery(document).ready(function($){
 						//$("#new_address_card").removeAttr('data-toggle');
 						$('#delivery').addClass('show');
 						
+						$("#deliv_radio").show();
 						onAddressClick(buyer_id);
 					}
 					else{
@@ -323,6 +325,7 @@ jQuery(document).ready(function($){
 	});
 	
 	$("#prod_remove").click(function() {
+		alert("Removed the product!");
 		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
 	});
 	
@@ -479,7 +482,7 @@ jQuery(document).ready(function($){
 			url : url,
 			data : JSON.stringify(req_data),
 			success : function(data){
-		      	//console.log(data);
+		      	console.log(data);
 		       	if(data=="success"){
 		       		updateOrder(buyer_id);
 		       	}

@@ -70,6 +70,7 @@ public class OrderServices {
 				
 				ItemDAO itemdao = new ItemDAO();
 				Item item = itemdao.getItemByItemId(ordItems.get(i).getItem_id());
+				ordItem.put("id", item.getId());
 				ordItem.put("item_name", item.getName());
 				ordItem.put("item_brand", item.getBrand());
 				
@@ -103,9 +104,10 @@ public class OrderServices {
 		return null;
 	}
 	
-	@Path("/deliveredOrder/{id}")
+	//Buyer updated delivered
+	@Path("/updateDelivered/{id}")
 	@POST
-	public String deliverOrder(@PathParam("id") int order_id) {
+	public String updateDelivered(@PathParam("id") int order_id) {
 			
 		OrderItemDAO dao = new OrderItemDAO();
 		OrderItem orderItem = new OrderItem();
@@ -116,19 +118,26 @@ public class OrderServices {
 			
 			OrderItem order_item = dao.getOrderItemByID(order_id);
 
-			//SellerAccountDAO sellerAccDao = new SellerAccountDAO();	
-			//SellerAccount account = sellerAccDao.getAccountBySellerID(order_item.getSeller_id()).get(0);
-			//account.setBalance(order_item.getAmount_paid());
-			//sellerAccDao.addBalance(account);
-			
-			return "success";
+			//Reduce Flipkart's balance
+			FlipkartAccountDAO faccdao = new FlipkartAccountDAO();
+			FlipkartAccount flipkart_acc = faccdao.getFlipkartAccount();
+			flipkart_acc.setBalance(order_item.getAmount_paid());
+			//System.out.println(".................................................."+flipkart_acc.getBalance()+"Bal.................");
+			if(faccdao.reduceBalance(flipkart_acc)=="success") {
+				SellerAccountDAO sellerAccDao = new SellerAccountDAO();	
+				//Add to seller's account
+				SellerAccount account = sellerAccDao.getAccountBySellerID(order_item.getSeller_id());
+				if(account!=null) {
+					account.setBalance(order_item.getAmount_paid());
+					return sellerAccDao.addBalance(account);
+				}
+			}
 		}
 		
-		else {
-			return "fail";
-		}
+		return "fail";
 	}
 	
+	//Seller updated shipped
 	@Path("/shipOrder/{id}")
 	@POST
 	public String shipOrder(@PathParam("id") int order_id) {
@@ -140,6 +149,7 @@ public class OrderServices {
 		return dao.updateStatus(orderItem);
 	}
 	
+	//Seller cancelled
 	@Path("/cancelOrder/{id}")
 	@POST
 	public String cancelOrder(@PathParam("id") int order_id) {
@@ -150,19 +160,25 @@ public class OrderServices {
 		orderItem.setStatus("cancelled");
 		if(dao.updateStatus(orderItem)=="success"){
 			
-			OrderItem order_item = dao.getOrderItemByID(order_id);
-			BuyerAccountDAO buyerAccDao = new BuyerAccountDAO();	
-			BuyerAccount account = buyerAccDao.getAccountByBuyerID(order_item.getBuyer_id()).get(0);
-			account.setBalance(order_item.getAmount_paid());
-			buyerAccDao.addBalance(account);
+			//Reduce Flipkart's balance
+			FlipkartAccountDAO faccdao = new FlipkartAccountDAO();
+			FlipkartAccount flipkart_acc = faccdao.getFlipkartAccount();
+			flipkart_acc.setBalance(orderItem.getAmount_paid());
 			
-			return "success";
+			if(faccdao.reduceBalance(flipkart_acc)=="success") {
+				OrderItem order_item = dao.getOrderItemByID(order_id);
+				
+				//Add money to buyer account
+				BuyerAccountDAO buyerAccDao = new BuyerAccountDAO();	
+				BuyerAccount account = buyerAccDao.getAccountByBuyerID(order_item.getBuyer_id()).get(0);
+				account.setBalance(order_item.getAmount_paid());
+				return buyerAccDao.addBalance(account);
+			}
 		}
-		else {
-			return "fail";
-		}
+		return "fail";
 	}
 	
+	//Get all the seller orders
 	@Path("/getSellerOrders/{id}")
 	@GET
 	@Produces("application/json")
@@ -181,40 +197,42 @@ public class OrderServices {
 			BuyerAddressDAO buyerAddDao = new BuyerAddressDAO();
 			ItemImagesDAO itemImageDao = new ItemImagesDAO();
 			
-			for(int i=0;i< orderItems.size();i++) {
+			if(orderItems!=null) {
+				for(int i=0;i< orderItems.size();i++) {
+				
+					OrderItem orderItem =orderItems.get(i); 
+					
+					JSONObject order = new JSONObject(orderItem);
+				
+					int item_id = orderItem.getItem_id();
+					int order_id = orderItem.getOrder_id();
+					int buyer_id = orderItem.getBuyer_id();
+					int address_id = orderItem.getAddress_id();
+					
+					
+					Item item = itemDao.getItemByItemId(item_id);	
+					order.put("item_id",item.getId());
+					order.put("item_name",item.getName());
+					
+					Buyer buyer = buyerDao.getUserById(buyer_id);
+					order.put("buyer_name",buyer.getName());
+				
+					BuyerAddress buyerAddress = buyerAddDao.getAddressByid(address_id);
+					order.put("buyer_address",buyerAddress.getAddress());
+					
+					List<ItemImages> itemImages = itemImageDao.getItemImagesByItemId(item_id);
+					order.put("image_location",itemImages.get(0).getImage_location());
+					
+					allOrders.put(order);
+				}
 			
-				OrderItem orderItem =orderItems.get(i); 
-				
-				JSONObject order = new JSONObject(orderItem);
-			
-				int item_id = orderItem.getItem_id();
-				int order_id = orderItem.getOrder_id();
-				int buyer_id = orderItem.getBuyer_id();
-				int address_id = orderItem.getAddress_id();
-				
-				
-				Item item = itemDao.getItemByItemId(item_id);	
-				order.put("item_id",item.getId());
-				order.put("item_name",item.getName());
-				
-				Buyer buyer = buyerDao.getUserById(buyer_id);
-				order.put("buyer_name",buyer.getName());
-			
-				BuyerAddress buyerAddress = buyerAddDao.getAddressByid(address_id);
-				order.put("buyer_address",buyerAddress.getAddress());
-				
-				List<ItemImages> itemImages = itemImageDao.getItemImagesByItemId(item_id);
-				order.put("image_location",itemImages.get(0).getImage_location());
-				
-				allOrders.put(order);
+				return allOrders.toString();
 			}
-			
-			return allOrders.toString();
 		}
 		
 		catch(Exception e) {	
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 }

@@ -8,7 +8,7 @@ jQuery(document).ready(function($){
 	var cookie_data = getCookie("Buyer_data");
 	if(cookie_data!="" && cookie_data!=null){
 		var buyer_data = JSON.parse(cookie_data);
-		console.log(buyer_data.id);
+		//console.log(buyer_data.id);
 		
 		if(buyer_data!="" && buyer_data!=null){
 			buyer_id = buyer_data.id;
@@ -60,27 +60,29 @@ jQuery(document).ready(function($){
 					//console.log(ordered_date);
 				    var date = ordered_date[2]+"-"+ordered_date[1]+"-"+ordered_date[0];
 					var order_card = 
-						"<div id='order_"+ord_id+"' style='border: 2px solid #eee;'>"+
+						"<div id='order_"+ord_id+"' stylequalse='border: 2px solid #eee;'>"+
 							"<div style='border-bottom: 2px solid #eee'>"+
 								"<h4 id='order_id_"+ord_id+"' class='col-form-label' style='font-size: 20px; margin-left: 40px;'>ORDER ID : "+orders[i].order_id+"</h4>"+
 							"</div>"+
 							"<div class='form-group row'>"+
 								"<div style='padding: 5px; margin-left: 40px;'>"+
-									"<img id='sel_prod_"+ord_id+"' src='"+orders[i].item_img+"' alt='Card image' style='width:120px;height:120px;float:left;' />"+
+									"<img id='sel_prod_"+ord_id+"' src='"+orders[i].item_img+"' alt='Card image' style='margin-top:30px;width:120px;height:120px;float:left;' />"+
 								"</div>"+
 								"<div>"+
 									"<div class='form-group' style='margin-left:40px;'>"+
 										"<div><label id='prod_name_"+ord_id+"' class='col-form-label' style='font-size: 18px;'>"+orders[i].item_name+"</label></div>"+
+										"<div><label id='prod_id_"+ord_id+"' class='col-form-label' style='font-size: 12px; color: gray;'>ITEM ID : "+orders[i].id+"</label></div>"+
 										"<div><label id='prod_brand_"+ord_id+"' class='col-form-label' style='font-size: 12px; color: gray;'>Brand : "+orders[i].item_brand+"</label></div>"+
 										"<div><label id='prod_seller_"+ord_id+"' class='col-form-label' style='font-size: 12px; color: gray;'>Seller :"+orders[i].seller_name+"</label></div>"+
 										"<div><label id='prod_qty_"+ord_id+"' class='col-form-label' style='font-size: 12px; color: gray;'>Quantity : "+orders[i].quantity+"</label></div>"+
 									"</div>"+
 								"</div>"+
-								"<div style='margin-top: 55px; margin-left: 100px;'>"+
+								"<div style='margin-top: 65px; margin-left: 100px;'>"+
 									"<label id='order_status_"+ord_id+"' class='col-form-label' style='font-size: 15px; color: "+color+";'>Status : "+status+"</label>"+
 								"</div>"+
-								"<div style='margin-top: 55px; margin-left: 150px;'>"+
+								"<div style='margin-top: 65px; margin-left: 150px;'>"+
 									"<button id='order_review_"+ord_id+"' class='btn btn-link' data-toggle='modal' data-target='#ratingModal_"+ord_id+"' style='font-size: 16px;'>RATE &amp; REVIEW PRODUCT</button>"+
+									"<button id='order_delivered_"+ord_id+"' class='btn btn-success' style='font-size: 16px;'>I RECEIVED THE ORDER</button>"+
 								"</div>"+
 							"</div>"+
 							"<div style='border-top: 2px solid #eee'>"+	   
@@ -94,10 +96,17 @@ jQuery(document).ready(function($){
 						"</div>";
 					$("#myorders").append(order_card);
 					$("#order_id_"+ord_id).show();
-					if(status!="DELIVERED"){
+					if(status=="SHIPPED"){
 						$('#order_review_'+ord_id).hide();
+						$("#order_delivered_"+ord_id).show();
+						onClickDelivered(ord_id);
+					}
+					else if(status!="DELIVERED"){
+						$('#order_review_'+ord_id).hide();
+						$("#order_delivered_"+ord_id).hide();
 					}
 					else{
+						$("#order_delivered_"+ord_id).hide();
 						var curr_review;
 						if(orders[i].review!=null){
 							curr_review = orders[i].review;
@@ -128,6 +137,30 @@ jQuery(document).ready(function($){
 			alert("Failed to fetch order details!");
 		}
 	});
+	
+	function onClickDelivered(ord_id){
+		$("#order_delivered_"+ord_id).click(function(){
+			var url="http://localhost:8080/flipkart/webapi/order/updateDelivered/"+ord_id;
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : url,
+				success : function(data){
+			      	//console.log(data);
+			       	if(data=="success"){
+			       		alert("Updated status!");
+			       		location.reload();
+			       	}
+			      	else{
+						alert("Issue updating the status!");
+					}
+				},
+				error: function(data) {
+					alert("failed");
+				}
+			});
+		});
+	}
 	
 	function ratingModal(review){
 		var ord_id = review.orderItem_id;

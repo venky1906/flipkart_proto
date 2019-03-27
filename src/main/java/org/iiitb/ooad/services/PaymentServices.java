@@ -54,6 +54,15 @@ public class PaymentServices {
 	@Consumes("application/json")
 	public String updateBalance(BuyerAccount account) {
 		BuyerAccountDAO dao = new BuyerAccountDAO();
-		return dao.reduceBalance(account);
+		float amt = account.getBalance();
+		if(dao.reduceBalance(account)=="success") {
+			//Add Flipkart's balance
+			FlipkartAccountDAO faccdao = new FlipkartAccountDAO();
+			FlipkartAccount flipkart_acc = faccdao.getFlipkartAccount();
+			//System.out.println(".................................................."+flipkart_acc.getBalance()+"Ba.............");
+			flipkart_acc.setBalance(amt);
+			return faccdao.addBalance(flipkart_acc);
+		}
+		return "fail";
 	}
 }

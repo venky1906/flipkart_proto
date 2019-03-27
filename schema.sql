@@ -368,6 +368,16 @@ CREATE TABLE IF NOT EXISTS `flipkartdb`.`Cart` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `flipkartdb`.`FlipkartAccount`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `flipkartdb`.`FlipkartAccount` (
+  `accountno` VARCHAR(12) NOT NULL,
+  `balance` FLOAT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`accountno`))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -400,3 +410,14 @@ INSERT INTO `flipkartdb`.`BuyerAddress` (`id`, `buyer_id`, `address`, `name`, `t
 INSERT INTO `flipkartdb`.`BuyerAddress` (`id`, `buyer_id`, `address`, `name`, `type`) VALUES (4, 4, 'IIITB', 'Home', 'GENERAL');
 
 COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `flipkartdb`.`FlipkartAccount`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `flipkartdb`;
+INSERT INTO `flipkartdb`.`FlipkartAccount` (`accountno`, `balance`) VALUES ('334455667788', 1000);
+
+COMMIT;
+

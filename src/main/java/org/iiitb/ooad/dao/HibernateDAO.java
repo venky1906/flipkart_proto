@@ -171,6 +171,53 @@ public class HibernateDAO<E> {
 		return 0;
 	}
 	
+	public int update(E entity, String param_id,String id_val, List<Field> fields)
+	{
+		try
+		{
+			session = SessionUtil.getSession();
+			tx = session.beginTransaction();
+			String conjunction = "";
+			String set_clause = "";
+			String hql ="";
+			int i=0;
+			for(Field p :fields)
+			{
+				set_clause += conjunction+p.getName() +" = :param"+i;
+				i++;
+				conjunction=", ";
+			}
+			hql = "update " + entity.getClass().getName() + " set "+set_clause+" where " + param_id + "= :id_val";
+			session.flush();
+			Query query = session.createQuery(hql);
+			i=0;
+			for(Field p :fields)
+			{
+				query.setParameter("param"+i, p.get(entity));
+				i++;
+			}
+			query.setParameter("id_val", id_val);
+			query.executeUpdate();
+
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return 1;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+
+		tx.commit();
+		session.flush();
+		session.close();
+		
+		return 0;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public double average(String entity_name, String attr, String param, int val) {
 		session = SessionUtil.getSession();

@@ -553,9 +553,9 @@ jQuery(document).ready(function($){
 				all_images = all_images + "</div>";
 			
 				new_division = new_division + all_images +
-							"<div class ='form-group' style='margin-left:20px;'>"+
+							"<div class ='form-group' id='my_form' style='margin-left:20px;'>"+
 									//Big Image division
-									"<div>"+
+									"<div id='big_img_div'>"+
 										"<img class='medium_img' src="+ item_images[j-1].image_location+" id='enlargedImage' style='margin-left: 30px;'></img>"+
 									"</div>"+
 									 //Buttons division	
@@ -648,18 +648,16 @@ jQuery(document).ready(function($){
 	//show enlarged image on hover of small image.
 	$('body').on("mouseenter",".small_image",function(){
 		var image = $(this).attr("src");
-		//var big_img = $(this).parent('div').parent('div').parent('div').child('.form-group')[1].child('img');
-	//	big_img.attr("src",image);
-		$("#enlargedImage").attr("src",image);
+		var big_img = $(this).parent('div').parent('div').parent('div').children('.form-group')[1];
+		$('img',big_img).attr("src",image);
 	});
+	
 	
 	// show the enlarged image of small image.
 	$('body').on("click",".small_image",function(){
 		var image = $(this).attr("src");
-		//var big_img = $(this).parent('div').parent('div').parent('div').child('.form-group')[1].child('img');
-		//big_img.attr("src",image);
-		//console.log("Image attr "+big_img.attr('id'));
-		$("#enlargedImage").attr("src",image);
+		var big_img = $(this).parent('div').parent('div').parent('div').children('.form-group')[1];
+		$('img', big_img).attr('src', image);
 	});
 	
 	// Onclick function for delete Item
@@ -723,7 +721,7 @@ jQuery(document).ready(function($){
 	        	}
 	        	
 	        	else
-	        		alert("failed to get Orders");
+	        		alert("No orders to show!");
 	        },
 	        
 	        error : function(data){
@@ -800,19 +798,6 @@ jQuery(document).ready(function($){
 					   "</div>";
 		     }
 
-			  	
-		     else if(order_details.status=='shipped'){
-		     
-		      buttons_division =
-		        "<div>"+
-					"<div class='form-group' style='margin-left:100px;margin-top:30px'>"+
-					    "<div class='row' style='margin-top:5px;'>"+
-						    "<button type='button' class='btn btn-primary' id='deliverOrder' style='width:100px'>Delivered</button>"+
-						"</div>"+
-		          "</div>"+  	 
-			   "</div>";
-		      
-		     }
 			
 		     var ordered_date = order_details.order_date;
 		     var order_date = ordered_date.split(" ")[0];
@@ -836,40 +821,6 @@ jQuery(document).ready(function($){
 		}
 	
 	};
-	
-	//Mark the status delivered;
-	$('body').on("click",'#deliverOrder',function(){
-		var order_id = $(this).parent('div').parent('div').parent('div').parent('div').parent('div').attr('id');
-		
-		if(order_id==null){
-			console.log("Error Changing Status");
-			return;
-		}
-		
-		$.ajax({
-			url: "http://localhost:8080/flipkart/webapi/order/deliveredOrder/" + order_id,
-			type:"POST",
-			cache:false,
-			contentType:false,
-			processData: false,
-	        success :function(data){
-	        	
-	        	if(data=="success")
-	        	{
-	        		location.reload();
-	        	}
-	        	
-	        	else
-	        		alert("failed to update Status");
-	        },
-	        
-	        error : function(data){
-	        	alert("failed to update Status !");
-	        }
-	        
-		});
-		
-	});
 	
 	
 	// Mark the status shipped

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.FlipkartAccount" table="FlipkartAccount">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart's account. 
+      </meta>
+      
+      <id name = "accountno" column = "accountno" type = "string">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "balance" column = "balance" type = "float"/>
+	</class>
+</hibernate-mapping>
