@@ -418,39 +418,20 @@
 	jQuery(document).ready(function($){
         console.log("Buyer log");
         $('.dropdown-trigger').dropdown();
-        var buyer_id;
-
-		function checkCookie(){
-			var buyer_data = getCookie("Buyer_data");
-            console.log("Buyer-data " + buyer_data);
-            if(buyer_data=="" || buyer_data==null)
-				buyer_id=null;
-			else
-			{
-                buyer_data = JSON.parse(buyer_data);
-                console.log("Buyer-data " + buyer_data);
-				buyer_id = buyer_data.id;
-                console.log("buyer_id"+ buyer_id);
-            }
-			
-			if(buyer_id!=null)
-			{
-
-                console.log("buyer_id"+ buyer_id);
-
-                $("#idloginbutton").removeAttr('data-toggle');
-				$("#idloginbutton").hide();	
-				var name=buyer_data.name;
-
-				$("#idprofilebutton").text(name);
-				$("#idlogoutbutton").show();
-				$("#idprofilebutton").show();		
-			}
-				
+        var buyer_id=null;
+        
+        var buyer_data = checkCookie("Buyer_data");
+ 		
+        if(buyer_data!=null){
+        	buyer_id = buyer_data.id;
+        	$("#idloginbutton").removeAttr('data-toggle');
+			$("#idloginbutton").hide();
+			$("#idprofilebutton").text(buyer_data.name);
+			$("#idlogoutbutton").show();
+			$("#idprofilebutton").show();
+        	
         }
-        
-		checkCookie();
-        
+       
         $("#signup_btn1").click(function(){
 			$("#login-Modal").hide();
 			$("#signup-Modal").show();

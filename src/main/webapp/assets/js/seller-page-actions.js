@@ -1,25 +1,21 @@
 jQuery(document).ready(function($){
 	
-	var image_count = 0;
-
 	// Check if seller is logged in and redirect the page accordingly
-	var seller_data = getCookie("seller_data");
+	
+	var seller_data = checkCookie("seller_data");
 	
 	var seller_id=null;
 	var seller_name="";
 	
-	if(seller_data=="" || seller_data==null){
-			seller_id = null;
-			window.location = 'SellerHub.html';
+	if(seller_data==null){
+		window.location = "SellerHub.html";
 	}
 	
 	else{
-		seller_data = JSON.parse(getCookie("seller_data"));
 		seller_id = seller_data.id;
 		seller_name=seller_data.name;
 	}
-	
-	
+		
 	//Function to get the nav-element from url
 	
 	$.urlParam = function(name){
@@ -189,6 +185,7 @@ jQuery(document).ready(function($){
 			
 			for(var i=0;i<this.files.length;i++){
 				
+				var image_count = 0;
 				
 				if(this.files[i]){
 					
