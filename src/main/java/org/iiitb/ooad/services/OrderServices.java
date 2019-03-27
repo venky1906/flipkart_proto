@@ -158,15 +158,15 @@ public class OrderServices {
 		OrderItem orderItem = new OrderItem();
 		orderItem.setOrder_id(order_id);
 		orderItem.setStatus("cancelled");
+		
 		if(dao.updateStatus(orderItem)=="success"){
-			
+			OrderItem order_item = dao.getOrderItemByID(order_id);
 			//Reduce Flipkart's balance
 			FlipkartAccountDAO faccdao = new FlipkartAccountDAO();
 			FlipkartAccount flipkart_acc = faccdao.getFlipkartAccount();
-			flipkart_acc.setBalance(orderItem.getAmount_paid());
+			flipkart_acc.setBalance(order_item.getAmount_paid());
 			
 			if(faccdao.reduceBalance(flipkart_acc)=="success") {
-				OrderItem order_item = dao.getOrderItemByID(order_id);
 				
 				//Add money to buyer account
 				BuyerAccountDAO buyerAccDao = new BuyerAccountDAO();	

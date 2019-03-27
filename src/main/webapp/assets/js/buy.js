@@ -248,9 +248,11 @@ jQuery(document).ready(function($){
 	//On clicking delivery 
 	function onAddressClick(buyer_id){
 		$("body").on( "click", "#radio",function(){
+			//location.reload();
 			var add_no = $(this).val(); 
 			$("#delivhere_"+add_no).show();
 			$("#delivhere_"+add_no).click(function() {
+				//console.log("Address: "+add_no);
 				address_id = add_no;
 				$('#delivery').collapse('hide');
 				$("#delivery_card").removeAttr('data-toggle');
@@ -497,7 +499,6 @@ jQuery(document).ready(function($){
 	}
 	
 	function updateOrder(buyer_id){
-		var address_id = 1;   //get from the checked address
 		var quantity = $("#prod_qt").val();;
 		var amount_paid = $("#total_price").text();
 		var orderItem = {

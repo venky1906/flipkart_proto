@@ -780,8 +780,8 @@ jQuery(document).ready(function($){
 					"</div>"+
 		          "</div>";
 			 
-			 var buttons_division = "";
-			
+			 var buttons_division = "</div>"; 
+			   
 		     if(order_details.status=='paid'){
 		    	 
 		    	 buttons_division =
