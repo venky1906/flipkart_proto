@@ -92,7 +92,7 @@ public class ItemServices {
 		
 	}
 	
-	
+	/*
 	@POST
 	@Path("delete/{id}")
 	public String deleteItemById(@PathParam("id") int item_id){
@@ -111,7 +111,7 @@ public class ItemServices {
 		else {
 			return "fail";
 		}
-	}
+	}*/
 	
 	@POST
 	@Path("/getAllItemsBySubcategoryId/{id}")
@@ -206,6 +206,16 @@ public class ItemServices {
 		return null;
 	}
 	
+	@POST
+	@Path("/updateQuantity")
+	@Consumes("application/json")
+	public String updateQuantity(Item item) {
+		
+		ItemDAO dao = new ItemDAO();
+		if(dao.updateItemQuantity(item,item.getItem_id())==1)
+				return "success";
+		return "fail";
+	}
 	
 	
 }

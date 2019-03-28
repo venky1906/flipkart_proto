@@ -556,12 +556,14 @@ jQuery(document).ready(function($){
 										"<img class='medium_img' src="+ item_images[j-1].image_location+" id='enlargedImage' style='margin-left: 30px;'></img>"+
 									"</div>"+
 									 //Buttons division	
-							    "<div class='form-group' style='margin-left:80px'>"+
+							    "<div class='form-group' style='margin-left:60px'>"+
 									"<div class='form-group row'  style='margin-top:20px;'>"+
-										"<button type='button' class='btn btn-primary my_button_remove' id='deleteItem'>DELETE</button>"+
-										"<button type='button' class='btn btn-primary my_button' id='editItem' style='margin-left:20px;'>EDIT</button>"+
+										"<label style='margin-top:10px;margin-right:10px;font-weight:bold;'>Quantity</label>"+
+										"<input type='number' class='form-control quantity_input' style='width:70px;' id='itemQuantityInput_"+ item.item_id +"' placeholder="+ item.quantity +" required>" +
+										"<button type='button' class='btn btn-primary save_btn' id='saveQuantity_"+ item.item_id +"' style='margin-left:20px;'>SAVE</button>"+
+										"<button type='button' class='btn btn-primary edit_btn' id='editQuantity_"+ item.item_id +"' style='margin-left:20px;'>EDIT</button>"+
 									"</div>"+	
-								"</div>"+				
+								"</div>"+
 							"</div>";
 							
 							
@@ -576,9 +578,6 @@ jQuery(document).ready(function($){
 								"<div class='row'>"+
 									"<label style='font-weight:bold;'>Price</label>"+
 								"</div>"+
-								"<div class='row'>"+
-									"<label style='font-weight:bold;'> Quantity</label>"+
-								"</div>"+	
 								"<div class='row'>"+
 									"<label style='font-weight:bold;'>Discount</label>"+
 								"</div>"+
@@ -598,9 +597,6 @@ jQuery(document).ready(function($){
 								"<div class='row'>"+
 									"<label>: "+ item.price + "</label>"+
 								"</div>"+
-								"<div class='row'>"+
-									"<label>: "+ item.quantity +"</label>"+
-								"</div>"+	
 								"<div class='row'>"+
 									"<label>: " + item.discount +"</label>"+
 								"</div>"+
@@ -638,6 +634,9 @@ jQuery(document).ready(function($){
 			new_division = new_division + label_division + label_value_division + div_end + "</div>";
 				
 			$("#manageAllItems").append(new_division);
+			$(".save_btn").hide();
+			$("#itemQuantityInput_"+item.item_id).prop('disabled', true);
+			
 		}
 	}
 	
@@ -657,6 +656,65 @@ jQuery(document).ready(function($){
 		$('img', big_img).attr('src', image);
 	});
 	
+	// Onclick for Edit Quantity Button
+	$("body").on("click",".edit_btn",function(){
+		var item_div = $(this).parent('div').parent('div').parent('div').parent('div');
+	    var item_id = item_div.attr('id');
+	    $(this).hide();
+	    $("#itemQuantityInput_"+item_id).prop('disabled',false);
+	    $("#saveQuantity_"+item_id).show();
+	});
+	
+	// On click save quantity button
+	$("body").on("click",".save_btn",function(){
+		var item_div = $(this).parent('div').parent('div').parent('div').parent('div');
+	    var item_id = item_div.attr('id');
+	    $(this).hide();
+	    $("#itemQuantityInput_"+item_id).prop('disabled',true);
+	    $("#editQuantity_"+item_id).show();
+	    console.log($("#itemQuantityInput_"+item_id).val());
+	    var quantity = $("#itemQuantityInput_"+item_id).val();
+	    
+	    if(quantity<0){
+	    	alert("quantity should be greater than zero");
+	    }
+	    
+	    else{
+	    	updateQuantity(item_id,quantity);
+	    }
+	    
+	 });
+	
+	function updateQuantity(item_id,quantity){
+		
+		var item = {
+			
+			"item_id" : item_id,
+			"quantity" : quantity,	
+			
+		};
+		
+		$.ajax(
+				{
+				type : 'POST',
+				contentType : 'application/json',
+				url : "http://localhost:8080/flipkart/webapi/items/updateQuantity",
+				data : JSON.stringify(item),
+				success : function(response){
+					if(response=="success")
+						alert("Updated Quantity");
+					else
+					{
+						alert("Couldnt Update Quantity");
+					}
+				},
+				 error : function(data){
+			        	alert("Couldnt Update Quantity !");
+			     }
+			});
+	};
+	
+	/*
 	// Onclick function for delete Item
 	$('body').on("click","#deleteItem",function(){
 		console.log("removed Parent");
@@ -690,12 +748,7 @@ jQuery(document).ready(function($){
 	        }
 	        
 		});
-	};
-	
-	// Onclick for Edit Item
-	$("body").on("click","#editItem",function(){
-		window.location = "UnderConstruction.html";
-	});
+	};*/
 	
 	
 

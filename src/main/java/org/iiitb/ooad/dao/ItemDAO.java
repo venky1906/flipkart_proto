@@ -11,7 +11,7 @@ public class ItemDAO extends HibernateDAO<Item> {
 
 	public List<Item> getItemsBySellerId(int seller_id)
 	{
-		return super.findAllNotEqualCondition(entity,"seller_id",seller_id,"quantity",0);
+		return super.findAll(entity,"seller_id",seller_id);
 	}
 	
 	public int addItem(Item item)
