@@ -65,4 +65,56 @@ public class PaymentServices {
 		}
 		return "fail";
 	}
+	
+	@POST
+	@Path("/editbuyerbalance")
+	@Consumes("application/json")
+	public String editBuyerBalance(BuyerAccount account) {
+		BuyerAccountDAO dao=new BuyerAccountDAO();
+		dao.updateBuyerBalance(account);
+		return "success";
+	}
+	
+	@POST
+	@Path("/editsellerbalance")
+	@Consumes("application/json")
+	public String editSellerDetails(SellerAccount account) {
+		SellerAccountDAO dao=new SellerAccountDAO();
+		dao.updateSellerBalance(account);
+		return "success";
+	}
+	
+	@GET
+	@Path("/getbuyerbalance/{buyer_id}")
+	public  float getBuyerBalance(@PathParam("buyer_id") int buyer_id) {
+		BuyerAccountDAO dao=new BuyerAccountDAO();
+		System.out.println("Buyer Id : " + buyer_id);
+		return dao.getBalance(buyer_id);
+	}
+	
+	@GET
+	@Path("/getsellerbalance/{seller_id}")
+	public float getSellerBalance(@PathParam("seller_id") int seller_id) {
+		SellerAccountDAO dao=new SellerAccountDAO();
+		System.out.println("Seller Id : "+seller_id);
+		return dao.getBalance(seller_id);
+	}
+	
+	@GET
+	@Path("/getflipkartbalance")
+	public float getFlipkartBalance() {
+		FlipkartAccountDAO dao=new FlipkartAccountDAO();
+		FlipkartAccount fa = dao.getFlipkartAccount();
+		return fa.getBalance();
+	}
+	
+	@POST
+	@Path("/editflipkartbalance")
+	public String editBuyerBalance(FlipkartAccount account) {
+		FlipkartAccountDAO dao=new FlipkartAccountDAO();
+		dao.updateFlipkartBalance(account);
+		return "success";
+	}
+	
+	
 }

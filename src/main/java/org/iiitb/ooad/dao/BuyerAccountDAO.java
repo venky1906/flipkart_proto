@@ -79,4 +79,35 @@ public class BuyerAccountDAO extends HibernateDAO<BuyerAccount> {
 	{
 		return super.find(entity, "accountno", account_no);
 	}
+	
+	public int updateBuyerBalance(BuyerAccount account)
+	{
+		try {
+			
+			List<Field> fields = new ArrayList<Field>();
+			Field balance_field = account.getClass().getDeclaredField("balance");
+			balance_field.setAccessible(true);
+			fields.add(balance_field);
+			System.out.println(account.getBalance());
+			System.out.println(account.getId());
+			if(super.update(account, "buyer_id", account.getBuyer_id(), fields)==1) {
+				return 1;
+			}
+			else
+				return 0;
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public float getBalance(int buyer_id)
+	{
+		return super.find(entity, "buyer_id", buyer_id).getBalance();
+		
+	}
+	
+	
 }

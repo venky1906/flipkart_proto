@@ -3,6 +3,18 @@ jQuery(document).ready(function($){
     getCategoryList("#itemCategory");
     getCategoryList("#itemExistsCategory");
 
+    $.ajax({
+            url: "http://localhost:8080/flipkart/webapi/payment/getflipkartbalance",
+            type: "GET",
+            success: function(data) {
+                    var balance=data;
+                    console.log(data);
+                    $("#flipkartbalance").val(balance);
+			    },
+
+    });
+
+    
     $('#AddC').click( function() {
     var category = {
     		
@@ -37,6 +49,41 @@ jQuery(document).ready(function($){
     		var subcategoryname = $("#subcategoryname").val()
 		    addsubCategory(selected_category,subcategoryname);
      });
+
+     $('#editbalance').click( function() {
+    	$("#flipkartbalance").prop('disabled', false);
+    	$('#editbalance').text("Save");
+    	$('#editbalance').click(function(){
+    		$("#flipkartbalance").prop('disabled', true);
+    		$('#editbalance').text("Edit Balance");
+    
+            var update = {
+                
+                accountno:334455667788,
+                balance : $("#flipkartbalance").val(),
+            };
+
+        console.log($("#flipkartbalance").val());
+            
+        $.ajax({
+            url: "http://localhost:8080/flipkart/webapi/payment/editflipkartbalance",
+            data: JSON.stringify(update),
+            type: "POST",
+            contentType:'application/json',
+            success: function(data) {
+            	
+    				if(data=="success"){
+    				    alert("Added Successfully");
+    				    location.reload();
+    				   }
+    				else	{
+    					alert("Error");
+    				}
+    			},
+
+        	});
+        });
+    });
     
        
     function loadCategory(category_list,cat_list_id){

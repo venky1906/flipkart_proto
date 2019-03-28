@@ -6,8 +6,8 @@
 
 /* style the container */
 .container {
-  width:300px;
-  height:275px;
+  width:350px;
+  height:220px;
   margin-right: auto;
   margin-left: auto;
   position:static;
@@ -18,7 +18,15 @@
 /* Full-width inputs */
 input[type=text], input[type=password] {
   width: 100%;
-  padding: 12px 20px;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+input[type=text1] {
+  width: 75%;
+  padding: 6px 20px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
@@ -29,11 +37,20 @@ input[type=text], input[type=password] {
 button {
   background-color: #0F2DF0;
   color: white;
-  padding: 14px 20px;
+  padding: 10px 20px;
   margin: 8px 0;
   border: none;
   cursor: pointer;
   width: 100%;
+}
+button1 {
+  background-color: #0F2DF0;
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 25%;
 }
 
 /* Add a hover effect for buttons */
@@ -45,4 +62,3 @@ button:hover {
 .container {
   padding: 16px;
 }
-

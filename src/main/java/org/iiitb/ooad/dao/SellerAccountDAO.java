@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.iiitb.ooad.model.BuyerAccount;
 import org.iiitb.ooad.model.SellerAccount;;
 
 public class SellerAccountDAO extends HibernateDAO<SellerAccount> {
@@ -62,5 +63,36 @@ public class SellerAccountDAO extends HibernateDAO<SellerAccount> {
 			return "success";
 		}
 		return "fail";
+	}
+	
+	public SellerAccount getOneAccountBySellerID(int seller_id)
+	{
+		return super.find(entity, "seller_id", seller_id);
+	}
+	
+	public int updateSellerBalance(SellerAccount account)
+	{
+		try {
+			
+			List<Field> fields = new ArrayList<Field>();
+			Field balance_field = account.getClass().getDeclaredField("balance");
+			balance_field.setAccessible(true);
+			fields.add(balance_field);
+			if(super.update(account, "seller_id", account.getSeller_id(), fields)==1)
+				return 1;
+			else
+				return 0;
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	public float getBalance(int seller_id)
+	{
+		return super.find(entity, "seller_id",seller_id).getBalance();
+		
 	}
 }

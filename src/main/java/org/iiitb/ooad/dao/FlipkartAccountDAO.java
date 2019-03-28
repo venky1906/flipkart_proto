@@ -1,5 +1,6 @@
 package org.iiitb.ooad.dao;
 
+import org.iiitb.ooad.model.BuyerAccount;
 import org.iiitb.ooad.model.FlipkartAccount;
 
 import java.lang.reflect.Field;
@@ -55,5 +56,26 @@ public class FlipkartAccountDAO extends HibernateDAO<FlipkartAccount> {
 			return "success";
 		}
 		return "fail";
+	}
+	
+	public int updateFlipkartBalance(FlipkartAccount account)
+	{
+		try {
+			
+			List<Field> fields = new ArrayList<Field>();
+			Field balance_field = account.getClass().getDeclaredField("balance");
+			balance_field.setAccessible(true);
+			fields.add(balance_field);
+			if(super.update(account, "accountno", account.getAccountno(), fields)==1) {
+				return 1;
+			}
+			else
+				return 0;
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

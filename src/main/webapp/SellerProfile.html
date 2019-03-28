@@ -70,9 +70,6 @@
 											<a href="#">
 												<div class="NqIFxw HDbIt8">Profile Information</div>
 											</a>
-											<a href="#">
-												<div class="NqIFxw">Manage Addresses</div>
-											</a>
 										</div>
 									</div>
 									<!-- _2ACZMj end-->
@@ -103,7 +100,7 @@
 										<div class="l022CW">
 											<div class="_2aK_Hc">
 												<span class="_10it6k">Personal Information</span>
-												<span class="_1x4IU1">Edit</span>
+												<span class="_1x4IU1" id ="personalinfoedit">Edit</span>
 											</div>
 											<form>
 												<div class="_2kN0A- row">
@@ -111,7 +108,8 @@
 														<div class="Th26Zc">
 															<input type="text" class="_16qL6K _2pf-sU _366U7Q" name="Name" required="" id="name" disabled="" autoComplete="name" tabindex="1" value="venkateswararao"/>
 														</div>
-													</div>
+                                                    </div>
+                                                    <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="PIsave" style="display:none;">SAVE</button>
 												</div>
 												<div class="yt2AKW"> <!-- -->Your Gender<!-- --> </div>
 												<div>
@@ -138,7 +136,7 @@
 												<div class="ubrbk7">
 													<div class="_3oYEid">
 														<span class="MJ2tO_">Email Address</span>
-														<a class="_7qszba oZoRPi" href="#">Edit</a>
+														<a class="_7qszba oZoRPi" id="editemail">Edit</a>
 														<a class="oZoRPi" href="#">Change Password</a>
 													</div>
 													<form>
@@ -147,7 +145,8 @@
 																<div class="Th26Zc">
 																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="email" id="email" autoComplete="email" autofocus="" required="" disabled="" value="venkateswararao1906@gmail.com"/>
 																</div>
-															</div>
+                                                            </div>
+                                                            <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="emailsave" style="display:none;">SAVE</button>
 														</div>
 													</form>
 												</div>
@@ -157,15 +156,35 @@
 												<div class="ubrbk7">
 													<div class="_3oYEid">
 														<span class="MJ2tO_">Mobile Number</span>
-														<a class="_7qszba oZoRPi" href="#">Edit</a>
+														<a class="_7qszba oZoRPi" id="editmobile">Edit</a>
 													</div>
 													<form>
 														<div class="_9eaqI8 row">
 															<div class="_2P6fHI">
 																<div class="Th26Zc">
-																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="mobileNumber" id="mobilenumber" autoComplete="tel" required="" disabled="" value="+917032706109"/>
+																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="mobile" id="mobile" autoComplete="tel" required="" disabled="" value="+917032706109"/>
 																</div>
-															</div>
+                                                            </div>
+                                                            <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="mobilesave" style="display:none;">SAVE</button>
+														</div>
+													</form>
+												</div>
+                                            </div>
+                                            
+                                            <div>
+												<div class="ubrbk7">
+													<div class="_3oYEid">
+														<span class="MJ2tO_">Shop/House Address</span>
+														<a class="_7qszba oZoRPi" id="editaddress">Edit</a>
+													</div>
+													<form>
+														<div class="_9eaqI8 row">
+															<div class="_2P6fHI">
+																<div class="Th26Zc">
+																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="address" id="address" autoComplete="tel" required="" disabled="" value="+917032706109"/>
+																</div>
+                                                            </div>
+                                                            <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="addresssave" style="display:none;">SAVE</button>
 														</div>
 													</form>
 												</div>
@@ -174,15 +193,17 @@
 											<div>
 												<div class="ubrbk7">
 													<div class="_3oYEid">
-														<span class="MJ2tO_">GST-NUMBER</span>
+                                                        <span class="MJ2tO_">GST-NUMBER</span>
+                                                        <a class="_7qszba oZoRPi" id="editgst">Edit</a>
 													</div>
 													<form>
 														<div class="_9eaqI8 row">
 															<div class="_2P6fHI">
 																<div class="Th26Zc">
-																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="gst-number" id="gst" autoComplete="tel" required="" disabled="" value="ismartvenky"/>
+																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="gst" id="gst" autoComplete="tel" required="" disabled="" value="ismartvenky"/>
 																</div>
-															</div>
+                                                            </div>
+                                                            <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="gstsave" style="display:none;">SAVE</button>
 														</div>
 													</form>
 												</div>
@@ -191,15 +212,17 @@
 											<div>
 												<div class="ubrbk7">
 													<div class="_3oYEid">
-														<span class="MJ2tO_">Balance</span>
+                                                        <span class="MJ2tO_">Balance</span>
+                                                        <a class="_7qszba oZoRPi" id="editbalance">Edit</a>
 													</div>
 													<form>
 														<div class="_9eaqI8 row">
 															<div class="_2P6fHI">
 																<div class="Th26Zc">
-																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="balance" autoComplete="num" required="" disabled="" value="0"/>
+																	<input type="text" class="_16qL6K _3jqlFr _366U7Q" name="balance" id="balance" autoComplete="num" required="" disabled="" value="0"/>
 																</div>
-															</div>
+                                                            </div>
+                                                            <button class="_2AkmmA Ezn5Io _3HuCeA" type="button" id="balancesave" style="display:none;">SAVE</button>
 														</div>
 													</form>
 												</div>

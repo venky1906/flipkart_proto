@@ -207,5 +207,26 @@ public class User_Services {
 				return 0;
 			 
 		}
+		
+		@POST
+		@Path("/editbuyerdetails/{attribute}")
+		@Consumes("application/json")
+		public String editBuyerDetails(@PathParam ("attribute") String attribute, Buyer user) {
+			System.out.println(user.getId());
+			BuyerDAO dao=new BuyerDAO();
+			dao.updateProfile(user, attribute);
+			return "success";
+		}
+		
+		@POST
+		@Path("/editsellerdetails/{attribute}")
+		@Consumes("application/json")
+		public String editSellerDetails(@PathParam ("attribute") String attribute, Seller seller) {
+			SellerDAO dao=new SellerDAO();
+			dao.updateProfile(seller,attribute);
+			return "success";
+		}
+		
+		
 
 }
