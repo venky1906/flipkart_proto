@@ -147,13 +147,15 @@ jQuery(document).ready(function($){
 		
 		var selected_category = $("#itemCategory").val();
 		if(selected_category=="Choose Category"){
-			$("#itemSubCategory").prop("disabled",true);
+		//	$("#itemSubCategory").prop("disabled",true);
 			$(".dynamic-sub-option").remove();
+			$(".dynamic-brand-option").remove();
 			return;
 		}
 		
 		else{	
 			$(".dynamic-sub-option").remove();
+			$(".dynamic-brand-option").remove();
 			getSubCategoryList(selected_category); 
 			$("#itemSubCategory").prop("disabled",false);
 		}
@@ -168,8 +170,64 @@ jQuery(document).ready(function($){
 		    );
 		});
 	};
+	//get subcategory list from backend - getSubCategoryList();
 	
-	//get subcaetgory list from backend - getSubCategoryList();
+	
+	//TO ADD AFTER ADDING BRAND TABLE
+	/*
+	//get All brand List from backend
+	function getBrandList(sub_category_id){
+    	
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/category/getBrandList/"+sub_category_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		loadBrands(data);
+	        	}
+	        	
+	        	else
+	        		alert("failed to get Brands");
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get Brands !");
+	        }
+	        
+		});
+	};
+		
+	//append the brands corresponding to the given sub-category.
+	function loadBrands(brands){
+		
+		$.each(brands, function(index,brand) {
+		    $("#itemBrand").append(
+		        $("<option class='dynamic-brand-option'></option>").val(brand.name).html(brand.name)
+		    );
+		});
+	};
+	
+	
+	$("body").on("change","#itemSubCategory",function(){
+		
+		var selected_subcategory = $("#itemSubCategory").val();
+		if(selected_category=="Choose SubCategory"){
+		//	$("#itemBrand").prop("disabled",true);
+			$(".dynamic-brand-option").remove();
+			return;
+		}
+		
+		else{	
+			$(".dynamic-brand-option").remove();
+			getBrandList(selected_subcategory); 
+		}
+	});*/
+	
 	
 	$("body").on("click","#addImageButton",function(event){
 		$("#uploadImage").click();
@@ -259,6 +317,7 @@ jQuery(document).ready(function($){
 	        
 		});
 	};
+	
 	
 	// submit the new Item Form with only fixed Item Details.
 	$("body").on("click","#submitItem",function(){
@@ -407,6 +466,7 @@ jQuery(document).ready(function($){
 			count++;
 			$("#warning_name").show();
 		}
+		
 			
 		if(!$("#itemPrice").val()){
 			count++;
@@ -422,8 +482,12 @@ jQuery(document).ready(function($){
 			
 		}
 		
+		if(!$("#itemColor").val()){
+			count++;
+			$("#warning_color").show();
+		}
 			
-		if(!$("#itemBrand").val()){
+		if($("#itemBrand").val()=="Choose Brand"){
 			count++;
 			$("#warning_brand").show();
 		}
@@ -471,8 +535,7 @@ jQuery(document).ready(function($){
 			$("#warning_category").show();
 		}
 		
-		console.log($("#itemSubcategory"));
-		if($("#itemSubcategory").val()=="Choose SubCategory"){
+		if($("#itemSubCategory").val()=="Choose SubCategory"){
 			count++;
 			$("#warning_subcategory").show();
 		}
