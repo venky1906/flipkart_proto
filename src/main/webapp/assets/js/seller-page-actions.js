@@ -173,13 +173,11 @@ jQuery(document).ready(function($){
 	//get subcategory list from backend - getSubCategoryList();
 	
 	
-	//TO ADD AFTER ADDING BRAND TABLE
-	/*
 	//get All brand List from backend
 	function getBrandList(sub_category_id){
     	
 		$.ajax({
-			url:"http://localhost:8080/flipkart/webapi/category/getBrandList/"+sub_category_id,
+			url:"http://localhost:8080/flipkart/webapi/category/getAllBrandsForASubCategory/"+sub_category_id,
 			type:"GET",
 			cache:false,
 			contentType:false,
@@ -207,7 +205,7 @@ jQuery(document).ready(function($){
 		
 		$.each(brands, function(index,brand) {
 		    $("#itemBrand").append(
-		        $("<option class='dynamic-brand-option'></option>").val(brand.name).html(brand.name)
+		        $("<option class='dynamic-brand-option'></option>").val(brand.brand).html(brand.brand)
 		    );
 		});
 	};
@@ -216,7 +214,7 @@ jQuery(document).ready(function($){
 	$("body").on("change","#itemSubCategory",function(){
 		
 		var selected_subcategory = $("#itemSubCategory").val();
-		if(selected_category=="Choose SubCategory"){
+		if(selected_subcategory=="Choose SubCategory"){
 		//	$("#itemBrand").prop("disabled",true);
 			$(".dynamic-brand-option").remove();
 			return;
@@ -226,7 +224,7 @@ jQuery(document).ready(function($){
 			$(".dynamic-brand-option").remove();
 			getBrandList(selected_subcategory); 
 		}
-	});*/
+	});
 	
 	
 	$("body").on("click","#addImageButton",function(event){

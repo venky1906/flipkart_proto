@@ -92,5 +92,19 @@ public class CategoryServices {
 		return "success";
 	}
 	
+	@GET
+	@Path("/getAllBrandsForASubCategory/{id}")
+	@Produces("application/json")
+	public List<Brand> getAllBrandsForASubCategory(@PathParam("id") int subcategory_id){
+		
+		BrandDAO dao= new BrandDAO();
+		List<Brand> brands = dao.getBrandsBySubcategoryId(subcategory_id);
+		if(brands==null)
+			return null;
+		else
+			return brands;
+		
+	}
+	
 	
 }

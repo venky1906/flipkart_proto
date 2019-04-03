@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Brand" table="Brand">
+	 
+      <meta attribute = "class-description">
+         This class contains the Brands.
+      </meta>
+      
+      <composite-id>
+		<key-property name="brand" column="brand" type="string"/>
+		<key-property name="subcategory_id" column="subcategory_id" type="int"/>
+	  </composite-id>
+      
+      <property name = "brand_img" column = "brand_img" type = "string"/>
+      </class>
+	
+</hibernate-mapping>
