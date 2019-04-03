@@ -253,7 +253,7 @@ jQuery(document).ready(function($){
 					
 						var image_div_id = 'image_div_' + image_count; 
 						var new_division = "<div id="+image_div_id+" class='dynamic'>" +									
-												"<img class='small_img small_image' id="+'image_'+image_count+" src='#' style='margin-left:30px;'></img>"
+												"<img class='small_img' id="+'image_'+image_count+" src='#' style='margin-left:30px;'></img>"
 											+"</div>";
 					
 						$("#allImages").append(new_division);
@@ -263,6 +263,19 @@ jQuery(document).ready(function($){
 				}
 			}
 		}
+	});
+	
+	//show enlarged image on hover of small image.
+	$('#addItemForm').on("mouseenter",".small_img",function(){
+		var image = $(this).attr("src");
+		$("#enlargedImage").attr("src",image);
+	});
+	
+	
+	// show the enlarged image of small image.
+	$('#addItemForm').on("click",".small_img",function(){
+		var image = $(this).attr("src");
+		$("#enlargedImage").attr("src",image);
 	});
 	
 	// Delete key value
