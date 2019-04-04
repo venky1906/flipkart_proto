@@ -656,7 +656,13 @@ jQuery(document).ready(function($){
 									"<label style='font-weight:bold;'>Discount</label>"+
 								"</div>"+
 								"<div class='row'>"+
+									"<label style='font-weight:bold;'>Category</label>"+
+								"</div>"+
+								"<div class='row'>"+
 									"<label style='font-weight:bold;'>Sub Category</label>"+
+								"</div>"+
+								"<div class='row'>"+
+									"<label style='font-weight:bold;'>Brand</label>"+
 								"</div>";
 										
 				
@@ -675,7 +681,13 @@ jQuery(document).ready(function($){
 									"<label>: " + item.discount +"</label>"+
 								"</div>"+
 								"<div class='row'>"+
+									"<label>: " + item_details.category_name + "</label>"+
+								"</div>"+
+								"<div class='row'>"+
 									"<label>: " + item_details.subcategory_name + "</label>"+
+								"</div>"+
+								"<div class='row'>"+
+									"<label>: " + item.brand + "</label>"+
 								"</div>";
 				
 				

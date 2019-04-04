@@ -106,5 +106,15 @@ public class CategoryServices {
 		
 	}
 	
+	@POST
+	@Path("/addBrand")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addBrand(Brand brand) {
+		BrandDAO dao = new BrandDAO();
+		dao.addBrand(brand);
+		return "success";
+	}
+	
 	
 }

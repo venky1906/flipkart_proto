@@ -60,6 +60,10 @@ public class ItemServices {
 				String subcategory_name = sub_cat.getName();
 				item_details.put("subcategory_name",subcategory_name);
 				
+				CategoryDAO category_dao = new CategoryDAO();
+				Category category = category_dao.getCategory(sub_cat.getCategory_id());
+				
+				item_details.put("category_name",category.getName());
 				//Get the list of variable details
 				
 				List<ItemDetails> key_value_pairs = itemDetailsDao.getItemDetailsByItemId(item_id);

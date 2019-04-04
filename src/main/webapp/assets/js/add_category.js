@@ -2,6 +2,7 @@ jQuery(document).ready(function($){
     
     getCategoryList("#itemCategory");
     getCategoryList("#itemExistsCategory");
+    getCategoryList("#itemCategoryBrand");
 
     $.ajax({
             url: "http://localhost:8080/flipkart/webapi/payment/getflipkartbalance",
@@ -49,6 +50,13 @@ jQuery(document).ready(function($){
     		var subcategoryname = $("#subcategoryname").val()
 		    addsubCategory(selected_category,subcategoryname);
      });
+    
+    $('#AddB').click( function() {
+    	var selected_category = $("#itemCategoryBrand").val();
+		var selected_subcategory = $("#itemSubCategory").val();
+		var brandname = $("#brandname").val()
+	    addBrand(selected_category,selected_subcategory,brandname);
+    });
 
      $('#editbalance').click( function() {
     	$("#flipkartbalance").prop('disabled', false);
@@ -94,6 +102,33 @@ jQuery(document).ready(function($){
             );
 		});	
 	};
+	
+	$("body").on("change","#itemCategoryBrand",function(){
+		
+		var selected_category = $("#itemCategoryBrand").val();
+		if(selected_category=="Choose Category"){
+		//	$("#itemSubCategory").prop("disabled",true);
+			$(".dynamic-sub-option").remove();
+			$(".dynamic-brand-option").remove();
+			return;
+		}
+		
+		else{	
+			$(".dynamic-sub-option").remove();
+			$(".dynamic-brand-option").remove();
+			getSubCategoryList(selected_category); 
+			$("#itemSubCategory").prop("disabled",false);
+		}
+	});
+	
+	function loadSubCategory(sub_categories){
+		
+		$.each(sub_categories, function(index,sub_category) {
+		    $("#itemSubCategory").append(
+		        $("<option class='dynamic-sub-option'></option>").val(sub_category.subcategory_id).html(sub_category.name)
+		    );
+		});
+	};
 
     function getCategoryList(cat_list_id){    	
 			$.ajax({
@@ -121,6 +156,33 @@ jQuery(document).ready(function($){
 			});
     };
     
+ // get subcategory list from backend
+	function getSubCategoryList(category){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/category/getSubCategoryList/"+category,
+			type:"POST",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data)
+	        	{
+	        		loadSubCategory(data);
+	        	}
+	        	
+	        	else
+	        		alert("failed to get Sub Categories");
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get Sub Categories !");
+	        }
+	        
+		});
+	};
+    
     function addsubCategory(categoryid, subcategoryname){
         var subcategory={
             category_id: categoryid,
@@ -129,6 +191,29 @@ jQuery(document).ready(function($){
         $.ajax({
         url: "http://localhost:8080/flipkart/webapi/category/addsubCategory",
         data: JSON.stringify(subcategory),
+        type: "POST",
+        contentType:'application/json',
+        success: function(data) {
+        	
+				if(data=="success"){
+				    alert("Added Successfully");
+				   }
+				else	{
+					alert("Error");
+				}
+			},
+
+    	});
+    };
+    
+    function addBrand(categoryid,subcategoryid, brandname){
+        var brand={
+            subcategory_id:subcategoryid,
+            brand: brandname,
+        };
+        $.ajax({
+        url: "http://localhost:8080/flipkart/webapi/category/addBrand",
+        data: JSON.stringify(brand),
         type: "POST",
         contentType:'application/json',
         success: function(data) {

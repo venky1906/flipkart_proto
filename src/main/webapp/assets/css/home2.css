@@ -73,8 +73,8 @@ display: inline; /* the default for span */
 
 
 .classR2div{		
- 	padding-left: 5%;
- 	padding-right: 5%;
+ 	padding-left: 3%;
+ 	padding-right: 3%;
  	margin-left: 3%;
  	margin-right: 3%;
 	display: inline-flex;
@@ -107,8 +107,49 @@ display: inline; /* the default for span */
 	position: relative;
 }
 
-.classR2div:hover .classDIVCATEGORY {display: block;}
+.classR2div:hover .classDIVCATEGORY {
+	display: block;
+	z-index: 99 !important;
+}
 
-#idlogoutbutton{
-	margin-left: 4px;
+
+#idsitemname1{
+	color: black;
+	display: block;
+}
+
+.classCviewall{
+	float: right;
+}
+#classCheadingname{
+	float: left;
+}
+
+
+._1GRhLX{
+	margin-top:5px;
+	margin-bottom: 5px;
+}
+
+._2kSfQ4{
+}
+
+.EstLIe{
+	width: 2340px;
+}
+
+._2NTrR2{
+	transform: translateX(0px);
+}
+
+._2kSfQ4{
+	width: 195px;
+}
+._2PX1l4{
+	height: 230px;	
+}
+
+._3BTv9X{
+	height: 150px;
+	width: 150px;
 }

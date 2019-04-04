@@ -30,6 +30,18 @@ public class HibernateDAO<E> {
 		return id;
 	}
 	
+	public void no_id_add(E entity)
+	{
+		session = SessionUtil.getSession();
+		tx = session.beginTransaction();
+		session.save(entity);
+		session.flush();
+		tx.commit();
+		session.close();
+	}
+	
+
+	
 	@SuppressWarnings("unchecked")
 	public E find(String entity_name, String param, String val)
 	{
