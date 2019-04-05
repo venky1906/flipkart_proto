@@ -16,4 +16,18 @@ public class CategoryDAO extends HibernateDAO<Category> {
 		return super.find(entity, "category_id", id);
 	}
 	
+	@SuppressWarnings("unused")
+	public void addCategory(Category category)
+	{
+		try {
+			int category_id = super.add(category);
+			//return item_id;
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			//return -1;
+		}
+	}
 }

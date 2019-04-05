@@ -24,6 +24,16 @@ function getCookie(cname) {
 	  return "";
 }
 
+function checkCookie(user){
+	
+	var user_data = getCookie(user);
+    if(user_data=="" || user_data==null)
+		return null;
+	user_data = JSON.parse(user_data);
+    return user_data;	
+}
+
+
 function deleteCookie(cname) 
 {
     document.cookie = cname + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';

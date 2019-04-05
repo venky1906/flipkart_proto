@@ -13,6 +13,10 @@ jQuery(document).ready(function($){
 	
 	var item_id = $.urlParam("itemid");
 	console.log(item_id);
+	
+	$("body").on( "click", "#logo",function(){
+		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
+	});
 		
 	//Initial page setting
 	var url="http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id;
@@ -26,6 +30,10 @@ jQuery(document).ready(function($){
 				//console.log(item);
 				$("#path_curr").text(item.name);
 				$("#name").text(item.name);
+				var id_str = "ITEM ID : "+item.id;
+				$("#item_id").text(id_str);
+				var qt_str = "Available Stock : "+item.quantity+" unit(s)";
+				$("#quantity").text(qt_str);
 				var offer_price = item.price-(item.price*item.discount*1.0/100.0);
 				$("#prod_offer_price").text("Rs. "+offer_price);
 				$("#prod_orig_price").text("Rs. "+item.price);
@@ -43,6 +51,12 @@ jQuery(document).ready(function($){
 				setRating(item.item_id);
 				setTotalRatings(item.item_id);
 				setTotalReviews(item.item_id);
+				
+				$("#desc").append("<li>"+"Brand: "+item.brand+"</li>");
+				$("#desc").append("<li>"+"Color: "+item.color+"</li>");
+				$("#desc").append("<li>"+"Description: "+item.description+"</li>");
+				$("#desc").append("<li>"+"Manufactured on: "+item.manufacture_date+"</li>");
+				
 				setDescription(item.item_id);
 				setSellerInfo(item.seller_id);
 				setSellerRating(item.seller_id);
@@ -50,7 +64,7 @@ jQuery(document).ready(function($){
 				onClickAddtoCart(item.item_id);
 			}
 			else{
-				alert("Problem occured!!");
+				alert("Problem occured3!!");
 			}
 		},
 		error: function(item) {
@@ -220,7 +234,7 @@ jQuery(document).ready(function($){
 					}
 				}
 				else{
-					alert("Problem occured!!");
+					//alert("Problem occured1!!");
 				}
 			},
 			error: function(desc) {
@@ -242,7 +256,7 @@ jQuery(document).ready(function($){
 					$("#seller_name").text(seller.name);
 				}
 				else{
-					alert("Problem occured!!");
+					alert("Problem occured2!!");
 				}
 			},
 			error: function(seller) {

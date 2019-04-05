@@ -60,6 +60,10 @@ public class ItemServices {
 				String subcategory_name = sub_cat.getName();
 				item_details.put("subcategory_name",subcategory_name);
 				
+				CategoryDAO category_dao = new CategoryDAO();
+				Category category = category_dao.getCategory(sub_cat.getCategory_id());
+				
+				item_details.put("category_name",category.getName());
 				//Get the list of variable details
 				
 				List<ItemDetails> key_value_pairs = itemDetailsDao.getItemDetailsByItemId(item_id);
@@ -92,7 +96,7 @@ public class ItemServices {
 		
 	}
 	
-	
+	/*
 	@POST
 	@Path("delete/{id}")
 	public String deleteItemById(@PathParam("id") int item_id){
@@ -111,7 +115,7 @@ public class ItemServices {
 		else {
 			return "fail";
 		}
-	}
+	}*/
 	
 	@POST
 	@Path("/getAllItemsBySubcategoryId/{id}")
@@ -200,12 +204,22 @@ public class ItemServices {
 		ItemDetailsDAO dao = new ItemDetailsDAO();
 		List<ItemDetails> itemdetails = dao.getItemDetailsByItemId(item_id);
 			
-		if(itemdetails!=null) {
+		if(itemdetails!=null && itemdetails.size()>0) {
 			return itemdetails;
 		}
 		return null;
 	}
 	
+	@POST
+	@Path("/updateQuantity")
+	@Consumes("application/json")
+	public String updateQuantity(Item item) {
+		
+		ItemDAO dao = new ItemDAO();
+		if(dao.updateItemQuantity(item,item.getItem_id())==1)
+				return "success";
+		return "fail";
+	}
 	
 	
 }

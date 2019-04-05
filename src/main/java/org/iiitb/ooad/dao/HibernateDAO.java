@@ -30,6 +30,18 @@ public class HibernateDAO<E> {
 		return id;
 	}
 	
+	public void no_id_add(E entity)
+	{
+		session = SessionUtil.getSession();
+		tx = session.beginTransaction();
+		session.save(entity);
+		session.flush();
+		tx.commit();
+		session.close();
+	}
+	
+
+	
 	@SuppressWarnings("unchecked")
 	public E find(String entity_name, String param, String val)
 	{
@@ -125,6 +137,53 @@ public class HibernateDAO<E> {
 	}
 	
 	public int update(E entity, String param_id,int id_val, List<Field> fields)
+	{
+		try
+		{
+			session = SessionUtil.getSession();
+			tx = session.beginTransaction();
+			String conjunction = "";
+			String set_clause = "";
+			String hql ="";
+			int i=0;
+			for(Field p :fields)
+			{
+				set_clause += conjunction+p.getName() +" = :param"+i;
+				i++;
+				conjunction=", ";
+			}
+			hql = "update " + entity.getClass().getName() + " set "+set_clause+" where " + param_id + "= :id_val";
+			session.flush();
+			Query query = session.createQuery(hql);
+			i=0;
+			for(Field p :fields)
+			{
+				query.setParameter("param"+i, p.get(entity));
+				i++;
+			}
+			query.setParameter("id_val", id_val);
+			query.executeUpdate();
+
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return 1;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+
+		tx.commit();
+		session.flush();
+		session.close();
+		
+		return 0;
+	}
+	
+	public int update(E entity, String param_id,String id_val, List<Field> fields)
 	{
 		try
 		{

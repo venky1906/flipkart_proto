@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function($) {
 	
 	/* warnings */
@@ -51,7 +50,7 @@ jQuery(document).ready(function($) {
 		{
 			setCookie("Buyer_data",JSON.stringify(user),30);
 			//$("#login-Modal").hide();
-			window.location = "Home.html";
+			window.location = "Homepage.html";
 		}
 		
 	}
@@ -177,7 +176,7 @@ jQuery(document).ready(function($) {
 			else
 			{
 				alert("Account Linked successfully");
-				window.location="Home.html";
+				window.location="Homepage.html";
 			}
 		}
 		});

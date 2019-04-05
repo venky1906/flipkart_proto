@@ -1,0 +1,64 @@
+@charset "UTF-8";
+/* Bordered form */
+\form {
+  border: 3px solid #f1f1f1;
+}
+
+/* style the container */
+.container {
+  width:350px;
+  height:220px;
+  margin-right: auto;
+  margin-left: auto;
+  position:static;
+  background-color: #f2f2f2;
+  padding: 20px 0 30px 0;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+input[type=text1] {
+  width: 75%;
+  padding: 6px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #0F2DF0;
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+button1 {
+  background-color: #0F2DF0;
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 25%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}

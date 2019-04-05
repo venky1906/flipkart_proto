@@ -20,14 +20,16 @@
   <mapping resource="Category.hbm.xml"/>
   <mapping resource="Buyer.hbm.xml"/>
   <mapping resource="Seller.hbm.xml"/>
+  <mapping resource="SellerAccount.hbm.xml"/>
   <mapping resource="SubCategory.hbm.xml"/>
   <mapping resource="Item.hbm.xml"/>
   <mapping resource="ItemDetails.hbm.xml"/>
   <mapping resource="ItemImages.hbm.xml"/>
   <mapping resource="BuyerAccount.hbm.xml"/>
   <mapping resource="BuyerAddress.hbm.xml"/>
-  <mapping resource="Review.hbm.xml"/>
-  <mapping resource="SellerAccount.hbm.xml"/>
-  
+  <mapping resource="Review.hbm.xml"/>  
+  <mapping resource="OrderItem.hbm.xml"/>
+  <mapping resource="FlipkartAccount.hbm.xml"/>
+  <mapping resource="Brand.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

@@ -72,7 +72,49 @@ public class CategoryServices {
 		return subcat;
 	}
 		
+	@POST
+	@Path("/addCategory")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addCategory(Category category) {
+		CategoryDAO dao = new CategoryDAO();
+		dao.addCategory(category);
+		return "success";
+	}
 	
+	@POST
+	@Path("/addsubCategory")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addSubCategory(SubCategory subcategory) {
+		SubCategoryDAO dao = new SubCategoryDAO();
+		dao.addSubCategory(subcategory);
+		return "success";
+	}
+	
+	@GET
+	@Path("/getAllBrandsForASubCategory/{id}")
+	@Produces("application/json")
+	public List<Brand> getAllBrandsForASubCategory(@PathParam("id") int subcategory_id){
+		
+		BrandDAO dao= new BrandDAO();
+		List<Brand> brands = dao.getBrandsBySubcategoryId(subcategory_id);
+		if(brands==null)
+			return null;
+		else
+			return brands;
+		
+	}
+	
+	@POST
+	@Path("/addBrand")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addBrand(Brand brand) {
+		BrandDAO dao = new BrandDAO();
+		dao.addBrand(brand);
+		return "success";
+	}
 	
 	
 }

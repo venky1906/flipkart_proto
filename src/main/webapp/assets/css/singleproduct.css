@@ -3,8 +3,8 @@
 .small_img {
   position: relative;
   border: 3px solid rgba(255,255,255,1);;
-  width: 75px;
-  height: 85px;
+  width: 55px;
+  height: 65px;
   margin: 0 auto;
 }
 
@@ -15,8 +15,8 @@
 .big_img {
   top: 25px;
   border: 5px solid rgba(255,255,255,1);;
-  width: 450px;
-  height: 420px;
+  width: 350px;
+  height: 320px;
   margin: 0 auto;
 }
 

@@ -26,4 +26,8 @@ public class BuyerAddressDAO extends HibernateDAO<BuyerAddress> {
 			return -1;
 		}
 	}
+	
+	public BuyerAddress getAddressByid(int address_id) {
+		return super.find(entity,"id",address_id);
+	}
 }

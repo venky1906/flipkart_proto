@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.flipkart_button{
+	color: white; 
+	background-color: rgba(255,69,0, 0.8); 
+	border-radius: 0 !important;
+}
+
+.star-rating {
+  line-height:32px;
+  font-size:1.25em;
+}
+
+.star-rating .fa-star{color: yellow;}
