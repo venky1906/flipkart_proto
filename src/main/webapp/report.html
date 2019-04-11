@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Items List</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" > </script>
+
+	<link rel="stylesheet" href="assets/css/report.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/flipitems.css">
+
+	<script src="assets/js/report.js"></script>
+
+</head>
+<body>
+<h2>List of Items</h2>
+
+<div class="classform">
+	<label>Price Range</label>
+	<input type="number" placeholder="Enter Minimum Price" name="minimumprice" id="idminprice" class="classinput" required>
+	<input type="number" placeholder="Enter Maximum Price" name="maximumprice" id="idmaxprice" class="classinput" required>
+	<button  type="button" id="submit_btn" class="button"> Submit </button>
+</div>
+
+<div id="idtablediv" class="classtablediv">
+	<table id="idtable" class="classtable">
+		<tr>
+			<th>S.No</th>
+			<th>Item id</th>
+			<th>Category Id</th>
+			<th>Sub category Id</th>
+			<th id="idimagecoloumn">Item Image</th>
+		</tr>
+
+<!--
+
+		<tr>
+			<td>-2</td>
+			<td>id2</td>
+			<td>Category 1</td>
+			<td>Subcategory 1</td>
+			<td><img src="images/mahith/h2.jpeg"></td>
+		</tr>
+		<tr>
+			<td>-1</td>
+			<td>id1</td>
+			<td>Category 1</td>
+			<td>Subcategory 1</td>
+			<td><img src="images/mahith/h1.jpeg"></td>
+		</tr>
+		<tr>
+			<td>0</td>
+			<td>id1</td>
+			<td>Category 2</td>
+			<td>Subcategory 2</td>
+			<td><img src="images/mahith/h3.jpeg"></td>
+		</tr>
+-->		
+		
+	</table>
+</div>
+
+</body>
+</html>
