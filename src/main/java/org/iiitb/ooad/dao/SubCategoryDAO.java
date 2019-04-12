@@ -16,6 +16,10 @@ public class SubCategoryDAO extends HibernateDAO<SubCategory> {
 	public SubCategory getSubCategory(int id) {
 		return super.find(entity, "subcategory_id", id);
 	}
+
+	public List<SubCategory> getSubCategoryTable(){		//RETURNS FULL TABLE
+		return super.list(new SubCategory());
+	}
 	
 	public void addSubCategory(SubCategory subcategory)
 	{

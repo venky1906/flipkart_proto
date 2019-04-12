@@ -167,6 +167,141 @@ public class ItemServices {
 		}
 		
 	}
+
+	//API to get Items in price range
+	@POST
+	@Path("/getByPrice")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String getReportByMRP(String data) throws JSONException{
+		JSONObject price_range = new JSONObject(data);
+		float minprice = (float)price_range.getDouble("min_price");
+		float maxprice = (float)price_range.getDouble("max_price");
+
+		System.out.println(minprice);
+		
+		ItemDAO dao = new ItemDAO();
+		ItemImagesDAO itemImagesDao = new ItemImagesDAO();
+		SubCategoryDAO subcategoryDao = new SubCategoryDAO();
+		List<Item> items = dao.getItemTableByPrice(minprice,maxprice);
+		List<SubCategory> subcats=subcategoryDao.getSubCategoryTable();
+		
+//		JSONObject two = new JSONObject();
+		JSONArray two2 = new JSONArray();
+		JSONArray first = new JSONArray();
+		JSONObject subcatobject= new JSONObject();
+		
+		
+		try {
+			for(int i=0;i<subcats.size();i++) {
+				SubCategory subcat=subcats.get(i);
+				subcatobject.append(Integer.toString(subcat.getSubcategory_id()), subcat.getCategory_id());
+			}
+		}catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+		
+		try {
+			for (int i=0;i<items.size();i++) {
+				Item item=items.get(i);
+	
+				JSONObject item_details= new JSONObject();
+				item_details.append("itemid",item.getItem_id());
+				item_details.append("name",item.getName());
+				item_details.append("price",item.getPrice());
+	//			item_details.append("brand",item.getBrand());
+				item_details.append("discount",item.getDiscount());
+				item_details.append("subcategory_id", item.getSubcategory_id());
+				int item_id = item.getItem_id();
+				
+				System.out.println("Item_id: " + item_id);
+				
+				ItemImages itemImage = itemImagesDao.getItemImagesByItemId(item_id).get(0);
+				item_details.append("image",itemImage.getImage_location());
+				
+				first.put(item_details);
+				
+			}
+			
+//			two.append("first",first.toString());
+//			two.append("second",subcatobject.toString());
+			
+			two2.put(first);
+			two2.put(subcatobject);
+			return two2.toString();
+		}catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
+	
+	//API to get all Items
+	@POST
+	@Path("/getReport")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String getReport() throws JSONException{
+		ItemDAO dao = new ItemDAO();
+		ItemImagesDAO itemImagesDao = new ItemImagesDAO();
+		SubCategoryDAO subcategoryDao = new SubCategoryDAO();
+		List<Item> items = dao.getItemTable();
+		List<SubCategory> subcats=subcategoryDao.getSubCategoryTable();
+		
+		JSONArray two2 = new JSONArray();
+		JSONArray first = new JSONArray();
+		JSONObject subcatobject= new JSONObject();
+//		JSONObject two = new JSONObject();
+		
+		
+		try {
+			for(int i=0;i<subcats.size();i++) {
+				SubCategory subcat=subcats.get(i);
+				subcatobject.append(Integer.toString(subcat.getSubcategory_id()), subcat.getCategory_id());
+			}
+		}catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+		
+		try {
+			for (int i=0;i<items.size();i++) {
+				Item item=items.get(i);
+	
+				JSONObject item_details= new JSONObject();
+				item_details.append("itemid",item.getItem_id());
+				item_details.append("name",item.getName());
+				item_details.append("price",item.getPrice());
+	//			item_details.append("brand",item.getBrand());
+				item_details.append("discount",item.getDiscount());
+				item_details.append("subcategory_id", item.getSubcategory_id());
+				int item_id = item.getItem_id();
+				
+				System.out.println("Item_id: " + item_id);
+				
+				ItemImages itemImage = itemImagesDao.getItemImagesByItemId(item_id).get(0);
+				item_details.append("image",itemImage.getImage_location());
+				
+				first.put(item_details);
+				
+			}
+			
+//			two.append("first",first.toString());
+//			two.append("second",subcatobject.toString());
+			
+			two2.put(first);
+			two2.put(subcatobject);
+			return two2.toString();
+		}catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+
 	
 	// API to get the Item with item id.
 	@POST
