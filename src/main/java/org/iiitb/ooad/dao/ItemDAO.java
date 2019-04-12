@@ -67,6 +67,14 @@ public class ItemDAO extends HibernateDAO<Item> {
 		return super.findAll(entity,"subcategory_id",subcat_id);
 	}
 	
+	public List<Item> getItemTable(){		//RETURNS ENTIRE ITEMS TABLE
+		return super.list(new Item());
+	}
+
+	public List<Item> getItemTableByPrice(float min,float max){
+		return super.findAllWithRange(entity,"price",min,max);
+	}
+		
 	public Item getItemByItemId(int item_id)
 	{
 		return super.find(entity,"item_id",item_id);
