@@ -104,6 +104,24 @@ public class HibernateDAO<E> {
 		session.close();
 		return entity;
 	}
+
+	@SuppressWarnings("unchecked")					//GET ELEMENTS WIHTIN RANGE
+	public List<E> findAllWithRange(String entity_name, String param, float val1, float val2)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where " + param + " >= :val1 "  + " and "  + param + " <= :val2 ";
+//		String hql = "from "+ entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val1);
+		query.setParameter("val2", val2);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		return entity;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<E> findAllNotEqualCondition(String entity_name, String param1, int val1,String param2,int val2)
