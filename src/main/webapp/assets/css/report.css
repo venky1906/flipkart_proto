@@ -32,8 +32,12 @@ td, th {
 }
 
 img {
+
   border: 1px solid #ddd;
-  height:50%;
+  border-radius: 4px;
+  padding: 5px;
+  width: 50px;
+  height: 50px;
 }
 
 img:hover {
@@ -41,16 +45,6 @@ img:hover {
 }
 
 button {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: white;
-  background-color: blue;
-  text-align: center;
-  cursor: pointer;
-  width: 30%;
-  font-size: 10px;
 }
 
 a {
@@ -64,6 +58,17 @@ button:hover, a:hover {
 }
 
 .button{
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: blue;
+  text-align: center;
+  cursor: pointer;
+  width: 30%;
+  font-size: 10px;
+	
 	width :100px;
 	margin : 0% 1%
 }
@@ -86,6 +91,5 @@ button:hover, a:hover {
 }
 
 #idimagecoloumn{
-	width:40px;
-	height:40px;
+	width:30%;
 }
