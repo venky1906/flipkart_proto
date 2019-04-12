@@ -8,8 +8,8 @@ $(document).ready(function () {
 
 	function Adder(processedItemList,subcatMapCat){
 //		alert(processedItemList.length);
-//		var s="<tr><th>S.No</th><th>Item id</th><th>Category Id</th><th>Sub category Id</th><th id="+'idimagecoloumn'+">Item Image</th></tr>";
-//		addItemToList(s);
+		var s="<tr><th>S.No</th><th>Item id</th><th>Category Id</th><th>Sub category Id</th><th id="+'idimagecoloumn'+">Item Image</th></tr>";
+		addItemToList(s);
 		for (var i = 0; i < processedItemList.length; i++) {
 			var itemid=processedItemList[i].itemid;
 			var subcategory_id=processedItemList[i].subcategory_id;
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
 
 	$("#submit_btn").click(function(){
-//		$("#idtable").remove();
+		$("#idtable").empty();
 		render_data();
 	});
 	
