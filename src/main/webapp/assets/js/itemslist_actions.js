@@ -42,7 +42,7 @@ jQuery(document).ready(function($){
                         
                         var item = //"<div class='bhgxx2 col-12-12'>"+
                                      //   "<div class='_3O0U0u _288RSE'>"+
-                                            "<div id="+itemid+" style='width: 25%;'>"+
+                                            "<div id="+itemid+" style='width: 25%;padding:10px'>"+
                                                 "<div class='IIdQZO _1R0K0g _1SSAGr'>"+
                                                     "<a class='_3dqZjq' target='_blank' ></a>"+
                                                         "<div>"+
