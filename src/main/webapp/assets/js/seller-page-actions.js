@@ -59,7 +59,7 @@ jQuery(document).ready(function($){
 		$("#viewProfile").load("SellerProfile.html");
 	}
 	
-	else if(nav_ref="addItem"){		
+	else if(nav_ref=="addItem"){		
 		active_page = "#addItemForm";
 		active_button = "#addItem";
 		$("#addItemForm").load("SellerAddItem.html");

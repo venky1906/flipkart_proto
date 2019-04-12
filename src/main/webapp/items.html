@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">	
+<title>Items List</title>
+
+<link rel="icon" type="image/png" href="images/sellerHub/fk-seller-hub-logo-mobile-v1.png">
+<script src="assets/js/jquery.min.js" > </script>
+<link rel="stylesheet" href="assets/css/bootstrap.min.4.3.1.css">
+
+<script src="assets/js/bootstrap.min.4.3.1.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<style>
+th {
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h2>List of Items</h2>
+<div class="container">
+<table class="table table-striped table-hover" id="myTable">
+	<thead class="thead-dark">
+		<tr>
+			<th>Item Id</th>
+			<th onclick="sortAlphabetical(1)">Item Name</th>
+			<th>Category</th>
+			<th>Sub category</th>
+			<th>Brand</th>
+			<th onclick="sortNumeric(5)">Price</th>
+			<th onclick="sortNumeric(6)">Discounted Price</th>
+			<th>Image</th>
+		</tr>
+	</thead>
+	<tbody id="items">
+	</tbody>
+</table>
+</div>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	getItems();
+	function Adder(processedItemList,subcatMapCat){
+		
+		for (var i = 0; i < processedItemList.length; i++) {
+			var itemid=processedItemList[i].itemid;
+			var item_name=processedItemList[i].name;
+			var brand = processedItemList[i].brand;
+			var price = processedItemList[i].price;
+			var discount = processedItemList[i].discount;
+			var disc_price = price-(price*discount)/100;
+			var subcategory_id=processedItemList[i].subcategory_id;
+			var image_location=processedItemList[i].image;
+			var category_id=subcatMapCat[subcategory_id];
+			str="<tr> <td>"+itemid+"</td><td>"+item_name+"</td><td>"+category_id+"</td><td>"+subcategory_id+"</td><td>"+brand+"</td><td>"+price+"</td><td>"+disc_price+"</td><td><img style='height:70px;width:80px'src="+image_location+"></td></tr>";
+			$("#items").append(str);
+		}
+	}
+	function getItems() {
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/items/getReport",
+			type:"POST",
+			cache:false,
+			contentType:false,
+		    processData: false,
+
+		    success : function (data) {
+		    	if(data){
+						Adder(data[0],data[1]);
+		    	}
+		    	else{
+		    		alert("failed to get all items");
+		    	}
+		    }
+
+		});
+	}
+	
+	
+})
+</script>
+<script>
+function sortAlphabetical(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+	  table = document.getElementById("myTable");
+	  switching = true;
+	  //Set the sorting direction to ascending:
+	  dir = "asc"; 
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[n];
+	      y = rows[i + 1].getElementsByTagName("TD")[n];
+	      /*check if the two rows should switch place,
+	      based on the direction, asc or desc:*/
+	      if (dir == "asc") {
+	        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	          //if so, mark as a switch and break the loop:
+	          shouldSwitch= true;
+	          break;
+	        }
+	      } else if (dir == "desc") {
+	        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+	          //if so, mark as a switch and break the loop:
+	          shouldSwitch = true;
+	          break;
+	        }
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	      //Each time a switch is done, increase this count by 1:
+	      switchcount ++;      
+	    } else {
+	      /*If no switching has been done AND the direction is "asc",
+	      set the direction to "desc" and run the while loop again.*/
+	      if (switchcount == 0 && dir == "asc") {
+	        dir = "desc";
+	        switching = true;
+	      }
+	    }
+	  }
+	}
+</script>
+<script>
+
+function sortNumeric(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch,switchcount = 0;
+	  table = document.getElementById("myTable");
+	  var dir="asc";
+	  switching = true;
+	  
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[n];
+	      y = rows[i + 1].getElementsByTagName("TD")[n];
+	      //check if the two rows should switch place:
+	    if(dir=="asc")
+	    {
+	      if (Number(x.innerHTML) > Number(y.innerHTML)) {
+	        //if so, mark as a switch and break the loop:
+	        shouldSwitch = true;
+	        break;
+	      }
+	    }  else if(dir=="desc"){
+	    	  if (Number(x.innerHTML) < Number(y.innerHTML)) {
+	  	        //if so, mark as a switch and break the loop:
+	  	        shouldSwitch = true;
+	  	        break;
+	  	      }  
+	    	  
+	    	}
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	      switchcount++;
+	    }
+	    else {
+		      /*If no switching has been done AND the direction is "asc",
+		      set the direction to "desc" and run the while loop again.*/
+		      if (switchcount==0 && dir == "asc") {
+		        dir = "desc";
+		        switching = true;
+		      }
+	    }
+	  }
+	}
+</script>
+</body>
+</html>

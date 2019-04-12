@@ -274,7 +274,7 @@ public class ItemServices {
 				item_details.append("itemid",item.getItem_id());
 				item_details.append("name",item.getName());
 				item_details.append("price",item.getPrice());
-	//			item_details.append("brand",item.getBrand());
+				item_details.append("brand",item.getBrand());
 				item_details.append("discount",item.getDiscount());
 				item_details.append("subcategory_id", item.getSubcategory_id());
 				int item_id = item.getItem_id();
