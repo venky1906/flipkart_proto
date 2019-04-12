@@ -250,10 +250,10 @@ public class ItemServices {
 		List<Item> items = dao.getItemTable();
 		List<SubCategory> subcats=subcategoryDao.getSubCategoryTable();
 		
-//		JSONObject two = new JSONObject();
 		JSONArray two2 = new JSONArray();
 		JSONArray first = new JSONArray();
 		JSONObject subcatobject= new JSONObject();
+//		JSONObject two = new JSONObject();
 		
 		
 		try {
