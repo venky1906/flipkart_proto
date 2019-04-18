@@ -237,6 +237,52 @@ public class ItemServices {
 
 	}
 
+	//API to get items with subcategory and price range
+	@POST
+	@Path("/getItemsByPriceRangeAndSubCategory")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String getItemsByPriceRangeAndSubCategory(String data) throws JSONException{
+		JSONObject inputobject = new JSONObject(data);
+		float minprice = (float)inputobject.getDouble("min_price");
+		float maxprice = (float)inputobject.getDouble("max_price");
+		int subcat_id = (int)inputobject.getInt("subcategory_id");
+
+		JSONArray first = new JSONArray();
+
+		ItemDAO dao = new ItemDAO();
+		ItemImagesDAO itemImagesDao = new ItemImagesDAO();
+		
+		List<Item> items = dao.getItemTableByPriceAndSubCategory(minprice,maxprice, subcat_id);
+		try {
+			for(int i=0;i<items.size();i++) {
+				Item item=items.get(i);
+				
+				JSONObject item_details= new JSONObject();
+				item_details.append("itemid",item.getItem_id());
+				item_details.append("name",item.getName());
+				item_details.append("price",item.getPrice());
+				item_details.append("brand",item.getBrand());
+				item_details.append("discount",item.getDiscount());
+//				item_details.append("subcategory_id", item.getSubcategory_id());
+				int item_id = item.getItem_id();
+				
+				System.out.println("Item_id: " + item_id);
+				
+				ItemImages itemImage = itemImagesDao.getItemImagesByItemId(item_id).get(0);
+				item_details.append("image",itemImage.getImage_location());
+				
+				first.put(item_details);				
+				
+			}
+			return first.toString();
+		}catch(Exception e) {	
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
 	//API to get items based on a key and subcategory
 	@POST
 	@Path("/getItemsByAKeyAndSubCategory")
