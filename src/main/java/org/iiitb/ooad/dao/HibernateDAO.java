@@ -140,7 +140,24 @@ public class HibernateDAO<E> {
 		return entity;
 	}
 	
-	
+	@SuppressWarnings("unchecked")					//GET ELEMENTS WIHTIN RANGE and val3 = subcatid
+	public List<E> findAllWithRangeAndSubCategory(String entity_name, String param, float val1, float val2,String param2,int val3)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where "+ param2 + " = :val3 "+ " and " + param + " >= :val1 "  + " and "  + param + " <= :val2 ";
+//		String hql = "from "+ entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val3", val3);
+		query.setParameter("val1", val1);
+		query.setParameter("val2", val2);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		return entity;
+	}	
+
 	@SuppressWarnings("unchecked")
 	public List<E> findAllNotEqualCondition(String entity_name, String param1, int val1,String param2,int val2)
 	{
