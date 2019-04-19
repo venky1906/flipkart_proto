@@ -7,6 +7,9 @@ jQuery(document).ready(function($){
 	var seller_id=null;
 	var seller_name="";
 	
+	//Used for add item page;
+	var fixedAttribute = null;
+	
 	if(seller_data==null){
 		window.location = "SellerHub.html";
 	}
@@ -16,8 +19,7 @@ jQuery(document).ready(function($){
 		seller_name=seller_data.name;
 	}
 		
-	//Function to get the nav-element from url
-	
+	//Function to get the nav-element from url	
 	$.urlParam = function(name){
 	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	    if (results==null) {
@@ -150,13 +152,15 @@ jQuery(document).ready(function($){
 		//	$("#itemSubCategory").prop("disabled",true);
 			$(".dynamic-sub-option").remove();
 			$(".dynamic-brand-option").remove();
+			$(".dynamic-fixedattribute-option").remove();
 			return;
 		}
 		
 		else{	
 			$(".dynamic-sub-option").remove();
 			$(".dynamic-brand-option").remove();
-			getSubCategoryList(selected_category); 
+			$(".dynamic-fixedattribute-option").remove();
+			getSubCategoryList(selected_category);
 			$("#itemSubCategory").prop("disabled",false);
 		}
 	});
@@ -217,15 +221,81 @@ jQuery(document).ready(function($){
 		if(selected_subcategory=="Choose SubCategory"){
 		//	$("#itemBrand").prop("disabled",true);
 			$(".dynamic-brand-option").remove();
+			$(".dynamic-fixedattribute-option").remove();
 			return;
 		}
 		
 		else{	
 			$(".dynamic-brand-option").remove();
-			getBrandList(selected_subcategory); 
+			$(".dynamic-fixedattribute-option").remove();
+			getBrandList(selected_subcategory);
+			getFixedAttributeList(selected_subcategory);
 		}
 	});
 	
+	// Show the FixedAttribute Dropdown in html
+	function loadFixedAttributeDropDown(fixedAttributeList){
+		fixedAttribute = fixedAttributeList[0].name;
+		console.log("Fixed Attribute : " + fixedAttribute);
+		var fixedAttributeDropDown = "<label for='fixedAttribute' class='col-sm-4 col-form-label dynamic-fixedattribute-option'>"+fixedAttribute+"</label>"
+									+ "<div class='col-sm-8 dynamic-fixedattribute-option'>"
+										+ "<select class='custom-select mr-sm-3' id='fixedAttribute'>"
+											+ "<option selected>" + "Choose " + fixedAttribute + "</option>"
+										+ "</select>"
+									+ "</div>";
+		
+		/*
+		<label for="itemBrand" class="col-sm-4 col-form-label ">ITEM BRAND</label>
+		<div class="col-sm-8">
+  			<select class="custom-select mr-sm-3" id="itemBrand" required>
+    			<option selected>Choose Brand</option>
+  			</select>
+  			<div id="warning_brand" class="warning" style="color: #f2575b;">Choose brand</div>
+		</div>
+		*/
+		
+		$("#fixedSubCatAttribute").append(fixedAttributeDropDown);
+		
+		
+		$.each(fixedAttributeList, function(index,attribute){
+			$("#fixedAttribute").append(
+		        $("<option class='dynamic-fixedatribute-option'></option>").val(attribute.value).html(attribute.value)
+		    );
+		});
+		
+	};
+	
+	//Get the fixed Attribute for a given subcategory
+	function getFixedAttributeList(subcategory_id){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/items/getFixedAttributeListBySubcatId/"+subcategory_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		loadFixedAttributeDropDown(data);
+	        	}
+	        	
+	        	else{
+	        		console.log("No attribute Present");
+	        		fixedAttribute = null;
+	        	}
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get fixedAttributeList !");
+	        }
+	        
+		});
+		
+		
+		
+	};
 	
 	$("body").on("click","#addImageButton",function(event){
 		$("#uploadImage").click();
@@ -349,6 +419,7 @@ jQuery(document).ready(function($){
 		    		"color" : $('#itemColor').val(),
 		    		"discount" : $("#itemDiscount").val(),
 		    		"seller_id" : seller_id,
+		    		"attribute1" : fixedAttribute,
 		    };
 		    
 		    console.log($("#itemCategory").val());
@@ -434,8 +505,17 @@ jQuery(document).ready(function($){
 	    	keyValuePair["item_value"]= value;
 	    	keyValuePair["item_id"] = item_id;
 	    	keyValuePairs.push(keyValuePair);
-	    	
 	    });
+		
+		var fixedKeyValue = {};
+		if(fixedAttribute){
+			fixedKeyValue["item_key"] = fixedAttribute;
+			fixedKeyValue["item_value"] = $("#fixedAttribute").val();
+			fixedKeyValue["item_id"] = item_id;
+			keyValuePairs.push(fixedKeyValue);
+		}
+		
+		$("#itemDiscount").val()
 		
 		if(keyValuePairs.length>0){
 		
@@ -1013,9 +1093,6 @@ jQuery(document).ready(function($){
 	        }
 	        
 		});
-	});
-	
-	
-	
+	});	
 });
 		

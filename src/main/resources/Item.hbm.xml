@@ -23,6 +23,7 @@
       <property name = "color" column = "color" type = "string"/>
       <property name = "discount" column = "discount" type = "float"/>
       <property name = "seller_id" column = "seller_id" type = "int"/>
+      <property name = "attribute1"  column = "attribute1" type = "string" />
      
 	</class>
 	

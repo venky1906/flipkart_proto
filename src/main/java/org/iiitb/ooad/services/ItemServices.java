@@ -446,5 +446,18 @@ public class ItemServices {
 		return "fail";
 	}
 	
+	@GET
+	@Path("/getFixedAttributeListBySubcatId/{subcategory_id}")
+	@Produces("application/json")
+	public List<FixedAttribute> getFixedAttribute(@PathParam("subcategory_id") int subcategory_id){
+		
+		FixedAttributeDAO dao = new FixedAttributeDAO();
+		List<FixedAttribute> list = dao.getFixedAttributeValuesBySubcatId(subcategory_id);
+		
+		if(list == null || list.isEmpty()){
+			return null;
+		}	
+		return list;
+	}
 	
 }
