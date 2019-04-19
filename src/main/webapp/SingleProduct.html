@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="assets/css/bootstrap.min.4.1.1.css" rel="stylesheet" id="bootstrap-css">
-
+  <link href="assets/css/bootstrap.min.4.3.1.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="assets/css/flipkart.css">
+<link rel="stylesheet" href="assets/css/flipitems.css">
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.4.3.1.js"></script>
 <script src="assets/js/popper.min.js"></script>
@@ -15,12 +16,34 @@
 </head>
 <body style="background-color: rgba(128,128,128,0.1);">
 	<!-- Header with flipkart logo -->
-	<div class="card" style="background-color: rgba(83, 51, 249, 1); height: 55px; border-radius: 0 !important;">
-		<div style="margin-left: 185px;">
-		  <img class="card-img-bottom" id="logo" src="images/Extras/logo.png" style="width: 110px; height: 46px;"> 
-		</div>
-		<!-- Add search and others -->
+	<div class="_3ybBIU">
+	<div class="_1tz-RS">
+		<div class="_3pNZKl">
+			<div class="_1T-JyI">
+				<div class="_3dGepu">
+					<a href="Homepage.html"><img width="75" src="images/Extras/fk-plus.png" alt="Flipkart" title="Flipkart" class="_1e_EAo"/></a>
+				</div>
+			</div>
+			<div class="Y5-ZPI"><form class="_1WMLwI header-form-search" action="/search" method="GET">
+				<div class="col-12-12 _2tVp4j">
+					<div class="O8ZS_U">
+						<input type="text" value="" class="LM6RPg" title="Search for products, brands and more" name="q" autoComplete="off" placeholder="Search for products, brands and more"/>	
+					</div>
+						<button class="vh79eN" type="submit"><svg width="10" height="20" viewBox="0 0 17 18" class="" xmlns="http://www.w3.org/2000/svg"><g fill="#2874F1" fill-rule="evenodd"><path class="_2BhAHa" d="m11.618 9.897l4.225 4.212c.092.092.101.232.02.313l-1.465 1.46c-.081.081-.221.072-.314-.02l-4.216-4.203"></path><path class="_2BhAHa" d="m6.486 10.901c-2.42 0-4.381-1.956-4.381-4.368 0-2.413 1.961-4.369 4.381-4.369 2.42 0 4.381 1.956 4.381 4.369 0 2.413-1.961 4.368-4.381 4.368m0-10.835c-3.582 0-6.486 2.895-6.486 6.467 0 3.572 2.904 6.467 6.486 6.467 3.582 0 6.486-2.895 6.486-6.467 0-3.572-2.904-6.467-6.486-6.467"></path></g></svg></button><input type="hidden" name="otracker" value="search"/><input type="hidden" name="otracker1" value="search"/><input type="hidden" name="marketplace" value="FLIPKART"/><input type="hidden" name="as-show" value="off"/><input type="hidden" name="as" value="off"/>
+					</div><ul class="col-12-12 _1PBbw8"></ul></form>
+			</div>
+						<div class="_1jA3uo _34niwY">
+				<div class="dHGf8H" style="padding-left:-100px">
+
+                        <a id="profile_btn">Login & Signup</a>
+                        
+     			</div>
+			</div>
+					</div>
+		<div class="_1S7OK2"></div>
 	</div>
+	<div class="_2hlh_L"></div>
+</div>
 	
 	<div class="card" style="height: 45px; border-radius: 0 !important;">
 	  <!-- Add categories-->
@@ -46,7 +69,7 @@
 			  <img class="big_img" id="prod_big_img" src="#" style="margin-left: 30px;"></img>
 			</div>
 			<div class="form-group row" align="center" style="margin-left: 55px; margin-top: 15px;">
-			  <button type="button" class="btn btn-warning btn-lg" id="go_to_cart" style="color: white; border-radius: 0 !important;">GO TO CART</button>
+			  <button type="button" class="btn btn-warning btn-lg" id="add_to_cart" style="color: white; border-radius: 0 !important;">ADD TO CART</button>
 			  <button type="button" class="btn flipkart_button btn-lg" style="margin-left: 10px;" id="buy_now">BUY NOW</button>
 			</div>
 		  </div>
@@ -112,7 +135,103 @@
 	</div>
 
 </body>
-
+<script type="text/javascript" src="assets/js/cookie.js"></script>
 <script type="text/javascript" src="assets/js/singleproduct.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	var buyer_id=null;
+	var inCart = false;
+	var cookie_data = getCookie("Buyer_data");
+	if(cookie_data!="" && cookie_data!=null){
+		var buyer_data = JSON.parse(cookie_data);
+		if(buyer_data!="" && buyer_data!=null){
+			buyer_id = buyer_data.id;
+			$("#profile_btn").text(buyer_data.name);
+		}
+		else
+		{
+			$("#add_to_cart").text("ADD TO CART");
+			$("#profile_btn").text("Login & Signup");
+		}
+	}	 
+	else
+	 {
+		$("#profile_btn").text("Login & Signup");
+	 }
+	$.urlParam = function(name){
+	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	    if (results==null) {
+	       return null;
+	    }
+	    return decodeURI(results[1]) || 0;
+	}
+	var item_id = $.urlParam("itemid");
+
+	checkCart(buyer_id,item_id);
+	$("#add_to_cart").click(function(){
+		if(buyer_id!=null)
+		{
+			
+			
+			if(!inCart)
+			{
+				addToCart(buyer_id,item_id);
+			}
+			window.location = "Cart.html";
+			
+		}
+	});
+	function checkCart(buyerId,itemId)
+	{
+		var item_data = JSON.stringify({"buyer_id":buyerId,
+			 "item_id":itemId,
+			 "quantity":1
+			});
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/cart/checkItemInCart",
+			type : 'POST',	
+			contentType : "application/json",
+			data:item_data,
+			success: function(response){
+				if(response==1)
+				{
+					inCart=true;
+					$("#add_to_cart").text("GO TO CART");
+				}
+			}
+		});
+	}
+	function addToCart(buyerId, itemId)
+	{
+		
+		var item_data = JSON.stringify({"buyer_id":buyerId,
+						 "item_id":itemId,
+						 "quantity":1
+						});
+		$.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/cart/addItemToCart",
+			 type : 'POST',
+			 contentType : "application/json",
+			 data:item_data,
+			 success: function(response){
+				 if(response!=-1)
+				 {
+				 	alert("added to cart");
+				 	
+				 }
+				 else
+				 {
+					 alert("unable to add to cart");
+				 }
+			 },
+			 error:function()
+			 {
+				 alert("unable to add to cart");
+			 }
+			 			
+		});
+	}
+})
+</script>
 
 </html>

@@ -300,9 +300,6 @@ public class ItemServices {
 		}
 	}
 	
-	
-
-	
 	// API to get the Item with item id.
 	@POST
 	@Path("/getItemByItemId/{id}")

@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,7 +21,13 @@ import org.iiitb.ooad.model.Item;
 import org.iiitb.ooad.dao.ItemDetailsDAO;
 import org.iiitb.ooad.model.ItemDetails;
 import org.iiitb.ooad.model.ItemImages;
+import org.iiitb.ooad.model.Seller;
+import org.iiitb.ooad.model.SellerAccount;
+import org.json.JSONArray;
+import org.json.*;
 import org.iiitb.ooad.dao.ItemImagesDAO;
+import org.iiitb.ooad.dao.SellerAccountDAO;
+import org.iiitb.ooad.dao.SellerDAO;
 
 @Path("/seller")
 public class SellerServices {
@@ -95,7 +102,6 @@ public class SellerServices {
 		return "fail";
 	}
 
-	
 	
 	private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation){
 		try

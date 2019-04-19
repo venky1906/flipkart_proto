@@ -3,6 +3,8 @@ package org.iiitb.ooad.dao;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Query;
 import org.iiitb.ooad.model.Item;
 
 public class ItemDAO extends HibernateDAO<Item> {
@@ -66,6 +68,12 @@ public class ItemDAO extends HibernateDAO<Item> {
 	{
 		return super.findAll(entity,"subcategory_id",subcat_id);
 	}
+
+	//USED for filtering color,brand with sub category
+	public List<Item> getItemsByAnAttributeAndSubcategoryId(String AttributeName,String AttributeValue,int subcat_id)
+	{
+		return super.findAllWithTwoConditions(entity,AttributeName,AttributeValue,"subcategory_id",subcat_id);
+	}
 	
 	public List<Item> getItemTable(){		//RETURNS ENTIRE ITEMS TABLE
 		return super.list(new Item());
@@ -74,7 +82,13 @@ public class ItemDAO extends HibernateDAO<Item> {
 	public List<Item> getItemTableByPrice(float min,float max){
 		return super.findAllWithRange(entity,"price",min,max);
 	}
-		
+
+	//filter by price range and subcategory
+	public List<Item> getItemTableByPriceAndSubCategory(float min,float max,int subcat_id){
+		return super.findAllWithRangeAndSubCategory(entity,"price",min,max,"subcategory_id",subcat_id);
+	}
+
+	
 	public Item getItemByItemId(int item_id)
 	{
 		return super.find(entity,"item_id",item_id);
@@ -90,4 +104,5 @@ public class ItemDAO extends HibernateDAO<Item> {
 		}
 		return "fail";
 	}
+	
 }

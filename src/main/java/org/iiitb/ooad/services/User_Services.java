@@ -196,15 +196,15 @@ public class User_Services {
 			return dao.addBuyerAddress(address);
 					 
 		}
-				
+		
 		// API to get the Seller with id.
 		@POST
 		@Path("/getSellerById/{id}")
 		@Produces("application/json")
-		public Seller getSellerById(@PathParam("id") int item_id){
+		public Seller getSellerById(@PathParam("id") int seller_id){
 					
 			SellerDAO dao = new SellerDAO();
-			Seller seller = dao.getSellerByID(item_id);
+			Seller seller = dao.getSellerByID(seller_id);
 			
 			return seller;
 		}
