@@ -80,8 +80,11 @@ display: inline; /* the default for span */
 	display: inline-flex;
 	cursor:pointer;
 	text-align: center;
+	padding-top:10px;
+	font-weight:bold;
 
 }
+
 
 .classR2div:hover{
 }
