@@ -32,5 +32,6 @@
   <mapping resource="FlipkartAccount.hbm.xml"/>
   <mapping resource="Brand.hbm.xml"/>
   <mapping resource="Cart.hbm.xml"/>
+  <mapping resource="FixedAttribute.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
