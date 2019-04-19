@@ -13,46 +13,67 @@
   <title>Flipkart: Admin</title>
 </head>
 
-<div class="container">
-    <select class="custom-select mr-sm-3" id="itemExistsCategory">
-		<option selected>Existing Categories</option>
-	</select>
-    <label for="categoryname"><b>Add Category Name</b></label>
-    <input type="text" placeholder="Enter Category Name" name="categoryname" id="categoryname" required>
-
-    <button type="button" id = 'AddC' >Add</button>
-  </div>
-<div class="container">
-    <select class="custom-select mr-sm-3" id="itemCategory">
-		<option selected>Choose Category</option>
-	</select>
-    <label for="subcategoryname"><b>Add SubCategory Name</b></label>
-    <input type="text" placeholder="Enter SubCategory Name" name="subcategoryname" id="subcategoryname" required>
-
-    <button type="button" id = 'AddS' >Add</button>
+<div class="row">
+<div class="column" style="margin-right:50px;margin-left:50px">
+	<div class="container">
+	    <select class="custom-select mr-sm-3" id="itemExistsCategory">
+			<option selected>Existing Categories</option>
+		</select>
+	    <label for="categoryname"><b>Add Category Name</b></label>
+	    <input type="text" placeholder="Enter Category Name" name="categoryname" id="categoryname" required>
+	
+	    <button type="button" id = 'AddC' >Add</button>
+	  </div>
+	<div class="container">
+	    <select class="custom-select mr-sm-3" id="itemCategory">
+			<option selected>Choose Category</option>
+		</select>
+	    <label for="subcategoryname"><b>Add SubCategory Name</b></label>
+	    <input type="text" placeholder="Enter SubCategory Name" name="subcategoryname" id="subcategoryname" required>
+	
+	    <button type="button" id = 'AddS' >Add</button>
+	</div>
+	
+	<div class="container">
+		<select class="custom-select mr-sm-3" id="itemCategoryBrand">
+			<option selected>Choose Category</option>
+		</select>
+	    <select class="custom-select mr-sm-3" id="itemSubCategory">
+			<option selected>Choose SubCategory</option>
+		</select>
+	    <label for="brandname"><b>Add Brand Name</b></label>
+	    <input type="text" placeholder="Enter Brand Name" name="brandname" id="brandname" required>
+	
+	    <button type="button" id = 'AddB' >Add</button>
+	</div>
+</div>
+<div class="column" style="margin-right:50px;">	
+	<div class="container">
+		<select class="custom-select mr-sm-3" id="itemCategoryFixedAttribute">
+			<option selected>Choose Category</option>
+		</select>
+	    <select class="custom-select mr-sm-3" id="itemSubCategoryFixedAttribute">
+			<option selected>Choose SubCategory</option>
+		</select>
+	    <label for="addFixedAttribute"><b>Add Fixed Attribute Name</b></label>
+	    <input type="text" placeholder="Enter Fixed Attribute Name" name="addFixedAttribute" id="addFixedAttribute" required>
+		<label for="fixedAttributeValue">Fixed Attribute Value</label>
+		<input type="text" placeholder="Enter Fixed Attribute Value" name="fixedAttributeValue" id="fixedAttributeValue" required>			
+	    <button type="button" id='AddF'>Add</button>
+	</div>	
 </div>
 
-<div class="container">
-	<select class="custom-select mr-sm-3" id="itemCategoryBrand">
-		<option selected>Choose Category</option>
-	</select>
-    <select class="custom-select mr-sm-3" id="itemSubCategory">
-		<option selected>Choose SubCategory</option>
-	</select>
-    <label for="brandname"><b>Add Brand Name</b></label>
-    <input type="text" placeholder="Enter Brand Name" name="brandname" id="brandname" required>
-
-    <button type="button" id = 'AddB' >Add</button>
+<div class="column" style="margin-right:50px;">
+	<div class="container">
+	    <h><b> Flipkart Account Number : </b> 334455667788 </h>
+	    <p>
+	    <b> Balance : </b> 
+	    <input type="text" disabled = "true" name="flipkartbalance" id="flipkartbalance" required>
+	    <button type="button" id = "editbalance">Edit Balance</button>
+	    </p>
+	</div>
 </div>
 
-<div class="container">
-    <h><b> Flipkart Account Number : </b> 334455667788 </h>
-    <p>
-    <b> Balance : </b> 
-    <input type="text1" disabled = "true" name="flipkartbalance" id="flipkartbalance" required>
-    <button type="button1" id = "editbalance">Edit Balance</button>
-    </p>
-    
 </div>
 
 <script src="assets/js/add_category.js"></script>

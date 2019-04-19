@@ -3,6 +3,7 @@ jQuery(document).ready(function($){
     getCategoryList("#itemCategory");
     getCategoryList("#itemExistsCategory");
     getCategoryList("#itemCategoryBrand");
+    getCategoryList("#itemCategoryFixedAttribute");
 
     $.ajax({
             url: "http://localhost:8080/flipkart/webapi/payment/getflipkartbalance",
@@ -47,9 +48,18 @@ jQuery(document).ready(function($){
     
     $('#AddS').click( function() {
     		var selected_category = $("#itemCategory").val();
-    		var subcategoryname = $("#subcategoryname").val()
+    		var subcategoryname = $("#subcategoryname").val();
 		    addsubCategory(selected_category,subcategoryname);
      });
+    
+    //
+    $("#AddF").click(function(){
+		var subcategory_id = $("#itemSubCategoryFixedAttribute").val();
+		var attribute = $("#addFixedAttribute").val();
+		var value = $("#fixedAttributeValue").val();
+		console.log("Name " + attribute);
+		addFixedAttribute(subcategory_id,attribute,value);
+    });
     
     $('#AddB').click( function() {
     	var selected_category = $("#itemCategoryBrand").val();
@@ -112,19 +122,76 @@ jQuery(document).ready(function($){
 			$(".dynamic-brand-option").remove();
 			return;
 		}
-		
-		else{	
+		else{
 			$(".dynamic-sub-option").remove();
 			$(".dynamic-brand-option").remove();
-			getSubCategoryList(selected_category); 
+			getSubCategoryList(selected_category,"#itemSubCategory"); 
 			$("#itemSubCategory").prop("disabled",false);
 		}
 	});
 	
-	function loadSubCategory(sub_categories){
+	$("body").on("change","#itemCategoryFixedAttribute",function(){
+		
+		var selected_category = $("#itemCategoryFixedAttribute").val();
+		if(selected_category=="Choose Category"){
+			$(".dynamic-sub-option").remove();
+			return;
+		}
+		else{
+			$(".dynamic-sub-option").remove();
+			getSubCategoryList(selected_category,"#itemSubCategoryFixedAttribute"); 
+		}
+	});
+	
+	$("body").on("change","#itemSubCategoryFixedAttribute",function(){	
+		var selected_subcategory = $("#itemSubCategoryFixedAttribute").val();
+		$("#addFixedAttribute").prop("disabled",false);
+		if(selected_subcategory=="Choose SubCategory"){
+			$("#addFixedAttribute").val("");
+			$("#fixedAttributeValue").val("");
+		}
+		else{
+			$("#addFixedAttribute").val("");
+			$("#fixedAttributeValue").val("");
+			getFixedAttributeList(selected_subcategory);
+		}
+	});
+
+	//Get the fixed Attribute for a given subcategory
+	function getFixedAttributeList(subcategory_id){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/items/getFixedAttributeListBySubcatId/"+subcategory_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		var fixedAttribute = data[0].name;
+	        		console.log(fixedAttribute);
+	        		$("#addFixedAttribute").val(fixedAttribute);
+	        		$("#addFixedAttribute").prop("disabled", true);
+	        	}
+	        	
+	        	else{
+	        		console.log("No attribute Present");
+	        	}
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get fixedAttributeList !");
+	        } 
+		});
+	};
+	
+	
+	function loadSubCategory(sub_categories,dropdown_id){
 		
 		$.each(sub_categories, function(index,sub_category) {
-		    $("#itemSubCategory").append(
+		    $(dropdown_id).append(
 		        $("<option class='dynamic-sub-option'></option>").val(sub_category.subcategory_id).html(sub_category.name)
 		    );
 		});
@@ -157,7 +224,7 @@ jQuery(document).ready(function($){
     };
     
  // get subcategory list from backend
-	function getSubCategoryList(category){
+	function getSubCategoryList(category,dropdown_id){
 		
 		$.ajax({
 			url:"http://localhost:8080/flipkart/webapi/category/getSubCategoryList/"+category,
@@ -169,7 +236,7 @@ jQuery(document).ready(function($){
 	        	
 	        	if(data)
 	        	{
-	        		loadSubCategory(data);
+	        		loadSubCategory(data,dropdown_id);
 	        	}
 	        	
 	        	else
@@ -228,5 +295,33 @@ jQuery(document).ready(function($){
 
     	});
     };
+    
+    function addFixedAttribute(subcategoryid,fixedAttributeName,value){
+        
+    	var attribute={
+            subcategory_id:subcategoryid,
+            name : fixedAttributeName,
+            value : value,
+        };
+        
+        $.ajax({
+        url: "http://localhost:8080/flipkart/webapi/items/addFixedAttributeForSubCategory",
+        data: JSON.stringify(attribute),
+        type: "POST",
+        contentType:'application/json',
+        success: function(data) {
+        	
+				if(data=="success"){
+				    alert("Added Successfully");
+				   }
+				else{
+					alert("Value Already Exists");
+				}
+			},
+
+    	});
+    };
+    
+    
 
 });

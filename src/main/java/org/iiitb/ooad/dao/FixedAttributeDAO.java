@@ -13,5 +13,18 @@ public class FixedAttributeDAO extends HibernateDAO<FixedAttribute> {
 		return super.findAll(entity,"subcategory_id",subcategory_id);
 	}
 	
+	public int addFixedAttribute(FixedAttribute fixedAttribute)
+	{
+		try {
+			super.add(fixedAttribute);
+			return 1;
+		}
+		
+		catch(Exception e){
+	//		e.printStackTrace();
+			return -1;
+		}
+	}
+	
 }
 

@@ -244,16 +244,6 @@ jQuery(document).ready(function($){
 										+ "</select>"
 									+ "</div>";
 		
-		/*
-		<label for="itemBrand" class="col-sm-4 col-form-label ">ITEM BRAND</label>
-		<div class="col-sm-8">
-  			<select class="custom-select mr-sm-3" id="itemBrand" required>
-    			<option selected>Choose Brand</option>
-  			</select>
-  			<div id="warning_brand" class="warning" style="color: #f2575b;">Choose brand</div>
-		</div>
-		*/
-		
 		$("#fixedSubCatAttribute").append(fixedAttributeDropDown);
 		
 		
