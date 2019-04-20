@@ -209,7 +209,7 @@ jQuery(document).ready(function($){
 				$("#item_id").text(id_str);
 				var qt_str = "Available Stock : "+item.quantity+" unit(s)";
 				$("#quantity").text(qt_str);
-				var offer_price = item.price-(item.price*item.discount*1.0/100.0);
+				var offer_price = (item.price-(item.price*item.discount*1.0/100.0)).toFixed(2);
 				$("#prod_offer_price").text("Rs. "+offer_price);
 				$("#prod_orig_price").text("Rs. "+item.price);
 				$("#discount").text(item.discount+"% off");

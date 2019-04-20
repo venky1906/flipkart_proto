@@ -54,8 +54,8 @@ jQuery(document).ready(function($){
 	//For price summary card
 	function priceSummary(price, discount, quantity){
 		$("#no_of_items").text(quantity);
-		var savings = (discount/100.0)*(price)*(quantity)*1.0;
-		var total_price = (price*quantity)-savings;
+		var savings = ((discount/100.0)*(price)*(quantity)*1.0).toFixed(2);
+		var total_price = ((price*quantity)-savings).toFixed(2);
 		//console.log(total_price);
 		$("#offer_price").text("Rs. "+total_price);
 		$("#total_price").text(total_price);

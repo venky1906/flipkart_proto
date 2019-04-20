@@ -90,7 +90,7 @@ jQuery(document).ready(function($){
 									"<label class='col-form-label' style='color: gray;'>Ordered On </label>"+
 									"<label id='order_date_"+ord_id+"' class='col-form-label' style='margin-left: 8px;'>"+date+"</label>"+
 									"<label class='col-form-label' style='margin-left: 570px; color: gray;'>Order Total</label>"+
-									"<label id='order_amt_"+ord_id+"' class='col-form-label' style='margin-left: 8px;'>Rs."+orders[i].amount_paid+"</label>"+
+									"<label id='order_amt_"+ord_id+"' class='col-form-label' style='margin-left: 8px;'>Rs."+orders[i].amount_paid.toFixed(2)+"</label>"+
 								"</div>"+
 							"</div>"+
 						"</div>";
