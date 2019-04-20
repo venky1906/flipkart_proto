@@ -75,6 +75,9 @@
 		  </div>
 		  <!-- Description -->
 		  <div>
+		  	<i id='wishlist' style='border-radius: 50%; margin-top: 10px; font-size: 15px; padding: 9px 9px; cursor: pointer;' value='0' class="fa fa-heart-o" aria-hidden="true"></i>
+		  </div>
+		  <div>
 			<form class="form-group" action="/action_page.php">
 			   <div class="form-group" style="margin-left:40px">
 			      <!-- Path -->
@@ -110,10 +113,19 @@
 			        <div><del id="prod_orig_price" class="col-form-label" style="margin-left: 20px; font-size: 14px; color: gray;">Rs.1000</del></div>
 			        <div><label id="discount" class="col-form-label" style="margin-left: 20px; font-size: 20px; color: green;">45% off</label></div>
 			      </div>
+			      <!-- Deals -->
+			      <div class="form-group">
+			        <label class="col-form-label" style="color: gray;">Deals Available: </label>
+			        <ul style="margin-left: 25px;" id="deals">
+					  <!-- <li>Point 1</li>
+					  <li>Point 2</li>
+					  <li>Point 3</li> -->
+					</ul> 
+			      </div>
 			      <!-- Description -->
 			      <div class="form-group">
 			        <label class="col-form-label" style="color: gray;">Details: </label>
-			        <ul id="desc">
+			        <ul style="margin-left: 25px;" id="desc">
 					  <!-- <li>Point 1</li>
 					  <li>Point 2</li>
 					  <li>Point 3</li> -->
@@ -137,101 +149,5 @@
 </body>
 <script type="text/javascript" src="assets/js/cookie.js"></script>
 <script type="text/javascript" src="assets/js/singleproduct.js"></script>
-<script type="text/javascript">
-jQuery(document).ready(function($){
-	var buyer_id=null;
-	var inCart = false;
-	var cookie_data = getCookie("Buyer_data");
-	if(cookie_data!="" && cookie_data!=null){
-		var buyer_data = JSON.parse(cookie_data);
-		if(buyer_data!="" && buyer_data!=null){
-			buyer_id = buyer_data.id;
-			$("#profile_btn").text(buyer_data.name);
-		}
-		else
-		{
-			$("#add_to_cart").text("ADD TO CART");
-			$("#profile_btn").text("Login & Signup");
-		}
-	}	 
-	else
-	 {
-		$("#profile_btn").text("Login & Signup");
-	 }
-	$.urlParam = function(name){
-	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	    if (results==null) {
-	       return null;
-	    }
-	    return decodeURI(results[1]) || 0;
-	}
-	var item_id = $.urlParam("itemid");
-
-	checkCart(buyer_id,item_id);
-	$("#add_to_cart").click(function(){
-		if(buyer_id!=null)
-		{
-			
-			
-			if(!inCart)
-			{
-				addToCart(buyer_id,item_id);
-			}
-			window.location = "Cart.html";
-			
-		}
-	});
-	function checkCart(buyerId,itemId)
-	{
-		var item_data = JSON.stringify({"buyer_id":buyerId,
-			 "item_id":itemId,
-			 "quantity":1
-			});
-		$.ajax({
-			url:"http://localhost:8080/flipkart/webapi/cart/checkItemInCart",
-			type : 'POST',	
-			contentType : "application/json",
-			data:item_data,
-			success: function(response){
-				if(response==1)
-				{
-					inCart=true;
-					$("#add_to_cart").text("GO TO CART");
-				}
-			}
-		});
-	}
-	function addToCart(buyerId, itemId)
-	{
-		
-		var item_data = JSON.stringify({"buyer_id":buyerId,
-						 "item_id":itemId,
-						 "quantity":1
-						});
-		$.ajax({
-			 url:"http://localhost:8080/flipkart/webapi/cart/addItemToCart",
-			 type : 'POST',
-			 contentType : "application/json",
-			 data:item_data,
-			 success: function(response){
-				 if(response!=-1)
-				 {
-				 	alert("added to cart");
-				 	
-				 }
-				 else
-				 {
-					 alert("unable to add to cart");
-				 }
-			 },
-			 error:function()
-			 {
-				 alert("unable to add to cart");
-			 }
-			 			
-		});
-	}
-})
-</script>
 
 </html>

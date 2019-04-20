@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Deal" table="Deal">
+	 
+      <id name = "deal_id" type = "int" column = "deal_id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "name" column = "name" type = "string"/>
+      <property name = "description" column = "description" type = "string"/>
+      <property name = "deal_discount" column = "deal_discount" type = "float"/>
+      <property name = "date_added" column = "date_added" type = "string"/>
+      <property name = "date_ended" column = "date_ended" type = "string"/>
+      <property name = "deal_img" column = "deal_img" type = "string"/>
+      
+     </class>
+	
+</hibernate-mapping>

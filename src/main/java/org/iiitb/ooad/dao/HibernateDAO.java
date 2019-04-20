@@ -75,6 +75,25 @@ public class HibernateDAO<E> {
 			return null;
 		return entity.get(0);
 	}
+	
+	@SuppressWarnings("unchecked")					
+	public E findOn(String entity_name, String param1, int val1, String param2, String  param3, String val2)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where " + param1 + "= :val1 "+ " and " + param2 + " <= :val2 " + " and " + param3 + " >= :val3 ";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val1);
+		query.setParameter("val2", val2);
+		query.setParameter("val3", val2);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		if (entity.size() == 0)
+			return null;
+		return entity.get(0);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<E> list(E ent)
@@ -139,6 +158,7 @@ public class HibernateDAO<E> {
 		session.close();
 		return entity;
 	}
+	
 	
 	@SuppressWarnings("unchecked")					//GET ELEMENTS WIHTIN RANGE and val3 = subcatid
 	public List<E> findAllWithRangeAndSubCategory(String entity_name, String param, float val1, float val2,String param2,int val3)

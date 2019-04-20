@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.DealItem" table="DealItem">
+	 
+      <meta attribute = "class-description">
+         This class contains the Flipkart's items in the deal. 
+      </meta>
+      
+      <id name = "id" type = "int" column = "id">
+         <generator class="native"/>
+      </id>
+      
+      <property name = "deal_id" column = "deal_id" type = "int"/>
+      <property name = "item_id" column = "item_id" type = "int"/>
+    
+	</class>
+</hibernate-mapping>
