@@ -409,7 +409,7 @@ jQuery(document).ready(function($){
 					for(var i=0;i<deals.length;i++){
 						var point = "<li>- "+
 										"<label style='color: green; font-weight: bold; margin-right: 5px;'>"+deals[i].name+" </label>"+
-										"<label style='color: gray;'> Extra "+deals[i].deal_discount+" % Off</label>"+
+										"<label style='color: gray;'>"+deals[i].deal_discount+" % Off</label>"+
 										"<li style='color: blue; margin-left: 25px;'> Valid till "+deals[i].validity+" only!</li>"+
 									"</li>";
 						$("#deals").append(point);

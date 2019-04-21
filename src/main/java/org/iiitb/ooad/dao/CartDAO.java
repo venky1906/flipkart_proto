@@ -77,6 +77,19 @@ public class CartDAO extends HibernateDAO<Cart> {
 		else
 			return 0;
 	}
+	
+	public int removeCart(int buyer_id)
+	{
+		int val = super.deleteRow(entity, "buyer_id", buyer_id);
+		if(val>0) {
+			return 1;
+		}
+		
+		else {
+			return 0;
+		}
+
+	}
 	public int removeItem(Cart cart)
 	{
 		int val=super.deleteRow(entity, "buyer_id", cart.getBuyer_id(),"item_id", cart.getItem_id());

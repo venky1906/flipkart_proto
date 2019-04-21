@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link href="assets/css/bootstrap.min.4.1.1.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="icon" type="image/png" href="images/sellerHub/fk-seller-hub-logo-mobile-v1.png">
+  
+  <link href="assets/css/bootstrap.min.4.3.1.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="assets/css/font-button.css">
 
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.min.4.3.1.js"></script>
@@ -71,22 +74,6 @@
 		      <div id="delivery" class="collapse" data-parent="#accordion">
 		        <div class="card-body" id="deliv_details">
 		           <div id="deliv_radio" class="form-check radio" style="border-top: 1px solid;">
-					 <!-- <input type="radio" class="form-check-input" name="radio">
-					 <div>
-					   <h5 id="addname1">Home</h5>
-					   <p id="address1">IIIT Bangalore-560100</p>
-					 </div>
-					 <div style="margin-left: 40px; margin-bottom: 8px;">
-					   <button type="button" class="btn btln-lg flipkart_button" id="delivhere1">DELIVER HERE</button>
-					 </div>
-				   </div>
-				   <div class="form-check" style="border-top: 1px solid;">
-					 <input type="radio" class="form-check-input" name="radio">
-					 <div>
-					   <h5 id="addname2">College</h5>
-					   <p id="address2">IIIT Bangalore-560100</p>
-					 </div>
-					 -->
 				   </div>
 				    
 		        </div>
@@ -134,45 +121,12 @@
 		      
 		      <div id="order" class="collapse" data-parent="#accordion">
 		        <div class="card-body">
-		        
-		          <h6 align="center">You can continue to place order with following available items.</h6>
-		          <!-- Product details -->
-			      <div id="prod_details" style="border-top: 1px solid;">
-	    
-				    <div class="col-lg-4" style="padding: 5px;">
-				      <img id="sel_prod" src="#" alt="Card image" style="width:160px;height:160px;float:left;" />
-				    </div>
-				    
-				    <div>
-				      <form class="form-group" action="/action_page.php">
-					    <div class="form-group" style="margin-left:200px">
-					        <h4 id="prod_name" class="col-lg-8 col-form-label" style="font-size: 20px;">Double cot bedsheet</h4>
-					        <label id="prod_id" class="col-lg-8 col-form-label" style="font-size: 12px; color: gray;">1</label>
-					        <label id="prod_desc" class="col-lg-8 col-form-label" style="font-size: 12px; color: gray;">4GB RAM</label>
-					        <label id="prod_seller" class="col-lg-8 col-form-label" style="font-size: 12px; color: gray;">Seller: Akash Motors</label>
-					        <div class="form-inline" style="margin-left: 10px;">
-	         		          <label id="prod_offer_price" class="col-form-label" style="font-size: 18px;">Rs.1000</label>
-					          <del id="prod_orig_price" class="col-form-label" style="font-size: 16px; color: gray; margin-left: 10px;">Rs.1000</del>
-					          <label id="prod_discount" class="col-form-label" style="color: green; font-size: 20px; margin-left: 10px;">45% Off</label>
-					        </div>
-					        <div>
-					        	<select class="form-control col-lg-6" style="color: green; font-weight: bold;" name="Deals" id="deals">
-       								<option value="select">Select Deal</option>
-					                <!-- <option value="1">Deal1</option>
-					                <option value="2">Deal2</option> -->
-       							</select>
-					        </div>
-					    </div>
-				      </form>
-				    </div>
-				    
-				    <div class="form-group row" style="margin-left: 8px;">
-	                  <input type="number" class="form-control col-lg-1" id="prod_qt" value="1">
-				      <button type="button" class="btn btn-link" id="prod_remove">REMOVE</button>
-				    </div>
-				    
+		        <button class="_2AkmmA _14O7kc _7UHT_c" onclick="window.location = 'Cart.html';">GO TO CART</button>
+		          <h6 align="center" style="padding-left: 40px;padding-top: 0px;margin-top: -30px;">You can continue to place order with following available items.</h6>
+		          <div id="cart">
+		          <!-- Products details -->
+					
 				  </div>
-				  
 				  <!-- Confirmation -->
 				  <div class="form-group row" style="border-top: 1px solid;">
 				    <label style="margin-left: 5px; margin-top: 20px;">Order confirmation email will be sent to </label>
@@ -192,27 +146,6 @@
 		      <div id="payment" class="collapse" data-parent="#accordion">
 		        <div id="accounts" class="card-body">
 		        
-		          <!-- <div class="form-check" style="border-top: 1px solid;">
-					 <input style="border-top: 5px solid;" type="radio" class="form-check-input" name="pay_radio">
-					 <div>
-					   <h5 id="pay_acc1">45XX XXXX 2947</h5>
-					   <form class="form-group" action="/action_page.php">
-					  	 <div class="form-group row">
-						   <label class="col-form-label col-lg-2">PIN:</label>
-						   <input type="password" class="form-control col-lg-3" id="pin_pay1" maxlength="4" placeholder="Enter your PIN">
-						   <button style="margin-left: 50px;" type="button" class="btn btln-lg col-lg-3 flipkart_button" id="pay_cont1">CONTINUE</button>
-						 </div>
-					   </form>
-					 </div>
-				  </div>
-				  
-				  <div class="form-check" style="border-top: 1px solid;">
-					<input style="border-top: 5px solid;" type="radio" class="form-check-input" name="pay_radio">
-					<div>
-					  <h5 id="pay_acc2">45XX XXXX 2947</h5>
-					</div>
-				  </div>
-				  -->
 				  
 		        </div>
 		      </div>
@@ -225,38 +158,35 @@
 	
 	<!-- Price card -->
 	<div>	
-	  <div class="card">
-		<form class="form-group" action="/action_page.php">
-		   <div class="form-group" style="margin-left: 30px; margin-right: 30px; margin-top: 30px;">
-		     <h5 style="border-bottom: 2px solid;">PRICE DETAILS</h5>
-		     <div class="form-inline">
-		     	<div class="form-inline">
-		     	   <label class="col-form-label">Price (</label>
-		     	   <label class="col-form-label" id="no_of_items">3 </label>
-		     	   <label class="col-form-label">item(s)):</label>
-		     	</div>
-		     	<div><label id="offer_price" style="margin-left: 110px;" class="col-form-label">Rs. 11,000</label></div>
-		     </div>
-		     <div class="form-inline" style="border-bottom: 1px solid;">
-		     	<div><label class="col-form-label">Delivery Charges:</label></div>
-		     	<div><label id="delivery" style="margin-left: 100px;" class="col-form-label">FREE</label></div>
-		     </div>
-		     <div class="form-inline" style="border-bottom: 2px solid;">
-		     	<div><label class="col-form-label">Amount Payable:</label></div>
-		     	<div class="form-inline">
-		     	  <label style="margin-left: 100px;" class="col-form-label">Rs.</label>
-		     	  <label id="total_price" style="margin-left: 5px;" class="col-form-label">11,000</label>
-		     	</div>
-		     </div>
-		     <div><label id="savings" class="col-form-label" style="color: green;">Your Total Savings on this order Rs.4000</label></div>
-		   </div>
-		</form>
-	  </div>
+	  <div class="card" id="price_table" >
+				<div class="card-header" style="background-color:white">
+					<h6 style="color:#878787;font-size:16px;font-family: Roboto,Arial,sans-serif">PRICE DETAILS</h6>
+				</div>
+				<div class="hJYgKM"  style="padding-left:10px">
+					<span id="total_items">Price (4 items)</span>
+					<span id="total_price" style="padding-right: 20px;"> ₹89,640</span>
+				</div>
+				<div class="hJYgKM" style="padding-left:10px">
+					Delivery Charges
+					<span><span class="_27kB8M _3Oa-sk" style="padding-right: 20px;">Free</span></span>
+				</div>
+				<div class="_3xFQAD" style="padding-left:10px">
+					<div class="hJYgKM">Amount Payable<span id="pay_price" style="padding-right: 20px;"> ₹2,599</span>
+					</div>
+				</div>
+				<div class="card-footer">
+				<div class="_34jRkt">
+					<span class="_27kB8M">Your Total Savings on this order 
+						<div class="QE-hRv">₹<span id="savings">400</span></div>
+					</span>
+				</div>
+				</div>
+			</div>
 	</div>
   </div>
 </body>
 
 <script type="text/javascript" src="assets/js/cookie.js"></script>
-<script type="text/javascript" src="assets/js/buy.js"></script>
+<script type="text/javascript" src="assets/js/buyCart.js"></script>
 
 </html>

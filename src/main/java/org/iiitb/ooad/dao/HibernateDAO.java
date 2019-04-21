@@ -370,5 +370,21 @@ public class HibernateDAO<E> {
 		session.close();
 		return rows;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getAllDistinct(String entity_name,String attr,String param, int val) {
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "select distinct "+ attr+" from " + entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		
+		List<String> list = query.list();
+		System.out.println(list);
+		session.clear();
+		session.flush();
+		session.close();
+		return list;
+	}
 
 }

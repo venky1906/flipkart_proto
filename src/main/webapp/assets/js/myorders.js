@@ -85,7 +85,7 @@ jQuery(document).ready(function($){
 									"<button id='order_delivered_"+ord_id+"' class='btn btn-success' style='font-size: 16px;'>I RECEIVED THE ORDER</button>"+
 								"</div>"+
 							"</div>"+
-							"<div style='border-top: 2px solid #eee'>"+	   
+							"<div style='border-top: 2px solid #eee; border-bottom: 2px solid #eee'>"+	   
 								"<div class='form-inline' style='font-size: 16px; margin-left: 40px;'>"+
 									"<label class='col-form-label' style='color: gray;'>Ordered On </label>"+
 									"<label id='order_date_"+ord_id+"' class='col-form-label' style='margin-left: 8px;'>"+date+"</label>"+

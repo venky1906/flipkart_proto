@@ -39,7 +39,16 @@ public class CartServices {
 		return null;
 		
 	}
-
+	
+	@GET
+	@Path("/removeItemsByBuyerId/{id}")
+	public int removeItemsByBuyerId(@PathParam("id") int buyer_id){
+		
+		CartDAO dao = new CartDAO();
+		return dao.removeCart(buyer_id);
+		
+	}
+	
 	@POST
 	@Path("/addItemToCart")
 	@Consumes("application/json")

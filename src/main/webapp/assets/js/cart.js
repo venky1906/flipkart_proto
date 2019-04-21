@@ -147,7 +147,7 @@ jQuery(document).ready(function($){
 					 				"</div>"+
 					 				"<button class='wNrY5O'  sign='1' data-id="+item_id+"> + </button>"+
 					 				"<div class='gdUKd9' tabindex='13' style='padding-left:40px'>"+
-					 						"<span data-id="+item_id+">Remove</span>"+
+					 						"<span class='remove' data-id="+item_id+">Remove</span>"+
 					 				"</div>"+
 					 				"</div>"+
 					 				"</div> </div>";
@@ -190,7 +190,7 @@ jQuery(document).ready(function($){
 				});
 
 	 }
-	 $("#cart").on('click','span',function(){
+	 $("#cart").on('click','.remove',function(){
 		removeItem($(this).attr('data-id')); 
 	 });
 
@@ -267,8 +267,7 @@ jQuery(document).ready(function($){
 		}
 	 });
 	 
-	 function setPrice(cart_data)
-	 {
-		 
-	 }
+	$("#place_order").click(function(){
+		window.location = "BuyCart.html";
+	});
 })

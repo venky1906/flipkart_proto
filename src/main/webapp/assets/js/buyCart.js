@@ -1,15 +1,4 @@
-/**
- * 
- */
 jQuery(document).ready(function($){
-	//Get the url parameters
-	$.urlParam = function(name){
-	    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	    if (results==null) {
-	       return null;
-	    }
-	    return decodeURI(results[1]) || 0;
-	}
 	
 	$("body").on( "click", "#logo",function(){
 		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
@@ -19,120 +8,24 @@ jQuery(document).ready(function($){
 		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
 	});
 	
-	var item_id = $.urlParam("itemid");
 	var address__id = 1;
-	var seller_id = 0;
-	console.log(item_id);
+	
 	$("#delivery_card").removeAttr('data-toggle');
 	$("#order_card").removeAttr('data-toggle');
 	$("#payment_card").removeAttr('data-toggle');
 	
-	//get item details
-	var url="http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id;
-	$.ajax({
-		type : 'POST',
-		contentType : 'application/json',
-		url : url,
-		success : function(item){
 
-			if(!$.isEmptyObject(item)){
-				//console.log(item);
-				priceSummary(item.price, item.discount, 1);
-				toOrderDetails(item);
-				setSellerInfo(item.seller_id);
-				setItemImage(item_id);
-		    }
-			else{
-				alert("Problem occured!!");
-			}
-		},
-		error: function(data) {
-			alert("failed");
-		}
-	});
-	
-	//For price summary card
-	function priceSummary(price, discount, quantity){
-		$("#no_of_items").text(quantity);
-		var savings = ((discount/100.0)*(price)*(quantity)*1.0).toFixed(2);
-		var total_price = ((price*quantity)-savings).toFixed(2);
-		//console.log(total_price);
-		$("#offer_price").text("Rs. "+total_price);
-		$("#total_price").text(total_price);
-		$("#savings").text("Your Total Savings on this order Rs. "+savings);
-	}
-	
-	//For order Summary
-	function toOrderDetails(item){
-		$("#prod_name").text(item.name);
-		$("#prod_id").text("ITEM ID : " + item.id);
-		$("#prod_desc").text(item.brand+" (Color: "+item.color+")");
-		//$("#prod_seller").text("Seller: "+seller);
-		var offer_price = item.price - (item.price*item.discount/100.0);
-		$("#prod_offer_price").text("Rs. "+offer_price.toFixed(2));
-		$("#prod_orig_price").text("Rs. "+item.price);
-		$("#prod_discount").text(item.discount+"% Off");
-		seller_id = item.seller_id;
-		toDealsAvailable(item.item_id);
-		//console.log(seller_id+"...........");
-		
-		//onOrderContinue(item.price, item.discount, item.quantity);
-	}
-	
-	
-	//Seller info in order summary
-	function setSellerInfo(id){
-		var url="http://localhost:8080/flipkart/webapi/user/getSellerById/"+id;
-		$.ajax({
-			type : 'POST',
-			contentType : 'application/json',
-			url : url,
-			success : function(seller){
-
-				if(!$.isEmptyObject(seller)){
-					$("#prod_seller").text("Seller: "+seller.name);
-				}
-				else{
-					alert("Problem occured!!");
-				}
-			},
-			error: function(seller) {
-				alert("failed");
-			}
-		});
-	}
-	
-	//Item image in order summary
-	function setItemImage(item_id){
-		var url="http://localhost:8080/flipkart/webapi/items/getItemImagesByItemId/"+item_id;
-		$.ajax({
-			type : 'POST',
-			contentType : 'application/json',
-			url : url,
-			success : function(itemimg){
-
-				//console.log(itemimg[0]);	
-				if(!$.isEmptyObject(itemimg)){
-					$("#sel_prod").attr("src", itemimg[0].image_location);
-				}
-				else{
-					alert("Problem occured!!");
-				}
-			},
-			error: function(itemimg) {
-				alert("failed");
-			}
-		});
-	}
-	
+	var price=0;
+	var no_items=0;
+	var savings=0;
+	var cart_data=null;
 	//get buyer data from cookies
+	var buyer_id = null;
 	var cookie_data = getCookie("Buyer_data");
 	if(cookie_data!="" && cookie_data!=null){
 		var buyer_data = JSON.parse(cookie_data);
-		console.log(buyer_data.id);
-		//var buyer_id;
-		
 		if(buyer_data!="" && buyer_data!=null){
+			buyer_id = buyer_data.id;
 			$("#email_conf").text(buyer_data.email);   //Email in Order Summary
 			$("#add_address_card").removeClass("d-none");
 			$('#login').collapse('hide');
@@ -144,6 +37,7 @@ jQuery(document).ready(function($){
 			toAddAddress(buyer_data.id);
 			onOrderContinue(buyer_data.id);
 			$("#saved_login").show();
+			getCartItems(buyer_id);
 		}
 		
 	}
@@ -177,6 +71,7 @@ jQuery(document).ready(function($){
 			success : function(data){
 	        	//console.log(data);
 	        	if(data.id>=1){
+	        		getCartItems(data.id);
 	        		setCookie("Buyer_data", JSON.stringify(data), 1);
 	        		$("#email_conf").text(data.email);   //Email in Order Summary
 					$("#add_address_card").removeClass("d-none");
@@ -328,25 +223,21 @@ jQuery(document).ready(function($){
 		$('#delivery').addClass('show');
 	});
 	
-	$("#prod_remove").click(function() {
-		alert("Removed the product!");
-		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
-	});
-	
 	//Check availability of the item
 	function onOrderContinue(buyer_id){
 		$("#order_cont").click(function() {
-			var req_qty = $("#prod_qt").val();
-			var url="http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id;
+			
+			$('#order').collapse('hide');
+			$("#order_card").removeAttr('data-toggle');
+			$('#payment').addClass('show');
+			toPayment(buyer_id);
+			/*var url="http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id;
 			$.ajax({
 				type : 'POST',
 				contentType : 'application/json',
 				url : url,
 				success : function(item){
 					if(!$.isEmptyObject(item)){
-						//console.log(item);
-						priceSummary(item.price, item.discount, req_qty);
-						toOrderDetails(item);
 						var qty = item.quantity;
 						if(qty==0){
 							alert("The item is no longer available!!");
@@ -372,50 +263,10 @@ jQuery(document).ready(function($){
 				error: function(data) {
 					alert("failed");
 				}
-			});
+			});*/
+			
 		});
 	}
-	
-	function toDealsAvailable(item_id){
-		var url="http://localhost:8080/flipkart/webapi/deal/getDealsOfItem/"+item_id;
-		$.ajax({
-			type : 'GET',
-			contentType : 'application/json',
-			url : url,
-			success : function(deals){
-
-				//console.log(deals);	
-				if(!$.isEmptyObject(deals)){
-					for(var i=0;i<deals.length;i++){
-						var deal = "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
-						$("#deals").append(deal);
-					}
-				}
-				else{
-					var point = "<li>No deals available on the item.</li>";
-					$("#deals").append(point);
-				}
-			},
-			error: function(desc) {
-				alert("failed");
-			}
-		});
-	}
-	
-	//Apply Deal
-	$("#deals").change(function(){
-		var id = $("#deals").val();
-		if(id!="select"){
-			var discount = id.split("_")[1];
-			var quantity = $("#prod_qt").val();
-			var price = $("#prod_orig_price").text().split(" ")[1];
-			var savings = ((discount/100.0)*(price)).toFixed(2);
-			var offer_price = (price-savings).toFixed(2);
-			$("#prod_discount").text(discount+"% Off");
-			$("#prod_offer_price").text("Rs. "+offer_price);
-			priceSummary(price, discount, quantity);
-		}
-	});
 	
 	function toPayment(buyer_id){
 		//$('#delivery').collapse('hide');
@@ -495,12 +346,16 @@ jQuery(document).ready(function($){
 				data : JSON.stringify(buyerAcc),
 				success : function(data){
 			       	if(data!="incorrect"){
-			       		var amt = parseFloat($("#total_price").text());
+			       		//var amt = $("#total_price").val();
+			       		var amt = price;
+			       		console.log(price);
 			       		if(amt<=parseFloat(data)){
 			       			updateBalance(buyer_id, amt, acc_no);
 			       		}
 			       		else{
 			       			alert("Insufficient Bank Balance!")
+			       			console.log("price : "+price);
+			       			console.log("balance : "+data);
 			       		}
 			       	}
 			       	else{
@@ -519,7 +374,6 @@ jQuery(document).ready(function($){
 			id : acc_no,
 			balance : amt,
 		};
-		//console.log(req_data);
 		var url="http://localhost:8080/flipkart/webapi/payment/updateBalance";
 		$.ajax({
 			type : 'POST',
@@ -527,7 +381,6 @@ jQuery(document).ready(function($){
 			url : url,
 			data : JSON.stringify(req_data),
 			success : function(data){
-		      	console.log(data);
 		       	if(data=="success"){
 		       		updateOrder(buyer_id);
 		       	}
@@ -540,40 +393,366 @@ jQuery(document).ready(function($){
 			}
 		});
 	}
+
+	function placeOrder(order_items,item_number){
+		
+		if(no_items==item_number){
+   			removeCart(buyer_id);
+   		}
+		
+		else{
+			var item = order_items[item_number];
+			
+			var quantity = $(item).find("div[name='Quantity']").attr('data');
+			var s_id  = $(item).find("div[name='seller']").attr('id');
+			var amount = $(item).find("span[name='amount']").attr('data');
+			var orderItem = {
+				item_id : $(item).attr('id'),
+				seller_id : s_id,
+				quantity : quantity,
+				buyer_id : buyer_id,
+				address_id : address_id,
+				amount_paid : amount,
+				status : "paymentdone",
+			}
+			console.log(orderItem);
+			var url="http://localhost:8080/flipkart/webapi/order/addOrderDetails";
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : url,
+				data : JSON.stringify(orderItem),
+				success : function(data){
+			       	if(data=="success"){
+			       		placeOrder(order_items,item_number+1);
+			       	}
+			      	else{
+						alert("Issue in placing order!");
+					}
+				},
+				error: function(data) {
+					alert("failed");
+				}
+			});
+		}
+	}
+
+	
+	
 	
 	function updateOrder(buyer_id){
-		var quantity = $("#prod_qt").val();;
-		var amount_paid = $("#total_price").text();
-		var orderItem = {
-			seller_id : seller_id,
-			item_id : item_id,
-			buyer_id : buyer_id,
-			address_id : address_id,
-			quantity : quantity,
-			amount_paid : amount_paid,
-			status : "paymentdone",
-		};
-		//console.log(orderItem);
-		var url="http://localhost:8080/flipkart/webapi/order/addOrderDetails";
-		$.ajax({
-			type : 'POST',
-			contentType : 'application/json',
-			url : url,
-			data : JSON.stringify(orderItem),
-			success : function(data){
-		      	//console.log(data);
-		       	if(data=="success"){
-		       		alert("Successfully placed your order!");
-		       		$(location).attr('href', "http://localhost:8080/flipkart/Homepage.html");
-		       	}
-		      	else{
-					alert("Issue in placing order!");
-				}
-			},
-			error: function(data) {
-				alert("failed");
+		var len=0;
+		var order_items = $("div[name='item']");
+		console.log(order_items);
+		placeOrder(order_items,0);
+		
+		/*
+		$("div[name='item']").each(function(){
+			len++;
+			console.log("Length " + len);
+			var quantity = $(this).find("div[name='Quantity']").attr('data');
+			var s_id  = $(this).find("div[name='seller']").attr('id');
+			var amount = $(this).find("span[name='amount']").attr('data');
+			var orderItem = {
+				item_id : $(this).attr('id'),
+				seller_id : s_id,
+				quantity : quantity,
+				buyer_id : buyer_id,
+				address_id : address_id,
+				amount_paid : amount,
+				status : "paymentdone",
 			}
-		});
+			var url="http://localhost:8080/flipkart/webapi/order/addOrderDetails";
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : url,
+				data : JSON.stringify(orderItem),
+				success : function(data){
+			       	if(data=="success"){
+			       		
+			       		console.log(len+ " - "+no_items);
+			       		if(len==no_items)
+			       		{
+			       			removeCart(buyer_id);
+			       		}
+			       		
+			       	}
+			      	else{
+						alert("Issue in placing order!");
+					}
+				},
+				error: function(data) {
+					alert("failed");
+				}
+			});
+		});*/
 	}
 	
+	 function getCartItems(buyerID)
+	 {
+		 $.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/cart/getItemsByBuyerId/"+buyer_id,
+			 type : 'POST',
+			 cache : false,
+			 contentType : false,
+			 processData : false,
+			 success: function(cart){
+				 if(cart!=null)
+				 {
+					 cart_data = cart;
+					 no_items = cart.length;
+					 $("#my_cart").text("MY CART("+no_items+")");
+					 $("#total_items").text("Price ("+no_items+" items)");
+					 $.each(cart,function(index,cart_item){
+						 var item_id = cart_item.item_id;
+						 var item_info = "<div class='card' name='item' id="+item_id+">"+
+							 				"<div class='card-body'>"+
+						 						"<div class='row'>"+
+						 							"<div class='column'>";	
+						 setImage(item_id,item_info,cart_item.quantity);						 
+					 });
+					 
+					 
+				 }
+				 else
+				 {
+					 var no_order = "<div id='no_orders' align='center' style='border: 2px solid #eee;'>"+
+					  "<label class='col-form-label'>You have no items in cart.</label>"+
+				   "</div>";
+					 $("#cart").append(no_order);
+					 $("#no_orders").show();
+					 $("#price_table").hide();
+					 $("#place_order").hide();
+				 }
+			 },
+			 error: function(cart) {
+					alert("Failed to fetch cart details!");
+			}
+		 });
+	 }
+	 function setSeller(seller_id,itemInfo,item,quantity){
+		 $.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/user/getSellerById/"+seller_id,
+			 type : 'POST',
+			 cache : false,
+			 contentType : false,
+			 processData : false,
+			 success:function(seller){
+				 if(seller!=null)
+				 {
+					 var disc_price = item.price-(item.price*item.discount)/100;
+					 disc_price*=quantity;
+					 savings+=quantity*item.price*item.discount/100;
+					 price+=disc_price;
+					 $("#total_price").text("₹"+price);
+					 $("#pay_price").text("₹"+price);
+					 $("#savings").text(savings);
+					 itemInfo+= "<div class='column' style='padding-left:35px'>"+
+									"<a style='font-size:16px;line-height:1' href='SingleProduct.html?itemid="+item.item_id+"'>"+ item.name+"</a>"+
+									"<div class='v7-Wbf' style='margin-top: 5px;display: block;color: #878787;font-size: 12px;'>"+
+										item.description + 
+									"</div>"+
+									"<div style='margin-top: 10px' name='seller' id="+seller.id+">"+
+										"<span style='margin-top: 10px;color: #878787;font-size: 12px;'>Seller: "+ seller.name+"</span>"+
+									"</div>"+
+									"<span class='pMSy0p XU9vZa' name='amount' data="+disc_price+" > ₹"+disc_price+"</span>"+
+									"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
+									"<span class='hMGTLH'>"+item.discount+"% Off</span>"+
+								"</div> </div> </div> </div>";
+					 $("#cart").append(itemInfo);
+				 }
+			 },
+			 error:function(){
+				 
+			 }
+			 
+		 });
+	 }
+	 function setItemData(item_id,itemInfo,quantity){
+		 $.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id,
+			 type : 'POST',
+			 cache : false,
+			 contentType : false,
+			 processData : false,
+			 success:function(item){
+				 if(item!=null)
+				 {
+					 setSeller(item.seller_id,itemInfo,item,quantity);
+				 }
+			 },
+			 error:function(){
+				 
+			 }
+			 
+		 });
+	 }
+	
+	 function setImage(item_id,itemInfo,quantity){
+		 $.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/items/getItemImagesByItemId/"+item_id,
+			 type : 'POST',
+			 cache : false,
+			 contentType : false,
+			 processData : false,
+			 success:function(images){
+				 if(images!=null)
+				 {
+					 itemInfo+= "<a href='SingleProduct.html?itemid="+item_id+"' > <img data-id="+item_id+" style='width:120px;height:80px'  alt='item_img' src="+images[0].image_location+"> </a>"+
+					 			 "<div class='_3RkJty' style='padding-top:40px'>"+
+					 			  	"<div class='_3md1dr'>";
+						  	
+					 	 itemInfo+= "<div name='Quantity' data="+quantity+">"+
+					 						"<label>Quantity : "+quantity+" units</label>"+
+					 				"</div>"+
+					 				"</div>"+
+					 				"</div> </div>";
+					 
+					 setItemData(item_id,itemInfo,quantity);
+				 }
+			 },
+			 error:function(){
+				 
+			 }
+			 
+		 });
+	 }
+	 
+	 function removeCart(buyer_id)
+	 {
+		var url="http://localhost:8080/flipkart/webapi/cart/removeItemsByBuyerId/"+buyer_id;
+		$.ajax({
+				type : 'GET',
+				contentType : false,
+				url : url,
+				success : function(data){
+					console.log("items removed from cart");
+					alert("Successfully placed your order!");
+					$(location).attr('href', "http://localhost:8080/flipkart/MyOrders.html");
+		       		
+				},
+				error:function(){
+					console.log("unable to remove items from cart")
+				}
+		});
+	 }
+	 /*
+	 function removeItem(item_id){
+		 var item_data = JSON.stringify({"buyer_id":buyer_id,
+			 "item_id":item_id,
+			});
+		 $.ajax({
+				 url:"http://localhost:8080/flipkart/webapi/cart/removeItem",
+				 type : 'POST',
+				 contentType : "application/json",
+				 data:item_data,
+				 success: function(response){
+					 if(response==1)
+					 {
+					 	alert("removed from cart");
+					 	window.location = "BuyCart.html";
+					 	
+					 }
+					 else
+					 {
+						 alert("unable to remove from cart");
+					 }
+				 },
+				 error:function()
+				 {
+					 alert("unable to remove from cart");
+				 }
+				 			
+				});
+
+	 }
+	 
+	 $("#cart").on('click','.remove',function(){
+		removeItem($(this).attr('data-id')); 
+	 });
+
+	 $("#cart").on('click','button',function(){
+		var item_id = $(this).attr('data-id');
+		var sign = $(this).attr('sign');
+		var quantity = parseInt($("input[data-id="+item_id+"]").val());
+		if(sign==1)
+		{
+			$.ajax({
+			 url:"http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id,
+			 type : 'POST',
+			 cache : false,
+			 contentType : false,
+			 processData : false,
+			 success:function(item){
+				 if(item!=null)
+				 {
+					 var max_quantity = item.quantity;
+					 if(quantity<max_quantity)
+					 {
+						 var item_data = JSON.stringify({"buyer_id":buyer_id,
+							 "item_id":item_id,
+							 "quantity":quantity+1
+							});
+						 $.ajax({
+							url:"http://localhost:8080/flipkart/webapi/cart/updateQuantityInCart",
+							type : 'POST',	
+							contentType : "application/json",
+							data:item_data,
+							success: function(response){
+								if(response==1)
+								{
+									//window.location = "BuyCart.html";
+									$("input[data-id="+item_id+"]").val(quantity+1);
+									var total_price = $("#total_price").val();
+									total_price = total_price + item.price;
+									$("#total_price").val(total_price);
+								}
+							}
+						});
+
+					}
+					 else
+					 {
+						 alert("Only "+ max_quantity+" are Availble");
+					 }
+				 }
+			 },
+			 error:function(){
+				 alert("Unable to find Item quantity");
+			 }
+			 
+			});
+		}
+		else if(sign==0)
+		{
+			
+				quantity--;
+				var item_data = JSON.stringify({"buyer_id":buyer_id,
+				 "item_id":item_id,
+				 "quantity":quantity
+				});
+				$.ajax({
+				url:"http://localhost:8080/flipkart/webapi/cart/updateQuantityInCart",
+				type : 'POST',	
+				contentType : "application/json",
+				data:item_data,
+				success: function(response){
+					if(response==1)
+					{
+						//window.location = "BuyCart.html";
+						$("input[data-id="+item_id+"]").val(quantity);
+						var total_price = $("#total_price").val();
+						total_price = total_price - item.price;
+						$("#total_price").val(total_price);
+					}
+				}
+				});
+			
+		}
+	 });*/
+	
 });
+/**
+ * 
+ */

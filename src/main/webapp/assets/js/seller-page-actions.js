@@ -409,7 +409,7 @@ jQuery(document).ready(function($){
 		    		"color" : $('#itemColor').val(),
 		    		"discount" : $("#itemDiscount").val(),
 		    		"seller_id" : seller_id,
-		    		"attribute1" : fixedAttribute,
+		    		"attribute1" : "",
 		    };
 		    
 		    console.log($("#itemCategory").val());

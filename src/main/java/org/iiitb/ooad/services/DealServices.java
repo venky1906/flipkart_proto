@@ -41,6 +41,7 @@ public class DealServices {
 				
 				Deal deal_details = ddao.getDealDetailsByID(deal_id);
 				if(deal_details!=null) {
+					deal_desc.put("deal_id", deal_details.getDeal_id());
 					deal_desc.put("name", deal_details.getName());
 					deal_desc.put("description", deal_details.getDescription());
 					deal_desc.put("deal_discount", deal_details.getDeal_discount());

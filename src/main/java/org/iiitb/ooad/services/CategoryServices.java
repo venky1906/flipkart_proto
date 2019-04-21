@@ -34,7 +34,6 @@ public class CategoryServices {
 
 	}
 	
-	
 	// API to get the su-category with id
 	@POST
 	@Path("/getSubCategoryList/{id}")
@@ -116,5 +115,17 @@ public class CategoryServices {
 		return "success";
 	}
 	
+	@GET
+	@Path("/getAllColorsForASubCategory/{id}")
+	public String getAllColorsForASubCategory(@PathParam("id") int subcategory_id){
+		
+		ItemDAO dao= new ItemDAO();
+		List<String> colors = dao.getColorsBySubcategoryId(subcategory_id);
+			
+		if(colors==null)
+			return null;
+		else
+			return colors.toString();	
+	}
 	
 }

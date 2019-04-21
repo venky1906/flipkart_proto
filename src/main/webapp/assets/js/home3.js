@@ -110,7 +110,7 @@ $(document).ready(function(){
 	function getallitems(subcatid){
         console.log(subcatid);
             $.ajax({
-			    url:"http://localhost:8080/flipkart/webapi/items/getAllItemsBySubcategoryId/"+subcatid,
+			    url:"http://localhost:8080/flipkart/webapi/items/getItemsBySubcategoryId/"+subcatid,
 			    type:"POST",
 			    cache:false,
 			    contentType:false,
