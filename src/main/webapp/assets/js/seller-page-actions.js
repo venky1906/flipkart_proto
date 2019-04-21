@@ -153,6 +153,7 @@ jQuery(document).ready(function($){
 			$(".dynamic-sub-option").remove();
 			$(".dynamic-brand-option").remove();
 			$(".dynamic-fixedattribute-option").remove();
+			$(".dynamic-color-option").remove();
 			return;
 		}
 		
@@ -160,6 +161,7 @@ jQuery(document).ready(function($){
 			$(".dynamic-sub-option").remove();
 			$(".dynamic-brand-option").remove();
 			$(".dynamic-fixedattribute-option").remove();
+			$(".dynamic-color-option").remove();
 			getSubCategoryList(selected_category);
 			$("#itemSubCategory").prop("disabled",false);
 		}
@@ -215,21 +217,59 @@ jQuery(document).ready(function($){
 	};
 	
 	
+	//get All Colors List from backend
+	function getColorList(sub_category_id){
+    	
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/category/getAllColorsForASubCategory/"+sub_category_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		loadColors(data);
+	        	}
+	        	
+	        	else
+	        		alert("failed to get Colors");
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get Colors !");
+	        }
+	        
+		});
+	};
+		
+	//append the colors corresponding to the given sub-category.
+	function loadColors(colors){	
+		$.each(colors, function(index,color) {
+		    $("#itemColor").append(
+		        $("<option class='dynamic-color-option'></option>").val(color.color).html(color.color)
+		    );
+		});
+	};
+	
 	$("body").on("change","#itemSubCategory",function(){
 		
 		var selected_subcategory = $("#itemSubCategory").val();
 		if(selected_subcategory=="Choose SubCategory"){
-		//	$("#itemBrand").prop("disabled",true);
 			$(".dynamic-brand-option").remove();
 			$(".dynamic-fixedattribute-option").remove();
+			$(".dynamic-color-option").remove();
 			return;
 		}
 		
 		else{	
 			$(".dynamic-brand-option").remove();
 			$(".dynamic-fixedattribute-option").remove();
+			$(".dynamic-color-option").remove();
 			getBrandList(selected_subcategory);
 			getFixedAttributeList(selected_subcategory);
+			getColorList(selected_subcategory);
 		}
 	});
 	
@@ -396,8 +436,15 @@ jQuery(document).ready(function($){
 		$(".warning").hide();
 		if(validate_add_item_form()){
 			
-		    var itemObject = {
-		    		
+			var fixedAttribute_val = null;
+			if(fixedAttribute){
+				fixedAttribute_val = $("#fixedAttribute").val();
+				if(fixedAttribute_val=="Choose " + fixedAttribute){
+					fixedAttribute = null;
+				}
+			}
+			
+		    var itemObject = {		
 		    		"id" : $("#itemId").val(),
 		    		"name" : $('#itemName').val(),
 		    		"subcategory_id" :$("#itemSubCategory").val(),
@@ -409,7 +456,7 @@ jQuery(document).ready(function($){
 		    		"color" : $('#itemColor').val(),
 		    		"discount" : $("#itemDiscount").val(),
 		    		"seller_id" : seller_id,
-		    		"attribute1" : "",
+		    		"attribute1" : fixedAttribute,
 		    };
 		    
 		    console.log($("#itemCategory").val());
@@ -563,7 +610,7 @@ jQuery(document).ready(function($){
 			
 		}
 		
-		if(!$("#itemColor").val()){
+		if($("#itemColor").val()=="Choose Color"){
 			count++;
 			$("#warning_color").show();
 		}
@@ -733,6 +780,9 @@ jQuery(document).ready(function($){
 								"</div>"+
 								"<div class='row'>"+
 									"<label style='font-weight:bold;'>Brand</label>"+
+								"</div>"+
+								"<div class='row'>"+
+									"<label style='font-weight:bold;'>Color</label>"+
 								"</div>";
 										
 				
@@ -758,6 +808,9 @@ jQuery(document).ready(function($){
 								"</div>"+
 								"<div class='row'>"+
 									"<label>: " + item.brand + "</label>"+
+								"</div>"+
+								"<div class='row'>"+
+									"<label>: " + item.color + "</label>"+
 								"</div>";
 				
 				

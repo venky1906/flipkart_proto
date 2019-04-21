@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="org.iiitb.ooad.model.Color" table="Color">
+	 
+	      <meta attribute = "class-description">
+	         This class contains the Colors.
+	      </meta>
+	     
+	      <id name = "color_id" type = "int" column = "color_id">
+	         <generator class="native"/>
+	      </id>
+	      
+	      <property name="color" column="color" type="string"/>
+		  <property name="subcategory_id" column="subcategory_id" type="int"/>  
+	  
+	  </class>
+	
+</hibernate-mapping>

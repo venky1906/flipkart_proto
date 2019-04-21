@@ -117,15 +117,15 @@ public class CategoryServices {
 	
 	@GET
 	@Path("/getAllColorsForASubCategory/{id}")
-	public String getAllColorsForASubCategory(@PathParam("id") int subcategory_id){
-		
-		ItemDAO dao= new ItemDAO();
-		List<String> colors = dao.getColorsBySubcategoryId(subcategory_id);
+	@Produces("application/json")
+	public  List<Color> getAllColorsForASubCategory(@PathParam("id") int subcategory_id){
+		ColorDAO dao= new ColorDAO();
+		List<Color> colors = dao.getColorsBySubcategoryId(subcategory_id);
 			
 		if(colors==null)
 			return null;
 		else
-			return colors.toString();	
+			return colors;
 	}
 	
 }

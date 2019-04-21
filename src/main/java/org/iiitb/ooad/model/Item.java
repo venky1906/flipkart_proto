@@ -15,7 +15,8 @@ public class Item {
 	//private String added_date;
 	private float discount;
 	private int seller_id;
-	
+	private String attribute1;
+
 	public Item(){
 		
 	}
@@ -139,6 +140,14 @@ public class Item {
 
 	public void setSeller_id(int seller_id) {
 		this.seller_id = seller_id;
+	}
+	
+	public String getAttribute1() {
+		return attribute1;
+	}
+
+	public void setAttribute1(String attribute1) {
+		this.attribute1 = attribute1;
 	}
 
 }
