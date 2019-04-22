@@ -2,6 +2,8 @@ package org.iiitb.ooad.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +15,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.iiitb.ooad.dao.BuyerDAO;
 import org.iiitb.ooad.dao.DealDAO;
 import org.iiitb.ooad.dao.DealItemDAO;
+import org.iiitb.ooad.model.Buyer;
 import org.iiitb.ooad.model.Deal;
 import org.iiitb.ooad.model.DealItem;
 import org.json.JSONArray;
@@ -64,6 +68,59 @@ public class DealServices {
 		return "fail";
 	}
 	
+	
+	@Path("/getDealsForUser")
+	@POST
+	@Produces("application/json")
+	public String getDealsForUser(String deal_item_details) throws JSONException, ParseException{
+		DealItemDAO didao = new DealItemDAO();
+		DealDAO ddao = new DealDAO();
+		
+		JSONObject details = new JSONObject(deal_item_details);
+		int item_id = details.getInt("item_id");
+		int buyer_id = details.getInt("buyer_id");
+		
+		List<DealItem> deals = didao.getDealsOfItem(item_id);
+		JSONArray result = new JSONArray();
+		
+		if(deals!=null) {
+			for(int i=0;i<deals.size();i++) {
+				JSONObject deal_desc = new JSONObject();
+				
+				DealItem deal = deals.get(i);
+				int deal_id = deal.getDeal_id();
+				
+				Deal deal_details = ddao.getDealDetailsByID(deal_id);
+				if(deal_details!=null) {
+					deal_desc.put("deal_id", deal_details.getDeal_id());
+					deal_desc.put("name", deal_details.getName());
+					deal_desc.put("description", deal_details.getDescription());
+					deal_desc.put("deal_discount", deal_details.getDeal_discount());
+					
+					String[] datetime = deal_details.getDate_ended().split(" ");
+					String[] date = datetime[0].split("-");
+					deal_desc.put("validity", date[2]+"-"+date[1]+"-"+date[0]+" "+datetime[1].substring(0, 8));
+	
+					if(deal_details.getName().equals("Birthday Offer")){
+						BuyerDAO buyer_dao = new BuyerDAO();
+						DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+						LocalDateTime now = LocalDateTime.now();
+						String [] today_datetime = dtf.format(now).split(" ");
+						String today = today_datetime[0];
+						Buyer buyer = buyer_dao.getUserById(buyer_id);
+						if(buyer.getDob().equals(today)){
+							result.put(deal_desc);
+						}
+					}
+					else
+						result.put(deal_desc);
+				}
+			}
+			return result.toString();
+		}
+		return "fail";
+	}
+
 	public String getValidity(String date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 

@@ -9,12 +9,22 @@ public class Buyer {
 	private String pic_location;
 	private String password;
 	private String gender;
+	private String dob;
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	public void setDob(String dob) {
+		this.dob = dob;
+	}
+	
+	public String getDob() {
+		return this.dob;
+	}
+	
 	public String getName() {
 		return name;
 	}
