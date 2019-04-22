@@ -12,6 +12,23 @@ jQuery(document).ready(function($){
 			$("#radio").val(buyer_data.gender);
 			$("#mobile").val(buyer_data.phone_no);
             $("#fullname").text(buyer_data.name);
+            if(buyer_data.dob==null){
+            	$("#dob").val('');
+            	$("#dob").hide();
+            	$("#addDob").show();
+            	$("#addDobInput").show();
+            }
+            else{
+            	var dob = buyer_data.dob;
+            	var date = dob.split("-");
+            	if(date[0].length>2){
+            		dob = date[2]+"-"+date[1]+"-"+date[0];
+            	}
+            	$("#dob").val(dob);
+            	$("#addDob").hide();
+            	$("#addDobInput").hide();
+            	$("#dob").prop('disabled', true);
+            }
             //$("#balance").val(buyer_data.balance);
             
             $.ajax({
@@ -25,10 +42,47 @@ jQuery(document).ready(function($){
 
     	    });
 			
-			}
-    }
-    
+		}
+    }	
+	
+	$("#addDob").on('click', function(){
+		
+		var dob = $("#addDobInput").val();
+		console.log(dob);
+		if(dob==null || dob==""){
+			alert("Choose Valid Date");
+			return;
+		}
+        
+        buyer_data.dob=dob;
+        
+        var update={
+                id:buyer_data.id,
+                dob:dob,
+        }
+        
+        console.log(buyer_data.id)
+        setCookie("Buyer_data", JSON.stringify(buyer_data), 1);
 
+        $.ajax({
+            url: "http://localhost:8080/flipkart/webapi/user/editbuyerdetails/"+"dob",
+            data: JSON.stringify(update),
+            type: "POST",
+            contentType:'application/json',
+            success: function(data) {
+        	
+				    if(data=="success"){
+				        alert("Added Successfully");
+				        location.reload();
+				    }
+				    else	{
+					    alert("Error");
+				    }
+			    },
+        });
+
+    });
+	
 
     $("#personalinfoedit").on('click', function(){
         $("#name").prop('disabled', false);

@@ -108,8 +108,11 @@ public class DealServices {
 						LocalDateTime now = LocalDateTime.now();
 						String [] today_datetime = dtf.format(now).split(" ");
 						String today = today_datetime[0];
+						String today_day = today.substring(5,today.length());
 						Buyer buyer = buyer_dao.getUserById(buyer_id);
-						if(buyer.getDob().equals(today)){
+						String buyer_dob = buyer.getDob();
+						if(buyer_dob!=null || buyer_dob!="")
+						if(buyer_dob.substring(5,today.length()).equals(today_day)){
 							result.put(deal_desc);
 						}
 					}
