@@ -71,6 +71,7 @@ public class DealServices {
 	
 	@Path("/getDealsForUser")
 	@POST
+	@Consumes("application/json")
 	@Produces("application/json")
 	public String getDealsForUser(String deal_item_details) throws JSONException, ParseException{
 		DealItemDAO didao = new DealItemDAO();

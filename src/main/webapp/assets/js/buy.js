@@ -73,7 +73,7 @@ jQuery(document).ready(function($){
 		$("#prod_orig_price").text("Rs. "+item.price);
 		$("#prod_discount").text(item.discount+"% Off");
 		seller_id = item.seller_id;
-		toDealsAvailable(item.item_id);
+		//toDealsAvailable(item.item_id);
 		//console.log(seller_id+"...........");
 		
 		//onOrderContinue(item.price, item.discount, item.quantity);
@@ -142,6 +142,7 @@ jQuery(document).ready(function($){
 	        $("#saved_login").append(saved_login);
 			toDelivery(buyer_data.id);
 			toAddAddress(buyer_data.id);
+			toDealsAvailable(item_id, buyer_data.id);
 			onOrderContinue(buyer_data.id);
 			$("#saved_login").show();
 		}
@@ -187,6 +188,7 @@ jQuery(document).ready(function($){
 			        $("#saved_login").append(saved_login);
 					toDelivery(data.id);
 					toAddAddress(data.id);
+					toDealsAvailable(item_id, data.id);
 					onOrderContinue(data.id);
 					$("#saved_login").show();
 			    }
@@ -345,7 +347,7 @@ jQuery(document).ready(function($){
 				success : function(item){
 					if(!$.isEmptyObject(item)){
 						//console.log(item);
-						priceSummary(item.price, item.discount, req_qty);
+						//priceSummary(item.price, item.discount, req_qty);
 						toOrderDetails(item);
 						var qty = item.quantity;
 						if(qty==0){
@@ -376,24 +378,31 @@ jQuery(document).ready(function($){
 		});
 	}
 	
-	function toDealsAvailable(item_id){
-		var url="http://localhost:8080/flipkart/webapi/deal/getDealsOfItem/"+item_id;
+	function toDealsAvailable(item_id, buyer_id){
+		var data = JSON.stringify({
+			item_id : item_id,
+			buyer_id : buyer_id,
+		});
+		var url="http://localhost:8080/flipkart/webapi/deal/getDealsForUser";
 		$.ajax({
-			type : 'GET',
+			type : 'POST',
 			contentType : 'application/json',
 			url : url,
+			data : data,
 			success : function(deals){
 
 				//console.log(deals);	
 				if(!$.isEmptyObject(deals)){
+					$("#deals").show();
 					for(var i=0;i<deals.length;i++){
 						var deal = "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
 						$("#deals").append(deal);
 					}
 				}
 				else{
-					var point = "<li>No deals available on the item.</li>";
-					$("#deals").append(point);
+					//var point = "<li>No deals available on the item.</li>";
+					//$("#deals").append(point);
+					$("#deals").hide();
 				}
 			},
 			error: function(desc) {

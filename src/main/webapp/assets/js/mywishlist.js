@@ -62,8 +62,9 @@ jQuery(document).ready(function($){
 								        "</div>"+
 									"</div>"+
 								"</div>"+
-								"<div style='margin-left: 570px; margin-top: 15px;'>"+
-									"<a id='delete_"+id+"' class='fa fa-trash' style='font-size: 25px; color: gray; cursor: pointer;'></a>"
+								"<div style='margin-left: 400px; margin-top: 15px;'>"+
+									"<div><a id='delete_"+id+"' class='fa fa-trash' style='margin-left: 40px; font-size: 25px; color: gray; cursor: pointer;'></a></div>"+
+									"<div><button id='move_"+item_id+"'class='btn' style='color: white; background-color: rgba(255,69,0, 0.8); border-radius: 0 !important; margin-top: 30px;'>Move to Cart</button></div>"+
 								"</div>"+
 							"</div>"+
 						"</div>";
@@ -71,11 +72,12 @@ jQuery(document).ready(function($){
 					$("#wishlist_"+item_id).show();
 					$("#no_items").hide();
 					onClick(item_id);
+					onClickMove(item_id);
 					onDelete(id);
 				}
 			}
 			else{
-				var no_items = "<div id='no_itens' align='center' style='border: 2px solid #eee;'>"+
+				var no_items = "<div id='no_items' align='center' style='border: 2px solid #eee;'>"+
 								  "<label class='col-form-label'>You have no items in Wishlist.</label>"+
 							   "</div>";
 				$("#mywishlist").append(no_items);
@@ -107,6 +109,28 @@ jQuery(document).ready(function($){
 					location.reload();
 				},
 				error: function(wishlist) {
+					alert("Problem Occured!");
+				}
+			});
+		});
+	}
+	
+	function onClickMove(item_id){
+		$('body').on("click", "#move_"+item_id, function(){
+			var data = JSON.stringify({
+				item_id : item_id,
+				buyer_id : buyer_id,
+			});
+			var url="http://localhost:8080/flipkart/webapi/wishlist/moveToCart";
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : url,
+				data : data,
+				success : function(response){
+					window.location = "Cart.html";
+				},
+				error: function(response) {
 					alert("Problem Occured!");
 				}
 			});

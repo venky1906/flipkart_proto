@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.iiitb.ooad.model.BuyerAccount;
 import org.iiitb.ooad.model.Cart;
 
 public class CartDAO extends HibernateDAO<Cart> {

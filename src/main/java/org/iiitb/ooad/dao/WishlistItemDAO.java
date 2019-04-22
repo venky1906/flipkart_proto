@@ -24,6 +24,14 @@ public class WishlistItemDAO extends HibernateDAO<WishlistItem>{
 		return "fail";
 	}
 	
+	public String deleteItem(WishlistItem item) {
+		int rows = super.deleteRow(entity, "item_id", item.getItem_id(), "buyer_id", item.getBuyer_id());
+		if(rows==1) {
+			return "success";
+		}
+		return "fail";
+	}
+	
 	public int checkItem(WishlistItem item)
 	{
 		WishlistItem val= super.find(entity, "buyer_id", item.getBuyer_id(), "item_id", item.getItem_id());

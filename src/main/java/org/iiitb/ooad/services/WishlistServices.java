@@ -8,10 +8,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.iiitb.ooad.dao.CartDAO;
 import org.iiitb.ooad.dao.ItemDAO;
 import org.iiitb.ooad.dao.ItemImagesDAO;
 import org.iiitb.ooad.dao.ReviewDAO;
 import org.iiitb.ooad.dao.WishlistItemDAO;
+import org.iiitb.ooad.model.Cart;
 import org.iiitb.ooad.model.Item;
 import org.iiitb.ooad.model.ItemImages;
 import org.iiitb.ooad.model.WishlistItem;
@@ -22,9 +24,8 @@ import org.json.JSONObject;
 @Path("/wishlist")
 public class WishlistServices {
 	
-
-	@Path("/getWishlistByBuyerID/{id}")
 	@GET
+	@Path("/getWishlistByBuyerID/{id}")
 	@Produces("application/json")
 	public String getWishlistByBuyerID(@PathParam("id") int buyer_id) throws JSONException{
 		WishlistItemDAO wdao = new WishlistItemDAO();
@@ -35,6 +36,9 @@ public class WishlistServices {
 		List<WishlistItem> wishlist = wdao.getWishlistByBuyerID(buyer_id);
 		
 		if(wishlist!=null) {
+			if(wishlist.size()==0) {
+				return null;
+			}
 			JSONArray result = new JSONArray();
 			for(int i=0;i<wishlist.size();i++) {
 				JSONObject wishlist_item = new JSONObject();
@@ -61,12 +65,38 @@ public class WishlistServices {
 		return "fail";
 	}
 	
-	@Path("deleteWishlistItemByID/{id}")
 	@POST
+	@Path("/deleteWishlistItemByID/{id}")
 	public String deleteWishlistItemByID(@PathParam("id") int id) {
 		WishlistItemDAO wdao = new WishlistItemDAO();
 		return wdao.deleteByID(id);
 	}
+	
+	@POST
+	@Path("/moveToCart")
+	@Consumes("application/json")
+	public String moveToCart(String data) throws JSONException {
+		JSONObject item = new JSONObject(data);
+		
+		WishlistItem witem = new WishlistItem();
+		witem.setBuyer_id(item.getInt("buyer_id"));
+		witem.setItem_id(item.getInt("item_id"));
+		
+		Cart cart = new Cart();
+		cart.setBuyer_id(item.getInt("buyer_id"));
+		cart.setItem_id(item.getInt("item_id"));
+		cart.setQuantity(1);
+		
+		WishlistItemDAO wdao = new WishlistItemDAO();
+		CartDAO cdao = new CartDAO();
+		
+		if(wdao.deleteItem(witem).equals("success") && cdao.getItemFromCartByBuyerId(cart.getBuyer_id(), cart.getItem_id())==null) {
+			cdao.addCart(cart);
+			return "success";
+		}
+		return "fail";
+	}
+	
 	
 	@POST
 	@Path("/checkItemInWishlist")
