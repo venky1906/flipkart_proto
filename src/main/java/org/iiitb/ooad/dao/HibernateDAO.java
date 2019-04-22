@@ -94,6 +94,39 @@ public class HibernateDAO<E> {
 			return null;
 		return entity.get(0);
 	}
+	
+	@SuppressWarnings("unchecked")					
+	public List<E> findAllWithRange(String entity_name, String param1, String  param2, String val)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where " + param1 + " <= :val1 " + " and " + param2 + " >= :val2 ";
+		Query query = session.createQuery(hql);
+		query.setParameter("val1", val);
+		query.setParameter("val2", val);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		return entity;
+	}
+	
+	@SuppressWarnings("unchecked")					
+	public List<E> findAllNotIn(String entity_name,String param1,ArrayList<Integer> values,String param2, String  param3, String val2)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where " + param1 + " not in :val1 " + " and " + param2 + " <= :val2 " + " and " + param3 + " >= :val3 ";
+		Query query = session.createQuery(hql);
+		query.setParameterList("val1", values);
+		query.setParameter("val2", val2);
+		query.setParameter("val3", val2);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		return entity;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<E> list(E ent)

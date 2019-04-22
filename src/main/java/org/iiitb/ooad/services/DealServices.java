@@ -2,10 +2,13 @@ package org.iiitb.ooad.services;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -101,6 +104,64 @@ public class DealServices {
 		}
 		return "fail";
 	}
+	
+	@Path("/getDealsNotAddedToItem/{item_id}")
+	@GET
+	@Produces("application/json")
+	public List<Deal> getDealsNotAddedToItem(@PathParam("item_id") int item_id){
 		
+			DealItemDAO didao = new DealItemDAO();
+			List<DealItem> item_deals = didao.getDealsOfItem(item_id);
+			
+			List<Deal> item_extra_deals = new ArrayList<Deal>();
 
+			DealDAO deal_dao = new DealDAO();
+
+			List<Integer> present_deals_ids = new ArrayList<Integer>();
+			for(int i=0;i<item_deals.size();i++){	
+				present_deals_ids.add(item_deals.get(i).getDeal_id());
+			}
+			
+			if(present_deals_ids.size()==0) {
+				item_extra_deals = deal_dao.getAllValidDeals();
+			}
+			
+			else{
+				item_extra_deals = deal_dao.getAllExtraValidDeals((ArrayList<Integer>) present_deals_ids);				
+			}
+			
+			for(int i=0;i<item_extra_deals.size();i++){				
+				String end_date = item_extra_deals.get(i).getDate_ended();
+				String[] datetime = end_date.split(" ");
+				String[] date = datetime[0].split("-");
+				item_extra_deals.get(i).setDate_ended(date[2]+"-"+date[1]+"-"+date[0]+" "+datetime[1].substring(0, 8));
+			}
+			
+			return item_extra_deals;
+	}
+	
+	@Path("/addItemToDeals")
+	@POST
+	@Consumes("application/json")
+	public String addItemToDeals(List<DealItem> deal_items){
+		
+		DealItemDAO dao = new DealItemDAO();
+		
+		for(int i=0;i<deal_items.size();i++){
+			int id = dao.addDealItem(deal_items.get(i));
+			if(id==-1){
+				return "fail";
+			}
+		}
+		return "success";
+	}
+	
+	@Path("/removeDealItem")
+	@POST
+	@Consumes("application/json")
+	public String deleteDealItem(DealItem dealItem){
+		
+		DealItemDAO dao = new DealItemDAO();
+		return dao.deleteDealItem(dealItem);
+	}
 }

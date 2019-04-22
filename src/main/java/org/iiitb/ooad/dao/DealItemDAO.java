@@ -3,6 +3,7 @@ package org.iiitb.ooad.dao;
 import java.util.List;
 
 import org.iiitb.ooad.model.DealItem;
+import org.iiitb.ooad.model.ItemDetails;
 
 public class DealItemDAO extends HibernateDAO<DealItem> {
 	
@@ -16,5 +17,26 @@ public class DealItemDAO extends HibernateDAO<DealItem> {
 			return deals;
 		}
 		return null;
+	}
+	
+	public int addDealItem(DealItem dealItem)
+	{
+		try {
+			int dealItem_id = super.add(dealItem);
+			return dealItem_id;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public String deleteDealItem(DealItem dealItem){
+		int rows = super.deleteRow(entity,"deal_id",dealItem.getDeal_id(),"item_id",dealItem.getItem_id());
+		if(rows>0)
+			return "success";
+		else
+			return "fail";
 	}
 }

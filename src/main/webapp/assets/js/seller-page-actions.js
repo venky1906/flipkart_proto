@@ -574,7 +574,6 @@ jQuery(document).ready(function($){
 		        }
 		        
 			});
-			
 		}
 	}
 	
@@ -755,9 +754,14 @@ jQuery(document).ready(function($){
 										"<button type='button' class='btn btn-primary edit_btn' id='editQuantity_"+ item.item_id +"' style='margin-left:20px;'>EDIT</button>"+
 									"</div>"+	
 								"</div>"+
+								"<div class='form-group' style='margin-left:40px'>"+
+									"<div class=form-group row' style='margin-top:10px;'>"+
+										"<button type='button' class='btn btn-success active_deal_button' id='active_deals_"+ item.item_id +"' item_id="+ item.item_id +" data-toggle='modal' data-target='#ActiveDealsModal'>ACTIVE DEALS</button>"+
+										"<button type='button' style='margin-left:20px;' class='btn btn-primary add_deal_button' id='active_deals_"+ item.item_id +"' item_id="+ item.item_id +" data-toggle='modal' data-target='#ExtraDealsModal'>ADD DEALS</button>"+
+									"</div>"+
+								"</div>"+					
 							"</div>";
-							
-							
+												
 				var label_division = "<!-- Details of the item -->"+
 							"<div class='form-group' style='margin-left:100px'>"+
 								"<div class='row'>"+
@@ -787,7 +791,8 @@ jQuery(document).ready(function($){
 										
 				
 							
-				label_value_division = "<div class='form-group' style='margin-left:100px'>"+
+				label_value_division = 
+					"<div class='form-group' style='margin-left:100px'>"+
 								"<div class='row'>"+
 									"<label>: "+ item.id +"</label>"+
 								"</div>"+
@@ -831,6 +836,8 @@ jQuery(document).ready(function($){
 					"<label style='font-weight:bold;'>Description</label>"+
 				"</div>"+
 			"</div>";
+			
+			
 			label_value_division = label_value_division +
 				"<div class='row'>"+
 					"<label>: "+ item.description +"</label>"+
@@ -840,7 +847,7 @@ jQuery(document).ready(function($){
 			var div_end	= "</div>";
 			  
 			
-			new_division = new_division + label_division + label_value_division + div_end + "</div>";
+			new_division = new_division + label_division + label_value_division  + div_end + "</div>";
 				
 			$("#manageAllItems").append(new_division);
 			$(".save_btn").hide();
@@ -849,7 +856,257 @@ jQuery(document).ready(function($){
 		}
 	}
 	
+	//Modal for Active Deals
+	$('body').on("click",".active_deal_button",function(){
+		
+		$('.dynamic-modal').remove();
+		var item_id = $(this).attr('item_id');
+		console.log("Item Id " + item_id);
+		showActiveDealsModal(item_id);
 	
+	});
+	
+	function showActiveDealsModal(item_id){
+		
+		console.log("Entered Modal Function");
+		
+		var modal = 
+			"<div class='modal fade dynamic-modal' id='ActiveDealsModal'>"+
+				"<div class='modal-dialog modal-lg modal-dialog-centered'>"+
+					"<div class='modal-content'>"+
+						"<div class='modal-header'>"+
+							"<h5 class='modal-title' style='color: black; font-weight: bold;'>ACTIVE DEALS FOR THE ITEM</h5>"+
+							"<button type='button' class='close' data-dismiss='modal'>&times;</button>"+
+						"</div>"+
+						"<div class='modal-body' id='deals' align='center'>"+
+							"<form class='form-group'>"+
+								"<div class='form-group row' align='center' id='noActiveDeals'>"+
+									"<label class='col-form-label col-lg-4' style='color: gray;'>No Deals Active For This Item</label>"+
+								"</div>"+
+							"</form>"+
+						"</div>"+
+						"<div class='modal-footer'>"+
+							"<button id='close' type='button' class='col-lg-3 btn btn-danger btn-lg' data-dismiss='modal'>CLOSE</button>"+
+						"</div>"+
+					"</div>"+
+				"</div>"+
+			"</div>";
+		
+		$("#manageAllItems").append(modal);
+		$("#ActiveDealsModal").show();		
+		getActiveDealsOfItem(item_id);
+	}
+	
+	// Modal for Active Modal
+	function getActiveDealsOfItem(item_id){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/deal/getDealsOfItem/"+item_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		if(data.length==0){
+	        			return;
+	        		}
+	        		$("#noActiveDeals").hide();
+	        		
+	        		for(var i=0;i<data.length;i++){
+	        			var deal = data[i];
+	        			var deal_div =
+	        				"<div class='row' style='margin-left:20px;' id="+ "deal_" + deal.deal_id  +" >"+
+	        						"<li> "+
+			        					"<label style='color: green; font-weight: bold; margin-right: 5px;'>"+deal.name+" </label>"+
+			        					"<label style='color: gray;'>"+deal.deal_discount+" % Off</label>"+
+			        					"<button type='button' item_id="+ item_id + " deal_id="+deal.deal_id+" id='removeDeal' class='close' aria-label='Close'>"+
+			        					  "<span aria-hidden='true'>&times;</span>"+
+			        					"</button>"+
+			        					"<div class='row' style='margin-left:40px'>"+
+			        						"<label style='color: blue; margin-left:25px;'> - Valid till "+deal.validity+"</label>"+
+			        					"</div>"+
+			        				"</li>"+	
+	        				"</div>";
+	        			
+	        			$("#deals").append(deal_div);
+	        		}
+	        	}
+	        	else{
+	        		alert("failed to get Colors");	
+	        	}
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get Colors !");
+	        }        
+		});
+	}
+	
+	$('body').on('click','#removeDeal',function(){
+		
+		var item_id = $(this).attr('item_id');
+		var deal_id = $(this).attr('deal_id');
+	
+		console.log(item_id + " " + deal_id);
+		
+		dealItem = {
+				"item_id" : item_id,
+				"deal_id" : deal_id,
+		};
+		
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/deal/removeDealItem",
+			type:"POST",
+			data: JSON.stringify(dealItem),
+			contentType: 'application/json',
+			success : function(data){
+	        	
+	        	if(data=="success"){
+	        		$("#deal_"+deal_id).remove();
+	        	}
+	        	else
+	        		alert("failed to Delete Deal");
+	        },
+	        error : function(data){
+	        	alert("failed to Delete Deals to Item!");
+	        }
+		});
+	});
+	
+	//Modal for Add Deals
+	$('body').on("click",".add_deal_button",function(){
+		
+		$('.dynamic-modal').remove();
+		var item_id = $(this).attr('item_id');
+		console.log("Item Id " + item_id);
+		showAddDealsModal(item_id);
+	
+	});
+	
+	function showAddDealsModal(item_id){
+		
+		console.log("Entered Modal Function");
+		
+		var modal = 
+			"<div class='modal fade dynamic-modal' id='ExtraDealsModal'>"+
+				"<div class='modal-dialog modal-lg modal-dialog-centered'>"+
+					"<div class='modal-content'>"+
+						"<div class='modal-header'>"+
+							"<h5 class='modal-title' style='color: black; font-weight: bold;'>ADD DEALS</h5>"+
+							"<button type='button' class='close' data-dismiss='modal'>&times;</button>"+
+						"</div>"+
+						"<div class='modal-body' id='deals' align='center'>"+
+							"<form class='form-group'>"+
+								"<div class='form-group row' align='center' id='noNewDeals'>"+
+									"<label class='col-form-label col-lg-4' style='color: gray;'>No Deals Present</label>"+
+								"</div>"+
+							"</form>"+
+						"</div>"+
+						"<div class='modal-footer'>"+
+							"<button id='done' type='button' class='col-lg-3 btn btn-success btn-lg' data-dismiss='modal'>DONE</button>"+
+						"</div>"+
+					"</div>"+
+				"</div>"+
+			"</div>";
+		
+		$("#manageAllItems").append(modal);
+		$("#ExtraDealsModal").show();		
+		getExtraDealsOfItem(item_id);
+	}
+	
+	$("body").on("click","#done",function(){
+		
+		var dealItems = [];
+	    
+		$("input[type='checkbox']:checked").each(function(){
+	    	
+	    	dealItem = {};
+		    
+	    	var item_id = $(this).attr('item_id');
+	    	var deal_id = $(this).val();
+	    	
+	    	dealItem["item_id"]=item_id;
+	    	dealItem["deal_id"]= deal_id;
+	    	dealItems.push(dealItem);	
+	    });
+		
+		if(dealItems.length>0){
+			addItemToDeals(dealItems);
+		}
+		
+	});
+	
+	function addItemToDeals(dealItems){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/deal/addItemToDeals",
+			type:"POST",
+			data: JSON.stringify(dealItems),
+			contentType: 'application/json',
+			success : function(data){
+	        	
+	        	if(data=="success"){
+	        		alert("Deals Added Successfully");
+	        	}
+	        	else
+	        		alert("failed to add Some Deals to Item");
+	        },
+	        error : function(data){
+	        	alert("failed to add Deals to Item!");
+	        }       
+		});	
+	}
+	
+	// Modal for Add Deal Modal
+	function getExtraDealsOfItem(item_id){
+		
+		$.ajax({
+			url:"http://localhost:8080/flipkart/webapi/deal/getDealsNotAddedToItem/"+item_id,
+			type:"GET",
+			cache:false,
+			contentType:false,
+			processData: false,
+	        success : function(data){
+	        	
+	        	if(data){
+	        		console.log(data);
+	        		if(data.length==0){
+	        			return;
+	        		}
+	        		$("#noNewDeals").hide();
+	        		
+	        		for(var i=0;i<data.length;i++){
+	        			var deal = data[i];
+	        			var deal_div =
+	        				"<div class='row' style='margin-left:20px;' id="+ "deal_" + deal.deal_id  +" >"+
+	        							"<label style='color: green; font-weight: bold; margin-right:5px;'><input style='margin-right:5px' type='checkbox' name='add_deal_item' item_id="+ item_id +" value="+deal.deal_id +" >"+deal.name+"</label>"+ 
+	        							"<label style='color: gray;'>"+deal.deal_discount+" % Off</label>"+
+			        					"<div class='row' style='margin-left:40px'>"+
+			        						"<label style='color: blue; margin-left:25px;'> - Valid till "+deal.date_ended+"</label>"+
+			        					"</div>"+	
+	        				"</div>";
+	        			
+	        			$("#deals").append(deal_div);
+	        		}
+	        	}
+	        	else{
+	        		alert("failed to get Colors");	
+	        	}
+	        },
+	        
+	        error : function(data){
+	        	alert("failed to get Colors !");
+	        }
+	        
+		});
+	}
+	
+	
+
 	//show enlarged image on hover of small image.
 	$('body').on("mouseenter",".small_image",function(){
 		var image = $(this).attr("src");
@@ -958,8 +1215,6 @@ jQuery(document).ready(function($){
 	        
 		});
 	};*/
-	
-	
 
 // Seller Order Functions
 	

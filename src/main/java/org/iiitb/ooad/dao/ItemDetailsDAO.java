@@ -26,8 +26,5 @@ public class ItemDetailsDAO extends HibernateDAO<ItemDetails> {
 			e.printStackTrace();
 			return -1;
 		}
-	}
-	
-	
-	
+	}	
 }
