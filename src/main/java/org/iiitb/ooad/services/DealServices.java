@@ -28,6 +28,7 @@ import org.json.JSONObject;
 @Path("/deal")
 public class DealServices {
 	
+	private String deals_folder = "/home/sowmya/Desktop/workspace/flipkart_proto/src/main/webapp/images/deal_images/";
 
 	@Path("/getDealsOfItem/{id}")
 	@GET
@@ -225,4 +226,70 @@ public class DealServices {
 		DealItemDAO dao = new DealItemDAO();
 		return dao.deleteDealItem(dealItem);
 	}
+	
+	@Path("addDeal")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addDeal( @FormDataParam("image") InputStream uploadedInputStream,
+            @FormDataParam("image") FormDataContentDisposition fileDetail,
+            @FormDataParam("dealname") String dealname,
+            @FormDataParam("description") String description,
+            @FormDataParam("discount") Float discount,
+            @FormDataParam("startdate") String startdate,
+            @FormDataParam("enddate") String enddate) {
+		
+			System.out.println(dealname);
+		try {
+			
+			
+			String images_location = deals_folder;
+			String pattern = "(?!^)\\.(?=[^.]*$)|(?<=^\\.[^.]{0,1000})$";
+			
+			if(fileDetail!=null) {
+				String[] filename =fileDetail.getFileName().split(pattern,-1);
+				String modifiedfilename = filename[0]+"_"+System.currentTimeMillis()+"."+filename[1];
+				System.out.println(modifiedfilename);
+				String actual_image_location = images_location + modifiedfilename;
+				String image_location = "images/deal_images/"+modifiedfilename;
+				writeToFile(uploadedInputStream, actual_image_location);
+				
+				DealDAO dao = new DealDAO();
+				
+				Deal deal = new Deal(dealname, description,discount,startdate,enddate,image_location);
+				int id=dao.addDeal(deal);
+				if(id!=-1) {
+					return "success";
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+		return "fail";
+		
+	}
+
+	private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation){
+		try
+            {
+                    OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+                    int read = 0;
+                    byte[] bytes = new byte[1024];
+
+                    out = new FileOutputStream(new File(uploadedFileLocation));
+                    while ((read = uploadedInputStream.read(bytes)) != -1)
+                    {
+                            out.write(bytes, 0, read);
+                    }
+                    out.flush();
+                    out.close();
+            }catch (IOException e)
+            {
+
+                    e.printStackTrace();
+            }
+
+    }
 }
