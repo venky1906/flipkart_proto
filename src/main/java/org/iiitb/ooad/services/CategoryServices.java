@@ -128,4 +128,14 @@ public class CategoryServices {
 			return colors;
 	}
 	
+	@POST
+	@Path("/addColor")
+	@Consumes("application/json")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String addColor(Color color) {
+		ColorDAO dao = new ColorDAO();
+		dao.addColor(color);
+		return "success";
+	}
+	
 }
