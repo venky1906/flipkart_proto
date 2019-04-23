@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/bootstrap.min.4.3.1.css" rel="stylesheet" id="bootstrap-css">
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.4.3.1.js"></script>
+<script src="assets/js/popper.min.js"></script>
+<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="assets/css/style-itemslist.css">
+  <title>Flipkart: Add Deals</title>
+</head>
+<body>
+	<div>
+		<a href="add_category.html"><button type="button" id="back" >BACK</button></a>
+	
+	</div>
+	
+	<form action='webapi/deal/addDeal' style="border:1px solid #ccc" id ="form_data" method='POST' enctype="multipart/form-data">
+	  <div class="container">
+	    <h1>Add Deal</h1>
+	    <p>Please fill in this form to create an Deal.</p>
+	    <hr>
+		<div class="form-group">
+	    <label for="dealname"><b>Deal Name</b></label>
+	    <input type="text" class="form-control" placeholder="Enter Deal Name" name="dealname" id="dealname" required>
+	    </div>
+	
+		<div class="form-group">
+	    <label for="description"><b>Description</b></label>
+	    <input type="text" class="form-control" placeholder="Describe the deal" id="description" name="description" required>
+	    </div>
+	    
+		<div class="form-group">
+	    <label for="discount"><b>Deal Discount</b></label>
+	    <input type="number"  class="form-control"placeholder="Enter Deal Discount" name="discount" id ="discount" required>
+	    </div>
+	    
+	    <div class="form-group">
+	    <label for="startdate"><b>Deal start date</b></label>
+	    <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="startdate" id="startdate" required>
+	    </div>
+	    
+	    <div class="form-group">
+	    <label for="enddate"><b>Deal end date</b></label>
+	    <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="enddate" id="enddate" required>
+	    </div>
+	
+	    <br>
+	    <div class="form-group">
+			<label for="image"><b>Image</b></label>   
+    		<input id="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" name="image"/>
+		</div>	
+			<img id="file-upload-image" src="#" alt="your image"/>
+    		<div class="clearfix">
+	    	
+	     
+	      <a href="add_category.html"><button type="submit" class="btn btn-default" style="background-color:green" action="add_category.html">Submit</button>
+	   	  </a>
+	   	  </div>
+	   	  
+	  </div>
+	</form>
+	
+</body>
+<script src="assets/js/add_deals.js"></script>
+</html>
