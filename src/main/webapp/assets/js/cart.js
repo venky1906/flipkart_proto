@@ -37,7 +37,7 @@ jQuery(document).ready(function($){
 					 $("#total_items").text("Price ("+no_items+" items)");
 					 $.each(cart,function(index,cart_item){
 						 var item_id = cart_item.item_id;
-						 var item_info = "<div class='card' id="+item_id+">"+
+						 var item_info = "<div class='card' name='item' id="+item_id+">"+
 							 				"<div class='card-body'>"+
 						 						"<div class='row'>"+
 						 							"<div class='column'>";	
@@ -62,6 +62,42 @@ jQuery(document).ready(function($){
 			}
 		 });
 	 }
+	 
+	 function dealsAvailable(item_id, buyer_id,item_info){
+			var data = JSON.stringify({
+				item_id : parseInt(item_id),
+				buyer_id : buyer_id,
+			});
+			var url="http://localhost:8080/flipkart/webapi/deal/getDealsForUser";
+			$.ajax({
+				type : 'POST',
+				contentType : 'application/json',
+				url : url,
+				data : data,
+				success : function(deals){
+
+					//console.log(deals);
+					if(!$.isEmptyObject(deals)){
+						item_info+=	"<div><select class='col-lg-8' style='color: green;' name='Deals' id='deals' data-id="+item_id+">"+
+						"<option value='select'>Select Deal</option>"; 
+	 						for(var i=0;i<deals.length;i++){
+							item_info += "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
+						}
+	 					item_info +="</select></div>";
+					}
+					else{
+						item_info += "<li style='color:green'>No deals available on the item.</li>";
+					}
+					item_info+="</div> </div> </div> </div>";
+ 					$("#cart").append(item_info);
+				
+				},
+				error: function(desc) {
+					alert("failed");
+				}
+			});
+		}
+
 	 function setSeller(seller_id,itemInfo,item,quantity){
 		 $.ajax({
 			 url:"http://localhost:8080/flipkart/webapi/user/getSellerById/"+seller_id,
@@ -74,7 +110,9 @@ jQuery(document).ready(function($){
 				 {
 					 var disc_price = item.price-(item.price*item.discount)/100;
 					 disc_price*=quantity;
+					 disc_price = disc_price;
 					 savings+=quantity*item.price*item.discount/100;
+					 savings = savings;
 					 console.log(savings);
 					 price+=disc_price;
 					 $("#total_price").text("₹"+price);
@@ -88,11 +126,11 @@ jQuery(document).ready(function($){
 									"<div style='margin-top: 10px'>"+
 										"<span style='margin-top: 10px;color: #878787;font-size: 12px;'>Seller: "+ seller.name+"</span>"+
 									"</div>"+
-									"<span class='pMSy0p XU9vZa'> ₹"+disc_price+"</span>"+
-									"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
-									"<span class='hMGTLH'>"+item.discount+"% Off</span>"+
-								"</div> </div> </div> </div>";
-					 $("#cart").append(itemInfo);
+									"<span class='pMSy0p XU9vZa' name='disc_price' data="+disc_price+"> ₹"+disc_price+"</span>"+
+									"<span class='pMSy0p LYRnr_' name='orig_price' data="+item.price*quantity+">₹"+item.price*quantity+"</span>"+
+									"<span class='hMGTLH' name='discount' data="+item.discount+">"+item.discount+"% Off</span>";
+				
+					 dealsAvailable(item.item_id,buyer_id,itemInfo);
 				 }
 			 },
 			 error:function(){
@@ -193,6 +231,45 @@ jQuery(document).ready(function($){
 	 $("#cart").on('click','.remove',function(){
 		removeItem($(this).attr('data-id')); 
 	 });
+	 $("#cart").on('change','select',function(){
+		 	var id = $(this).val();
+			var item_id = $(this).attr('data-id');
+			console.log(" Item "+ item_id);
+			if(id!="select"){
+				var discount = id.split("_")[1];
+				var item = $("div[name='item'][id="+item_id+"]");
+				var item_price = $(item).find("span[name='orig_price']").attr('data');
+				var item_savings = ((discount/100.0)*(item_price));
+				
+				var offer_price = (item_price-item_savings);
+				$(item).find("span[name='discount']").text(discount+"% Off");
+				$(item).find("span[name='discount']").attr('data',discount);
+				$(item).find("span[name='disc_price']").text("Rs. "+offer_price);
+				$(item).find("span[name='disc_price']").attr('data',offer_price);
+				
+				priceSummary();
+			}
+			else
+			{
+				window.location = "Cart.html";
+			}
+		});
+	 function priceSummary(){
+		 var items = $("div[name='item']");
+		 var total_price = 0;
+		 total_price = parseInt(total_price);
+		 var total_savings = 0;
+		 for(var i=0;i<no_items;i++)
+		 {
+			 var item = items[i];
+			 total_price+= parseInt($(item).find("span[name='disc_price']").attr('data'));
+			 total_savings += $(item).find("span[name='discount']").attr('data')*$(item).find("span[name='orig_price']").attr('data')/100;
+		 }
+		 total_price = parseInt(total_price);
+		 $("#total_price").text("₹"+total_price);
+		 $("#pay_price").text("₹"+total_price);
+		 $("#savings").text(total_savings);
+	 }
 
 	 $("#cart").on('click','button',function(){
 		var item_id = $(this).attr('data-id');
@@ -267,7 +344,59 @@ jQuery(document).ready(function($){
 		}
 	 });
 	 
+	 function place_order(items,item_number){
+		 	
+		 	if(item_number==items.length){
+		 		window.location = "BuyCart.html";
+		 		return;
+		 	}
+		 	var item = items[item_number];
+			var item_id = $(item).attr('id');
+			console.log(" ID " + item);
+			var id = $(item).find("select").val();
+			var deal_id = parseInt(id.split("_")[0]);
+			if(id!='select')
+			{
+				var item_data = JSON.stringify({"buyer_id":buyer_id,
+					"item_id":item_id,
+					"deal_id":deal_id
+				});
+				$.ajax({
+					url:"http://localhost:8080/flipkart/webapi/cart/updateDealInCart",
+					type:'POST',
+					contentType : "application/json",
+					data:item_data,
+					success: function(response){
+						place_order(items,item_number+1);
+					}
+				});
+			}
+			else{
+				var item_data = JSON.stringify({"buyer_id":buyer_id,
+					"item_id":item_id,
+					"deal_id":0
+				});
+				$.ajax({
+					url:"http://localhost:8080/flipkart/webapi/cart/updateDealInCart",
+					type:'POST',
+					contentType : "application/json",
+					data:item_data,
+					success: function(response){
+						place_order(items,item_number+1);
+					}
+				});
+			}
+	 }
+	 
+	 
 	$("#place_order").click(function(){
-		window.location = "BuyCart.html";
+		
+		var items = $("div[name='item']");
+		if(items.length>0)
+		place_order(items,0);
+		for(var i=0;i<no_items;i++)
+		{
+			
+		}
 	});
 })

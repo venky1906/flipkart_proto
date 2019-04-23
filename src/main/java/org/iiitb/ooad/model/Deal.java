@@ -9,6 +9,10 @@ public class Deal {
 	private String date_ended;
 	private String deal_img;
 	
+	public Deal(){
+		
+	}
+	
 	public int getDeal_id() {
 		return deal_id;
 	}

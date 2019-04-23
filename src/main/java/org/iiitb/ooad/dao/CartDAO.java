@@ -56,7 +56,34 @@ public class CartDAO extends HibernateDAO<Cart> {
 		}
 	}
 	
-	
+	public int updateDeal(Cart cart)
+	{
+		try {
+			
+			List<Field> fields = new ArrayList<Field>();
+			Field quantity_field = cart.getClass().getDeclaredField("deal_id");
+			quantity_field.setAccessible(true);
+			fields.add(quantity_field);
+			if(super.update(cart, "id", cart.getId(), fields)==1)
+				return 1;
+			else
+				return 0;
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	public int updateDealInCart(Cart cart)
+	{
+		Cart curr_cart = getItemFromCartByBuyerId(cart.getBuyer_id(),cart.getItem_id());
+		curr_cart.setDeal_id(cart.getDeal_id());
+		if(updateDeal(curr_cart)==1) {
+			return 1;
+		}
+		return 0;
+	}
 	
 	public int updateQuantityInCart(Cart cart)
 	{

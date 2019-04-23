@@ -14,6 +14,7 @@
       <property name = "buyer_id" column = "buyer_id" type = "int"/>
       <property name = "item_id" column = "item_id" type = "int"/>
       <property name = "quantity" column = "quantity" type = "int"/>
+      <property name = "deal_id" column = "deal_id" type = "int"/>
       </class>
 	
 </hibernate-mapping>

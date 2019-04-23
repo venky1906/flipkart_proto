@@ -301,4 +301,13 @@ public class DealServices {
             }
 
     }
+	
+	@Path("/getDeal/{deal_id}")
+	@POST
+	@Produces("application/json")
+	public Deal getDeals(@PathParam("deal_id") int deal_id){
+		
+		DealDAO dao = new DealDAO();
+		return dao.getDealDetailsByID(deal_id);
+	}
 }

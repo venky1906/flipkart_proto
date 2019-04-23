@@ -5,6 +5,13 @@ public class Cart {
 	private int id;
 	private int buyer_id;
 	private int item_id;
+	private int deal_id;
+	public int getDeal_id() {
+		return deal_id;
+	}
+	public void setDeal_id(int deal_id) {
+		this.deal_id = deal_id;
+	}
 	private int quantity;
 	public int getId() {
 		return id;

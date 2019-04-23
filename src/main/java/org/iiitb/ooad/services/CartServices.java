@@ -67,6 +67,15 @@ public class CartServices {
 		return dao.updateQuantityInCart(cart);
 	}
 	
+	@POST
+	@Path("/updateDealInCart")
+	@Consumes("application/json")
+	public int updateDealsInCart(Cart cart)
+	{
+		CartDAO dao = new CartDAO();
+		return dao.updateDealInCart(cart);
+
+	}
 	
 	@POST
 	@Path("/removeItem")

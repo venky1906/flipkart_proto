@@ -445,48 +445,6 @@ jQuery(document).ready(function($){
 		var order_items = $("div[name='item']");
 		console.log(order_items);
 		placeOrder(order_items,0);
-		
-		/*
-		$("div[name='item']").each(function(){
-			len++;
-			console.log("Length " + len);
-			var quantity = $(this).find("div[name='Quantity']").attr('data');
-			var s_id  = $(this).find("div[name='seller']").attr('id');
-			var amount = $(this).find("span[name='amount']").attr('data');
-			var orderItem = {
-				item_id : $(this).attr('id'),
-				seller_id : s_id,
-				quantity : quantity,
-				buyer_id : buyer_id,
-				address_id : address_id,
-				amount_paid : amount,
-				status : "paymentdone",
-			}
-			var url="http://localhost:8080/flipkart/webapi/order/addOrderDetails";
-			$.ajax({
-				type : 'POST',
-				contentType : 'application/json',
-				url : url,
-				data : JSON.stringify(orderItem),
-				success : function(data){
-			       	if(data=="success"){
-			       		
-			       		console.log(len+ " - "+no_items);
-			       		if(len==no_items)
-			       		{
-			       			removeCart(buyer_id);
-			       		}
-			       		
-			       	}
-			      	else{
-						alert("Issue in placing order!");
-					}
-				},
-				error: function(data) {
-					alert("failed");
-				}
-			});
-		});*/
 	}
 	
 	 function getCartItems(buyerID)
@@ -510,7 +468,7 @@ jQuery(document).ready(function($){
 							 				"<div class='card-body'>"+
 						 						"<div class='row'>"+
 						 							"<div class='column'>";	
-						 setImage(item_id,item_info,cart_item.quantity);						 
+						 setImage(item_id,item_info,cart_item.quantity,cart_item.deal_id);						 
 					 });
 					 
 					 
@@ -531,7 +489,75 @@ jQuery(document).ready(function($){
 			}
 		 });
 	 }
-	 function setSeller(seller_id,itemInfo,item,quantity){
+	 
+	 
+	 function setDeal(seller,itemInfo,item, quantity, deal_id)
+	 {
+	 	if(deal_id!=0 && deal_id!=null)
+	 	{
+	 		$.ajax({
+	 			url:"http://localhost:8080/flipkart/webapi/deal/getDeal/"+deal_id,
+	 			type:'POST',
+	 			cache : false,
+	 			contentType : false,
+	 			processData : false,
+	 			success: function(deal){
+				
+				 var disc_price = item.price-(item.price*deal.deal_discount)/100;
+				 disc_price*=quantity;
+				 savings+=quantity*item.price*deal.deal_discount/100;
+				 price+=disc_price;
+				 $("#total_price").text("₹"+price);
+				 $("#pay_price").text("₹"+price);
+				 $("#savings").text(savings);
+				 itemInfo+= "<div class='column' style='padding-left:35px'>"+
+								"<a style='font-size:16px;line-height:1' href='SingleProduct.html?itemid="+item.item_id+"'>"+ item.name+"</a>"+
+								"<div class='v7-Wbf' style='margin-top: 5px;display: block;color: #878787;font-size: 12px;'>"+
+									item.description + 
+								"</div>"+
+								"<div style='margin-top: 10px' name='seller' id="+seller.id+">"+
+									"<span style='margin-top: 10px;color: #878787;font-size: 12px;'>Seller: "+ seller.name+"</span>"+
+								"</div>"+
+								"<span class='pMSy0p XU9vZa' name='amount' data="+disc_price+" > ₹"+disc_price+"</span>"+
+								"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
+								"<span class='hMGTLH'>"+deal.deal_discount+"% Off</span>"+
+								"<li style='color:green' > Offer : "+deal.name+"</li>"+
+								"<li style='color:blue' > Description : "+deal.description+"</li>"+
+							"</div> </div> </div> </div>";
+				 $("#cart").append(itemInfo);
+				 
+	 			  },
+	 			  error: function(cart) {
+	 				  alert("Failed to fetch cart details!");
+	 			  }
+	 			});
+	 	}
+	 	else{
+	 		var disc_price = item.price-(item.price*item.discount)/100;
+			 disc_price*=quantity;
+			 savings+=quantity*item.price*item.discount/100;
+			 price+=disc_price;
+			 $("#total_price").text("₹"+price);
+			 $("#pay_price").text("₹"+price);
+			 $("#savings").text(savings);
+			 itemInfo+= "<div class='column' style='padding-left:35px'>"+
+							"<a style='font-size:16px;line-height:1' href='SingleProduct.html?itemid="+item.item_id+"'>"+ item.name+"</a>"+
+							"<div class='v7-Wbf' style='margin-top: 5px;display: block;color: #878787;font-size: 12px;'>"+
+								item.description + 
+							"</div>"+
+							"<div style='margin-top: 10px' name='seller' id="+seller.id+">"+
+								"<span style='margin-top: 10px;color: #878787;font-size: 12px;'>Seller: "+ seller.name+"</span>"+
+							"</div>"+
+							"<span class='pMSy0p XU9vZa' name='amount' data="+disc_price+" > ₹"+disc_price+"</span>"+
+							"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
+							"<span class='hMGTLH'>"+item.discount+"% Off</span>"+
+							"<li style='color:green' > No Deals Applied</li>"+
+						"</div> </div> </div> </div>";
+			 $("#cart").append(itemInfo);
+	 	}
+	 }
+	 
+	 function setSeller(seller_id,itemInfo,item,quantity,deal_id){
 		 $.ajax({
 			 url:"http://localhost:8080/flipkart/webapi/user/getSellerById/"+seller_id,
 			 type : 'POST',
@@ -541,26 +567,7 @@ jQuery(document).ready(function($){
 			 success:function(seller){
 				 if(seller!=null)
 				 {
-					 var disc_price = item.price-(item.price*item.discount)/100;
-					 disc_price*=quantity;
-					 savings+=quantity*item.price*item.discount/100;
-					 price+=disc_price;
-					 $("#total_price").text("₹"+price);
-					 $("#pay_price").text("₹"+price);
-					 $("#savings").text(savings);
-					 itemInfo+= "<div class='column' style='padding-left:35px'>"+
-									"<a style='font-size:16px;line-height:1' href='SingleProduct.html?itemid="+item.item_id+"'>"+ item.name+"</a>"+
-									"<div class='v7-Wbf' style='margin-top: 5px;display: block;color: #878787;font-size: 12px;'>"+
-										item.description + 
-									"</div>"+
-									"<div style='margin-top: 10px' name='seller' id="+seller.id+">"+
-										"<span style='margin-top: 10px;color: #878787;font-size: 12px;'>Seller: "+ seller.name+"</span>"+
-									"</div>"+
-									"<span class='pMSy0p XU9vZa' name='amount' data="+disc_price+" > ₹"+disc_price+"</span>"+
-									"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
-									"<span class='hMGTLH'>"+item.discount+"% Off</span>"+
-								"</div> </div> </div> </div>";
-					 $("#cart").append(itemInfo);
+					 setDeal(seller,itemInfo,item,quantity,deal_id); 
 				 }
 			 },
 			 error:function(){
@@ -569,7 +576,7 @@ jQuery(document).ready(function($){
 			 
 		 });
 	 }
-	 function setItemData(item_id,itemInfo,quantity){
+	 function setItemData(item_id,itemInfo,quantity,deal_id){
 		 $.ajax({
 			 url:"http://localhost:8080/flipkart/webapi/items/getItemByItemId/"+item_id,
 			 type : 'POST',
@@ -579,7 +586,7 @@ jQuery(document).ready(function($){
 			 success:function(item){
 				 if(item!=null)
 				 {
-					 setSeller(item.seller_id,itemInfo,item,quantity);
+					 setSeller(item.seller_id,itemInfo,item,quantity,deal_id);
 				 }
 			 },
 			 error:function(){
@@ -589,7 +596,7 @@ jQuery(document).ready(function($){
 		 });
 	 }
 	
-	 function setImage(item_id,itemInfo,quantity){
+	 function setImage(item_id,itemInfo,quantity,deal_id){
 		 $.ajax({
 			 url:"http://localhost:8080/flipkart/webapi/items/getItemImagesByItemId/"+item_id,
 			 type : 'POST',
@@ -609,7 +616,7 @@ jQuery(document).ready(function($){
 					 				"</div>"+
 					 				"</div> </div>";
 					 
-					 setItemData(item_id,itemInfo,quantity);
+					 setItemData(item_id,itemInfo,quantity,deal_id);
 				 }
 			 },
 			 error:function(){
