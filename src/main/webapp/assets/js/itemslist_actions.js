@@ -96,13 +96,10 @@ jQuery(document).ready(function($){
 			success: function(data) {
                 console.log(data);
 				if(data){
-					data = data.substring(1,data.length-1);
-					console.log(data);
-					var allColors = data.split(', ');
-					//var allColors = data;
+					var allColors = data;
 					console.log(allColors)
 	                for(var i=0;i<allColors.length;i++){
-	                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i]+">"+allColors[i]+"<br>"; 
+	                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i].color+">"+allColors[i].color+"<br>"; 
 	                	$("#color_filter").append(colors);
 	                }
 				}
@@ -116,12 +113,9 @@ jQuery(document).ready(function($){
     $("body").on('click',".colors",function(){
     	$('input[type="checkbox"]').not(this).prop('checked', false);
     	color=$(this).attr('id');
-    	//console.log(color)
     	var selected_color_items=[];
     	for(var j=0; j<allItems.length; j++){
-    		//console.log(allItems[j].color);
     		if(allItems[j].color == color){
-    			//console.log("sdjvhdfkkdjv")
     			selected_color_items.push(allItems[j]);
     		}
     	}
@@ -129,6 +123,65 @@ jQuery(document).ready(function($){
     	console.log(selected_color_items);
     	display(selected_color_items);
     });
+    
+    $("body").on('click','input[type="checkbox"]:not(:checked)',function(){
+    	console.log("lk;lklk")
+    	display(allItems);
+    });
+    
+    $("body").on('click',".discount",function(){
+    	$('input[type="checkbox"]').not(this).prop('checked', false);
+    	var discount=$(this).attr('value');
+    	console.log("Value : " + discount);
+    	var id=$(this).attr('id');
+    	var selected_discount_items=[];
+    	for(var j=0; j<allItems.length; j++){
+    		
+    		if(id=="less10"){
+    			console.log("Entered Less than 10");
+    			if(allItems[j].discount[0] < discount){
+        			selected_discount_items.push(allItems[j]);
+        		}
+    		}
+    		else{
+    			if(allItems[j].discount[0] >= discount){
+    				console.log(allItems[j].discount[0]);
+    				selected_discount_items.push(allItems[j]);
+    			}
+    			
+    		}
+
+    	}
+    	present_items = selected_discount_items;
+    	console.log(selected_discount_items);
+    	display(selected_discount_items);
+    });
+    
+    
+    $("#price").click(function(){
+    	minprice=$("#minprice").val();
+    	maxprice=$("#maxprice").val();
+    	if(maxprice<minprice){
+    		alert("minimum price is more than maximum price");
+    	}
+    	else{
+    		var selected_price_items=[];
+    		var item_price=0;
+    		for(var i=0;i<allItems.length;i++){
+    			item_price=Math.round((allItems[i].price-(((allItems[i].discount)/100)*allItems[i].price)));
+    			if( item_price >= minprice && item_price < maxprice){
+    				selected_price_items.push(allItems[i]);
+    			}
+    		}
+    		present_items = selected_price_items;
+    		console.log(selected_price_items)
+    		display(selected_price_items);
+    		
+    	}
+    	
+    });
+    
+    
 		
     
 	function display(items_list){
@@ -141,6 +194,7 @@ jQuery(document).ready(function($){
 					var item_price = allItems[i].price;
 					var item_brand = allItems[i].brand;
 					var item_discount = allItems[i].discount;
+					console.log("-----"+allItems[i].discount+"-----------")
 					var item_image = allItems[i].image;
 					var item_rating=allItems[i].rating;
 					var item_ratingcount=allItems[i].rating_count;
