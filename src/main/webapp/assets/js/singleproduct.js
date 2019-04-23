@@ -236,8 +236,10 @@ jQuery(document).ready(function($){
 				setDescription(item.item_id);
 				setSellerInfo(item.seller_id);
 				setSellerRating(item.seller_id);
-				checkCart(buyer_id,item.item_id);
-				checkWishlist(buyer_id,item.item_id);
+				if(buyer_id!=null){
+					checkCart(buyer_id,item.item_id);
+					checkWishlist(buyer_id,item.item_id);
+				}
 				onClickBuy(item.item_id);
 				onClickAddtoCart(item.item_id);
 			}
