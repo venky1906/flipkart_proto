@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/css/add_category.css">
   <title>Flipkart: Admin</title>
 </head>
-
+<body>
 <div class="row">
 <div class="column" style="margin-right:50px;margin-left:50px">
 	<div class="container">
@@ -48,7 +48,7 @@
 	</div>
 </div>
 <div class="column" style="margin-right:50px;">	
-	<div class="container">
+	<div class="container" style ="height:120px;margin-bottom:200px;">
 		<select class="custom-select mr-sm-3" id="itemCategoryFixedAttribute">
 			<option selected>Choose Category</option>
 		</select>
@@ -61,6 +61,19 @@
 		<input type="text" placeholder="Enter Fixed Attribute Value" name="fixedAttributeValue" id="fixedAttributeValue" required>			
 	    <button type="button" id='AddF'>Add</button>
 	</div>	
+	
+	<div class="container">
+		<select class="custom-select mr-sm-3" id="itemCategoryColor">
+			<option selected>Choose Category</option>
+		</select>
+	    <select class="custom-select mr-sm-3" id="itemSubCategoryColor">
+			<option selected>Choose SubCategory</option>
+		</select>
+	    <label for="color"><b>Add Color</b></label>
+	    <input type="text" placeholder="Enter Color" name="color" id="color" required>
+	
+	    <button type="button" id = 'AddColor' >Add</button>
+	</div>
 </div>
 
 <div class="column" style="margin-right:50px;">
@@ -72,8 +85,12 @@
 	    <button type="button" id = "editbalance">Edit Balance</button>
 	    </p>
 	</div>
+		<a href="add_deals.html"><button style="background-color:green" type="button" id="AddDeal">Add Deal</button></a>
 </div>
 
 </div>
 
 <script src="assets/js/add_category.js"></script>
+</body>
+</html>
+
