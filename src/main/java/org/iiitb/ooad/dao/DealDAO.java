@@ -31,4 +31,8 @@ public class DealDAO extends HibernateDAO<Deal> {
 		return super.findAllNotIn(entity,"deal_id",present_deals_ids,"date_added", "date_ended", dtf.format(now));
 	}
 	
+		public int addDeal(Deal deal){
+		return super.add(deal);
+	}
+	
 }
