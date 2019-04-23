@@ -1,5 +1,10 @@
 package org.iiitb.ooad.services;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -14,7 +19,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.iiitb.ooad.dao.BuyerDAO;
 import org.iiitb.ooad.dao.DealDAO;
 import org.iiitb.ooad.dao.DealItemDAO;
@@ -28,8 +36,9 @@ import org.json.JSONObject;
 @Path("/deal")
 public class DealServices {
 	
-	private String deals_folder = "/home/sowmya/Desktop/workspace/flipkart_proto/src/main/webapp/images/deal_images/";
-
+//	private String deals_folder = "/home/sowmya/Desktop/workspace/flipkart_proto/src/main/webapp/images/deal_images/";
+	private String deals_folder = "/home/sravya/git/flipkart_proto/src/main/webapp/images/deal_images/";
+	
 	@Path("/getDealsOfItem/{id}")
 	@GET
 	@Produces("application/json")
