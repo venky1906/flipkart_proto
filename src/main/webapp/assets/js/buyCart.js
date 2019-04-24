@@ -490,7 +490,9 @@ jQuery(document).ready(function($){
 		 });
 	 }
 	 
-	 
+	 function roundToTwo(num) {    
+		    return +(Math.round(num + "e+2")  + "e-2");
+		}
 	 function setDeal(seller,itemInfo,item, quantity, deal_id)
 	 {
 	 	if(deal_id!=0 && deal_id!=null)
@@ -502,11 +504,32 @@ jQuery(document).ready(function($){
 	 			contentType : false,
 	 			processData : false,
 	 			success: function(deal){
-				
-				 var disc_price = item.price-(item.price*deal.deal_discount)/100;
-				 disc_price*=quantity;
-				 savings+=quantity*item.price*deal.deal_discount/100;
-				 price+=disc_price;
+	 			
+	 			
+	 			if(deal.name=='Buy 1 Get 1')
+	 			{
+	 				if(quantity==1)
+	 				{
+		            	  alert("Atleast two items should be bought!");
+		            	  window.location = 'Cart.html';
+		            }
+		            else if(quantity%2==0)
+		             {
+		            	  discount = 50;
+		              }
+		              else
+		              {
+		            	  discount = roundToTwo((quantity-1)*100/(quantity*2));
+		              }
+	 			}
+	 			else
+	 			{
+	 				discount = deal.deal_discount;
+	 			}
+				 var disc_price = parseInt((item.price*quantity)-((discount)/100)*(item.price)*(quantity));
+				 savings+=parseInt(quantity*item.price*discount/100);
+				 price+=roundToTwo(disc_price);
+				 price = roundToTwo(price);
 				 $("#total_price").text("₹"+price);
 				 $("#pay_price").text("₹"+price);
 				 $("#savings").text(savings);
@@ -520,7 +543,7 @@ jQuery(document).ready(function($){
 								"</div>"+
 								"<span class='pMSy0p XU9vZa' name='amount' data="+disc_price+" > ₹"+disc_price+"</span>"+
 								"<span class='pMSy0p LYRnr_'>₹"+item.price*quantity+"</span>"+
-								"<span class='hMGTLH'>"+deal.deal_discount+"% Off</span>"+
+								"<span class='hMGTLH'>"+discount+"% Off</span>"+
 								"<li style='color:green' > Offer : "+deal.name+"</li>"+
 								"<li style='color:blue' > Description : "+deal.description+"</li>"+
 							"</div> </div> </div> </div>";
@@ -533,9 +556,8 @@ jQuery(document).ready(function($){
 	 			});
 	 	}
 	 	else{
-	 		var disc_price = item.price-(item.price*item.discount)/100;
-			 disc_price*=quantity;
-			 savings+=quantity*item.price*item.discount/100;
+	 		var disc_price = parseInt((item.price*quantity)-(item.price*item.discount*quantity)/100);
+			 savings+= parseInt(quantity*item.price*item.discount/100);
 			 price+=disc_price;
 			 $("#total_price").text("₹"+price);
 			 $("#pay_price").text("₹"+price);
@@ -555,6 +577,23 @@ jQuery(document).ready(function($){
 						"</div> </div> </div> </div>";
 			 $("#cart").append(itemInfo);
 	 	}
+	 }
+	 
+	 function priceSummary(){
+		 var items = $("div[name='item']");
+		 var total_price = 0;
+		 total_price = parseInt(total_price);
+		 var total_savings = 0;
+		 for(var i=0;i<no_items;i++)
+		 {
+			 var item = items[i];
+			 total_price+= parseInt($(item).find("span[name='disc_price']").attr('data'));
+			 total_savings += $(item).find("span[name='discount']").attr('data')*$(item).find("span[name='orig_price']").attr('data')/100;
+		 }
+		 total_price = parseInt(total_price);
+		 $("#total_price").text("₹"+total_price);
+		 $("#pay_price").text("₹"+total_price);
+		 $("#savings").text(total_savings);
 	 }
 	 
 	 function setSeller(seller_id,itemInfo,item,quantity,deal_id){

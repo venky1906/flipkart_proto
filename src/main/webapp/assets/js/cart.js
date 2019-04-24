@@ -81,7 +81,7 @@ jQuery(document).ready(function($){
 						item_info+=	"<div><select class='col-lg-8' style='color: green;' name='Deals' id='deals' data-id="+item_id+">"+
 						"<option value='select'>Select Deal</option>"; 
 	 						for(var i=0;i<deals.length;i++){
-							item_info += "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
+							item_info += "<option  value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"_"+deals[i].name+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
 						}
 	 					item_info +="</select></div>";
 					}
@@ -113,7 +113,6 @@ jQuery(document).ready(function($){
 					 disc_price = disc_price;
 					 savings+=quantity*item.price*item.discount/100;
 					 savings = savings;
-					 console.log(savings);
 					 price+=disc_price;
 					 $("#total_price").text("₹"+price);
 					 $("#pay_price").text("₹"+price);
@@ -233,15 +232,34 @@ jQuery(document).ready(function($){
 	 });
 	 $("#cart").on('change','select',function(){
 		 	var id = $(this).val();
-			var item_id = $(this).attr('data-id');
-			console.log(" Item "+ item_id);
+		 	var item_id = $(this).attr('data-id');
 			if(id!="select"){
+				var deal_id = id.split("_")[0];
 				var discount = id.split("_")[1];
+				var deal_name = id.split("_")[2];
+				var item_savings,offer_price;
 				var item = $("div[name='item'][id="+item_id+"]");
 				var item_price = $(item).find("span[name='orig_price']").attr('data');
-				var item_savings = ((discount/100.0)*(item_price));
-				
-				var offer_price = (item_price-item_savings);
+				var quantity = parseInt($("input[data-id="+item_id+"]").val());
+				if(deal_name=="Buy 1 Get 1")
+				{
+		              if(quantity==1)
+		              {
+		            	  alert("Atleast two items should be bought!");
+		            	  $(this).val('select');
+		            	  return;
+		              }
+		              else if(quantity%2==0)
+		              {
+		            	  discount = 50;
+		              }
+		              else
+		              {
+		            	  discount = roundToTwo((quantity-1)*100/(quantity*2));
+		              }
+				}
+				item_savings = ((discount/100.0)*(item_price));
+				offer_price = parseInt((item_price-item_savings));
 				$(item).find("span[name='discount']").text(discount+"% Off");
 				$(item).find("span[name='discount']").attr('data',discount);
 				$(item).find("span[name='disc_price']").text("Rs. "+offer_price);
@@ -254,6 +272,9 @@ jQuery(document).ready(function($){
 				window.location = "Cart.html";
 			}
 		});
+	 function roundToTwo(num) {    
+		    return +(Math.round(num + "e+2")  + "e-2");
+		}
 	 function priceSummary(){
 		 var items = $("div[name='item']");
 		 var total_price = 0;
