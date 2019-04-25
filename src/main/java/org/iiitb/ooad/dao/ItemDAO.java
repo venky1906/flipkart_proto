@@ -109,4 +109,8 @@ public class ItemDAO extends HibernateDAO<Item> {
 		return getAllDistinct(entity,"color","subcategory_id",subcat_id);
 	}
 	
+	public List<Item> getItemsbyItemIdList(List<Integer> dealitems) {
+		return findAllIn(entity,"item_id",dealitems);
+	}
+	
 }
