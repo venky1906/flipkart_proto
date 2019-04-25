@@ -470,4 +470,62 @@ public class DealServices {
 		DealDAO dao = new DealDAO();
 		return dao.getDealDetailsByID(deal_id);
 	}
+	
+	@POST
+	@Path("/getAllItemsByDealId/{id}")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public String getDealItemsByDealId(@PathParam("id")int deal_id) throws JSONException
+	{
+
+		ItemDAO dao = new ItemDAO();
+		ItemImagesDAO itemImagesDao = new ItemImagesDAO();
+		DealItemDAO itemdao = new DealItemDAO();
+		List<Integer> dealitems = itemdao.getItemIdByDealId(deal_id);
+		if(dealitems.size()!=0) {
+			List<Item> items = dao.getItemsbyItemIdList(dealitems);
+			JSONArray allItems = new JSONArray();
+			try {
+				
+				for(int i=0;i< items.size();i++) {
+				
+					Item item = items.get(i);
+					
+					JSONObject item_details= new JSONObject();
+					item_details.append("itemid",item.getItem_id());
+					item_details.append("name",item.getName());
+					item_details.append("price",item.getPrice());
+					item_details.append("brand",item.getBrand());
+					item_details.append("discount",item.getDiscount());
+					item_details.append("manufacture_date",item.getManufacture_date());
+					item_details.append("color",item.getColor());
+					
+					int item_id = item.getItem_id();
+					ReviewDAO reviewdao = new ReviewDAO();
+					
+					Double rating = reviewdao.averageRatingOfItem(item_id);
+					item_details.append("rating",rating);
+					
+					long count = reviewdao.totalItemRatings(item_id);
+					item_details.append("rating_count",count);
+					
+					System.out.println("Item_id: " + item_id);
+					
+					ItemImages itemImage = itemImagesDao.getItemImagesByItemId(item_id).get(0);
+					item_details.append("image",itemImage.getImage_location());
+					
+					allItems.put(item_details);
+					
+				}
+				return allItems.toString();
+			}
+			
+			catch(Exception e) {	
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		return "no items";
+	}
 }
