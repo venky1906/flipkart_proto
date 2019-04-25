@@ -39,4 +39,8 @@ public class DealItemDAO extends HibernateDAO<DealItem> {
 		else
 			return "fail";
 	}
+	
+	public List<Integer> getItemIdByDealId(int deal_id) {
+		return getAllDistinctInteger(entity,"item_id","deal_id",deal_id);
+	}
 }
