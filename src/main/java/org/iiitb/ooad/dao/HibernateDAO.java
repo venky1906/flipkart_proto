@@ -419,5 +419,36 @@ public class HibernateDAO<E> {
 		session.close();
 		return list;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Integer> getAllDistinctInteger(String entity_name,String attr,String param, int val) {
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "select distinct "+ attr+" from " + entity_name + " where "+param+" = :val";
+		Query query = session.createQuery(hql);
+		query.setParameter("val", val);
+		
+		List<Integer> list = query.list();
+		System.out.println(list);
+		session.clear();
+		session.flush();
+		session.close();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")					
+	public List<E> findAllIn(String entity_name,String param1,List<Integer> values)
+	{
+		session = SessionUtil.getSession();
+		session.flush();
+		String hql = "from " + entity_name + " where " + param1 + " in :val1";
+		Query query = session.createQuery(hql);
+		query.setParameterList("val1", values);
+		List<E> entity = query.list();
+		session.clear();
+		session.flush();
+		session.close();
+		return entity;
+	}
 
 }
