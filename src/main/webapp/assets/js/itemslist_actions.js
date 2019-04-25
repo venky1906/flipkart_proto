@@ -117,30 +117,27 @@ jQuery(document).ready(function($){
     function displaycolors(){
     	subcat_id = $.urlParam("subcat_id");
     	if(subcat_id!=null){
-	    	console.log(subcat_id)
-	        $.ajax({
-			    url:"webapi/category/getAllColorsForASubCategory/"+subcat_id,
-			    type:"GET",
-			    cache:false,
-			    contentType:"application/json",
-		 	
-				success: function(data) {
-	                console.log(data);
-					if(data){
-						data = data.substring(1,data.length-1);
-						console.log(data);
-						var allColors = data.split(', ');
-						console.log(allColors)
-		                for(var i=0;i<allColors.length;i++){
-		                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i]+">"+allColors[i]+"<br>"; 
-		                	$("#color_filter").append(colors);
-		                }
-					}
-					else{
-						console.log("Colors are null");
-					}
+	    	$.ajax({
+		    url:"http://localhost:8080/flipkart/webapi/category/getAllColorsForASubCategory/"+subcat_id,
+		    type:"GET",
+		    cache:false,
+		    contentType:"application/json",
+	 	
+			success: function(data) {
+                console.log(data);
+				if(data){
+					var allColors = data;
+					console.log(allColors)
+	                for(var i=0;i<allColors.length;i++){
+	                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i].color+">"+allColors[i].color+"<br>"; 
+	                	$("#color_filter").append(colors);
+	                }
 				}
-	        });
+				else{
+					console.log("Colors are null");
+				}
+			}
+        	});
     	}
     };
      
