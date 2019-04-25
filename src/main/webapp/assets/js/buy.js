@@ -22,6 +22,7 @@ jQuery(document).ready(function($){
 	var item_id = $.urlParam("itemid");
 	var address__id = 1;
 	var seller_id = 0;
+	var item_price,item_discount;
 	console.log(item_id);
 	$("#delivery_card").removeAttr('data-toggle');
 	$("#order_card").removeAttr('data-toggle');
@@ -37,6 +38,8 @@ jQuery(document).ready(function($){
 
 			if(!$.isEmptyObject(item)){
 				//console.log(item);
+				item_price = item.price;
+				item_discount = item.discount;
 				priceSummary(item.price, item.discount, 1);
 				toOrderDetails(item);
 				setSellerInfo(item.seller_id);
@@ -54,8 +57,8 @@ jQuery(document).ready(function($){
 	//For price summary card
 	function priceSummary(price, discount, quantity){
 		$("#no_of_items").text(quantity);
-		var savings = ((discount/100.0)*(price)*(quantity)*1.0).toFixed(2);
-		var total_price = ((price*quantity)-savings).toFixed(2);
+		var savings = ((discount/100.0)*(price)*1.0).toFixed(2);
+		var total_price = (price-savings).toFixed(2);
 		//console.log(total_price);
 		$("#offer_price").text("Rs. "+total_price);
 		$("#total_price").text(total_price);
@@ -348,6 +351,7 @@ jQuery(document).ready(function($){
 					if(!$.isEmptyObject(item)){
 						//console.log(item);
 						//priceSummary(item.price, item.discount, req_qty);
+						
 						toOrderDetails(item);
 						var qty = item.quantity;
 						if(qty==0){
@@ -361,6 +365,7 @@ jQuery(document).ready(function($){
 							$('#order').collapse('hide');
 							$("#order_card").removeAttr('data-toggle');
 							$('#payment').addClass('show');
+							
 							toPayment(buyer_id);
 							//alert("done");
 						}
@@ -395,7 +400,7 @@ jQuery(document).ready(function($){
 				if(!$.isEmptyObject(deals)){
 					$("#deals").show();
 					for(var i=0;i<deals.length;i++){
-						var deal = "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
+						var deal = "<option value='"+deals[i].deal_id+"_"+deals[i].deal_discount+"_"+deals[i].name+"'>"+deals[i].name+" : "+ deals[i].deal_discount +"% Off</option>";
 						$("#deals").append(deal);
 					}
 				}
@@ -411,21 +416,66 @@ jQuery(document).ready(function($){
 		});
 	}
 	
+	 function roundToTwo(num) {    
+		    return +(Math.round(num + "e+2")  + "e-2");
+	 }
 	//Apply Deal
 	$("#deals").change(function(){
 		var id = $("#deals").val();
 		if(id!="select"){
+			var deal_name = id.split("_")[2];
 			var discount = id.split("_")[1];
 			var quantity = $("#prod_qt").val();
 			var price = $("#prod_orig_price").text().split(" ")[1];
+			if(deal_name=="Buy 1 Get 1")
+			{
+				if(quantity==1)
+				{
+					 alert("Atleast two items should be bought!");
+					 	quantity = $("#prod_qt").val();
+						price = quantity*item_price;
+						discount = item_discount;
+						var savings = ((discount/100.0)*(price)).toFixed(2);
+						var offer_price = (price-savings).toFixed(2);
+						$("#prod_discount").text(discount+"% Off");
+						$("#prod_orig_price").text("Rs. "+price);
+						$("#prod_offer_price").text("Rs. "+offer_price);
+						$("#deals").val('select');
+						priceSummary(price, discount, quantity);
+	            	 return;
+				}
+	            else if(quantity%2==0)
+	            {
+	            	  discount = 50;
+	            } 
+	            else{
+	            	discount = roundToTwo((quantity-1)*100/(quantity*2));
+	            }
+			}
 			var savings = ((discount/100.0)*(price)).toFixed(2);
 			var offer_price = (price-savings).toFixed(2);
 			$("#prod_discount").text(discount+"% Off");
 			$("#prod_offer_price").text("Rs. "+offer_price);
 			priceSummary(price, discount, quantity);
 		}
+		else
+		{
+			window.location = "BuyingPortal.html?itemid="+item_id;
+		}
 	});
-	
+	$("#prod_qt").change(function(){
+		var quantity = $("#prod_qt").val();
+		var price = quantity*item_price;
+		var discount = item_discount;
+		var savings = ((discount/100.0)*(price)).toFixed(2);
+		var offer_price = (price-savings).toFixed(2);
+		$("#prod_discount").text(discount+"% Off");
+		$("#prod_orig_price").text("Rs. "+price);
+		$("#prod_offer_price").text("Rs. "+offer_price);
+		$("#deals").val('select');
+		priceSummary(price, discount, quantity);
+
+	});
 	function toPayment(buyer_id){
 		//$('#delivery').collapse('hide');
 		var url="http://localhost:8080/flipkart/webapi/payment/getAccountDetails/"+buyer_id;
