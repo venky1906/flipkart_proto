@@ -16,9 +16,11 @@ jQuery(document).ready(function($){
 	displaycolors();
     
     function getallitems(){
+    	
         subcat_id = $.urlParam("subcat_id");
+        if(subcat_id!=null){
             $.ajax({
-			    url:"http://localhost:8080/flipkart/webapi/items/getAllItemsBySubcategoryId/"+subcat_id,
+			    url:"webapi/items/getAllItemsBySubcategoryId/"+subcat_id,
 			    type:"POST",
 			    cache:false,
 			    contentType:false,
@@ -40,32 +42,60 @@ jQuery(document).ready(function($){
 					}
 				}
             });
+        }
+        else{
+        	subcat_id = $.urlParam("deal_id");
+        	console.log(subcat_id)
+                $.ajax({
+    			    url:"webapi/deal/getAllItemsByDealId/"+subcat_id,
+    			    type:"POST",
+    			    cache:false,
+    			    contentType:false,
+    		    	processData: false,
+    		    	
+    				success: function(data) {
+    					console.log("lalala");
+    					if(data){
+    						allItems = data;
+    						console.log(allItems)
+    		                present_items = data;
+    		                display(present_items);
+    		            }
+    					else{
+    						allItems=null;
+    					}
+    				}
+                });
+        	
+        }
     };
     
     function displaybrands(){
     	subcat_id = $.urlParam("subcat_id");
-    	console.log(subcat_id)
-        $.ajax({
-		    url:"http://localhost:8080/flipkart/webapi/category/getAllBrandsForASubCategory/"+subcat_id,
-		    type:"GET",
-		    cache:false,
-		    contentType:false,
-	    	processData: false,
-	 	
-			success: function(data){
-	            console.log(data);
-				if(data){
-					var allBrands = data;
-					console.log(allBrands)
-	                for(var i=0;i<allBrands.length;i++){
-	                	var brands = "<input type='checkbox' class='brands'  id="+allBrands[i].brand+">"+allBrands[i].brand+"<br>"	                	
-	                	$("#brand_filter").append(brands);
-	                }    
+    	if(subcat_id!=null){
+	    	console.log(subcat_id)
+	        $.ajax({
+			    url:"webapi/category/getAllBrandsForASubCategory/"+subcat_id,
+			    type:"GET",
+			    cache:false,
+			    contentType:false,
+		    	processData: false,
+		 	
+				success: function(data){
+		            console.log(data);
+					if(data){
+						var allBrands = data;
+						console.log(allBrands)
+		                for(var i=0;i<allBrands.length;i++){
+		                	var brands = "<input type='checkbox' class='brands'  id="+allBrands[i].brand+">"+allBrands[i].brand+"<br>"	                	
+		                	$("#brand_filter").append(brands);
+		                }    
+					}
+					else{
+					}
 				}
-				else{
-				}
-			}
-        });
+	        });
+    	}
     };
     
     $("body").on('click',".brands",function(){
@@ -86,28 +116,32 @@ jQuery(document).ready(function($){
     
     function displaycolors(){
     	subcat_id = $.urlParam("subcat_id");
-    	console.log(subcat_id)
-        $.ajax({
-		    url:"http://localhost:8080/flipkart/webapi/category/getAllColorsForASubCategory/"+subcat_id,
-		    type:"GET",
-		    cache:false,
-		    contentType:"application/json",
-	 	
-			success: function(data) {
-                console.log(data);
-				if(data){
-					var allColors = data;
-					console.log(allColors)
-	                for(var i=0;i<allColors.length;i++){
-	                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i].color+">"+allColors[i].color+"<br>"; 
-	                	$("#color_filter").append(colors);
-	                }
+    	if(subcat_id!=null){
+	    	console.log(subcat_id)
+	        $.ajax({
+			    url:"webapi/category/getAllColorsForASubCategory/"+subcat_id,
+			    type:"GET",
+			    cache:false,
+			    contentType:"application/json",
+		 	
+				success: function(data) {
+	                console.log(data);
+					if(data){
+						data = data.substring(1,data.length-1);
+						console.log(data);
+						var allColors = data.split(', ');
+						console.log(allColors)
+		                for(var i=0;i<allColors.length;i++){
+		                	var colors = "<input type='checkbox' class='colors'  id="+allColors[i]+">"+allColors[i]+"<br>"; 
+		                	$("#color_filter").append(colors);
+		                }
+					}
+					else{
+						console.log("Colors are null");
+					}
 				}
-				else{
-					console.log("Colors are null");
-				}
-			}
-        });
+	        });
+    	}
     };
      
     $("body").on('click',".colors",function(){
